@@ -41,6 +41,9 @@ public class SN_SwerveModule {
 
     lastAngle = getState().angle;
 
+    driveConfiguration = new TalonFXConfiguration();
+    steerConfiguration = new TalonFXConfiguration();
+
     configure();
   }
 
