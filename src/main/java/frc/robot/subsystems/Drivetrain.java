@@ -13,6 +13,10 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SN_SwerveModule;
+import frc.robot.Constants.Module0;
+import frc.robot.Constants.Module1;
+import frc.robot.Constants.Module2;
+import frc.robot.Constants.Module3;
 import frc.robot.Constants.constDrivetrain;
 import frc.robot.RobotMap.mapDrivetrain;
 import frc.robot.RobotPreferences.prefDrivetrain;
@@ -20,8 +24,8 @@ import frc.robot.RobotPreferences.prefDrivetrain;
 public class Drivetrain extends SubsystemBase {
 
   private SN_SwerveModule[] swerveModules;
-  private SwerveDriveOdometry odometry;
   private PigeonIMU pigeon;
+  private SwerveDriveOdometry odometry;
 
   public SlewRateLimiter driveSlewRateLimiter;
   public SlewRateLimiter steerSlewRateLimiter;
@@ -31,16 +35,16 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
 
     swerveModules = new SN_SwerveModule[] {
-        new SN_SwerveModule(constDrivetrain.Module0.CONSTANTS),
-        new SN_SwerveModule(constDrivetrain.Module1.CONSTANTS),
-        new SN_SwerveModule(constDrivetrain.Module2.CONSTANTS),
-        new SN_SwerveModule(constDrivetrain.Module3.CONSTANTS)
+        new SN_SwerveModule(Module0.CONSTANTS),
+        new SN_SwerveModule(Module1.CONSTANTS),
+        new SN_SwerveModule(Module2.CONSTANTS),
+        new SN_SwerveModule(Module3.CONSTANTS)
     };
-
-    odometry = new SwerveDriveOdometry(constDrivetrain.SWERVE_KINEMATICS, getGyroYaw());
 
     pigeon = new PigeonIMU(mapDrivetrain.PIGEON_CAN);
     zeroGyroYaw();
+
+    odometry = new SwerveDriveOdometry(constDrivetrain.SWERVE_KINEMATICS, getGyroYaw());
 
     driveSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.driveRateLimit.getValue());
     steerSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.steerRateLimit.getValue());
