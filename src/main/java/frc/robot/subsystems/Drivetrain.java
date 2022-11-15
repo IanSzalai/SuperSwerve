@@ -29,10 +29,13 @@ public class Drivetrain extends SubsystemBase {
   boolean displayOnDashboard;
 
   public Drivetrain() {
-    swerveModules[0] = new SN_SwerveModule(constDrivetrain.Module0.CONSTANTS);
-    swerveModules[1] = new SN_SwerveModule(constDrivetrain.Module1.CONSTANTS);
-    swerveModules[2] = new SN_SwerveModule(constDrivetrain.Module2.CONSTANTS);
-    swerveModules[3] = new SN_SwerveModule(constDrivetrain.Module3.CONSTANTS);
+
+    swerveModules = new SN_SwerveModule[] {
+        new SN_SwerveModule(constDrivetrain.Module0.CONSTANTS),
+        new SN_SwerveModule(constDrivetrain.Module1.CONSTANTS),
+        new SN_SwerveModule(constDrivetrain.Module2.CONSTANTS),
+        new SN_SwerveModule(constDrivetrain.Module3.CONSTANTS)
+    };
 
     odometry = new SwerveDriveOdometry(constDrivetrain.SWERVE_KINEMATICS, getGyroYaw());
 
