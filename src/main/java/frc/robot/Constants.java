@@ -9,6 +9,12 @@ import frc.robot.RobotMap.mapDrivetrain;
 
 public final class Constants {
 
+  public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
+      Module0.POSITION,
+      Module1.POSITION,
+      Module2.POSITION,
+      Module3.POSITION);
+
   public static final class Module0 {
     public static final double STEER_ENCODER_OFFSET = Units.degreesToRadians(37.35);
     public static final Translation2d POSITION = new Translation2d(-constDrivetrain.TRACK_WIDTH / 2,
@@ -85,10 +91,5 @@ public final class Constants {
     public static final boolean STEER_ENCODER_INVERT = false;
     public static final boolean GYRO_INVERT = false;
 
-    public static final SwerveDriveKinematics SWERVE_KINEMATICS = new SwerveDriveKinematics(
-        Module0.POSITION,
-        Module1.POSITION,
-        Module2.POSITION,
-        Module3.POSITION);
   }
 }

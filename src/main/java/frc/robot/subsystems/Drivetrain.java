@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.SN_SwerveModule;
 import frc.robot.Constants.Module0;
 import frc.robot.Constants.Module1;
@@ -44,7 +45,7 @@ public class Drivetrain extends SubsystemBase {
     pigeon = new PigeonIMU(mapDrivetrain.PIGEON_CAN);
     zeroGyroYaw();
 
-    odometry = new SwerveDriveOdometry(constDrivetrain.SWERVE_KINEMATICS, getGyroYaw());
+    odometry = new SwerveDriveOdometry(Constants.SWERVE_KINEMATICS, getGyroYaw());
 
     driveSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.driveRateLimit.getValue());
     steerSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.steerRateLimit.getValue());
@@ -90,7 +91,7 @@ public class Drivetrain extends SubsystemBase {
           velocity.getY(),
           velocity.getRotation().getRadians());
     }
-    SwerveModuleState[] states = constDrivetrain.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
+    SwerveModuleState[] states = Constants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
 
     // mutates states with desaturated wheel speeds
     SwerveDriveKinematics.desaturateWheelSpeeds(states, Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue()));
