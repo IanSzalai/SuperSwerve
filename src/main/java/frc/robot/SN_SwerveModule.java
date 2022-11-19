@@ -96,7 +96,8 @@ public class SN_SwerveModule {
     double angle = SN_Math.degreesToFalcon(state.angle.getDegrees(), constDrivetrain.STEER_GEAR_RATIO);
 
     if (Math.abs(state.speedMetersPerSecond) <= prefDrivetrain.percentOfMaxSpeedToSteer.getValue()) {
-      angle = SN_Math.degreesToFalcon(lastAngle.getDegrees(), constDrivetrain.STEER_GEAR_RATIO);
+      angle = SN_Math.degreesToFalcon(lastAngle.getDegrees(),
+          constDrivetrain.STEER_GEAR_RATIO);
     }
 
     steerMotor.set(ControlMode.Position, angle);
@@ -124,7 +125,8 @@ public class SN_SwerveModule {
 
     double rotations = steerEncoder.getAbsolutePosition();
     double radians = Units.rotationsToRadians(rotations);
-    double correctedRadians = radians - steerEncoderOffset;
+
+    double correctedRadians = radians + ((2 * Math.PI) - steerEncoderOffset);
 
     correctedRadians *= constDrivetrain.STEER_ENCODER_INVERT ? -1 : 1;
 

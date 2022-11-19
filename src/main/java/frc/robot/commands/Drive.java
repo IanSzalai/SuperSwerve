@@ -5,6 +5,7 @@ import com.frcteam3255.joystick.SN_F310Gamepad;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
@@ -33,19 +34,31 @@ public class Drive extends CommandBase {
   public void execute() {
 
     // get joystick inputs
-    double xVelocity = conDriver.getAxisLSX();
-    double yVelocity = conDriver.getAxisLSY();
-    double rVelocity = conDriver.getAxisRSX();
+    double xStick = conDriver.getAxisLSX();
+    double yStick = conDriver.getAxisLSY();
+    double rStick = conDriver.getAxisRSX();
+
+    SmartDashboard.putNumber("x Stick", xStick);
+    SmartDashboard.putNumber("y Stick", yStick);
+    SmartDashboard.putNumber("r Stick", rStick);
 
     // apply slew rate limiter
-    xVelocity = subDrivetrain.driveSlewRateLimiter.calculate(xVelocity);
-    yVelocity = subDrivetrain.driveSlewRateLimiter.calculate(yVelocity);
-    rVelocity = subDrivetrain.steerSlewRateLimiter.calculate(rVelocity);
+    double xStickSlewed = subDrivetrain.driveXSlewRateLimiter.calculate(xStick);
+    double yStickSlewed = subDrivetrain.driveYSlewRateLimiter.calculate(yStick);
+    double rStickSlewed = subDrivetrain.steerSlewRateLimiter.calculate(rStick);
+
+    SmartDashboard.putNumber("x Stick Slewed", xStickSlewed);
+    SmartDashboard.putNumber("y Stick Slewed", yStickSlewed);
+    SmartDashboard.putNumber("r Stick Slewed", rStickSlewed);
 
     // scale slewed joystick inputs to proper units
-    xVelocity *= Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
-    yVelocity *= Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
-    rVelocity *= Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue());
+    double xVelocity = xStickSlewed * Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
+    double yVelocity = yStickSlewed * Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
+    double rVelocity = rStickSlewed * Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue());
+
+    SmartDashboard.putNumber("x Velocity", xVelocity);
+    SmartDashboard.putNumber("y Velocity", yVelocity);
+    SmartDashboard.putNumber("r Velocity", rVelocity);
 
     // create velocity pose with scaled, slewed joystick inputs
     Pose2d velocity = new Pose2d(
@@ -58,7 +71,6 @@ public class Drive extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    subDrivetrain.drive(new Pose2d(0, 0, new Rotation2d(0)), fieldRelative, isOpenLoop);
   }
 
   @Override

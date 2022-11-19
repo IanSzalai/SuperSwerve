@@ -13,6 +13,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotPreferences;
 import frc.robot.SN_SwerveModule;
 import frc.robot.Constants.Module0;
 import frc.robot.Constants.Module1;
@@ -28,10 +29,9 @@ public class Drivetrain extends SubsystemBase {
   private PigeonIMU pigeon;
   private SwerveDriveOdometry odometry;
 
-  public SlewRateLimiter driveSlewRateLimiter;
+  public SlewRateLimiter driveXSlewRateLimiter;
+  public SlewRateLimiter driveYSlewRateLimiter;
   public SlewRateLimiter steerSlewRateLimiter;
-
-  boolean displayOnDashboard;
 
   public Drivetrain() {
 
@@ -47,10 +47,9 @@ public class Drivetrain extends SubsystemBase {
 
     odometry = new SwerveDriveOdometry(Constants.SWERVE_KINEMATICS, getGyroYaw());
 
-    driveSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.driveRateLimit.getValue());
+    driveXSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.driveRateLimit.getValue());
+    driveYSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.driveRateLimit.getValue());
     steerSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.steerRateLimit.getValue());
-
-    displayOnDashboard = false;
 
     configure();
   }
@@ -86,10 +85,7 @@ public class Drivetrain extends SubsystemBase {
           velocity.getRotation().getRadians(),
           getGyroYaw());
     } else {
-      chassisSpeeds = new ChassisSpeeds(
-          velocity.getX(),
-          velocity.getY(),
-          velocity.getRotation().getRadians());
+      chassisSpeeds = new ChassisSpeeds(velocity.getX(), velocity.getY(), velocity.getRotation().getRadians());
     }
     SwerveModuleState[] states = Constants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
 
@@ -150,21 +146,11 @@ public class Drivetrain extends SubsystemBase {
     return odometry.getPoseMeters();
   }
 
-  public void displayValuesOnDashboard() {
-    displayOnDashboard = true;
-  }
-
-  public void hideValuesOnDashboard() {
-    displayOnDashboard = false;
-  }
-
   @Override
   public void periodic() {
     odometry.update(getGyroYaw(), getModuleStates());
 
-    SmartDashboard.putBoolean("Drivetrain displayOnDashboard", displayOnDashboard);
-
-    if (displayOnDashboard) {
+    if (RobotPreferences.displayPreferences.getValue()) {
 
       for (SN_SwerveModule mod : swerveModules) {
 

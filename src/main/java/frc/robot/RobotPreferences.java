@@ -1,8 +1,11 @@
 package frc.robot;
 
+import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
 public class RobotPreferences {
+
+  public static final SN_BooleanPreference displayPreferences = new SN_BooleanPreference("displayPreferences", false);
 
   public static final class prefDrivetrain {
     public static final SN_DoublePreference driveF = new SN_DoublePreference("driveF", 1);
@@ -25,8 +28,8 @@ public class RobotPreferences {
         "percentOfMaxSpeedToSteer", 0.01);
 
     // applied on joysticks, so units are from -1 to 1
-    public static final SN_DoublePreference driveRateLimit = new SN_DoublePreference("driveRateLimit", 0);
-    public static final SN_DoublePreference steerRateLimit = new SN_DoublePreference("steerRateLimit", 0);
+    public static final SN_DoublePreference driveRateLimit = new SN_DoublePreference("driveRateLimit", 100);
+    public static final SN_DoublePreference steerRateLimit = new SN_DoublePreference("steerRateLimit", 100);
   }
 
 }
