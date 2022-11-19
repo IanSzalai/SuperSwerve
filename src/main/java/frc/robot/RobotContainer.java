@@ -23,6 +23,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     conDriver.btn_X.whenPressed(new InstantCommand(() -> subDrivetrain.zeroGyroYaw()));
+    conDriver.btn_Y.whenPressed(new InstantCommand(() -> subDrivetrain.configure()));
   }
 
   public Command getAutonomousCommand() {

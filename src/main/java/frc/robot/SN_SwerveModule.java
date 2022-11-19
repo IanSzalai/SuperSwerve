@@ -101,6 +101,7 @@ public class SN_SwerveModule {
     }
 
     steerMotor.set(ControlMode.Position, angle);
+    lastAngle = state.angle;
 
   }
 

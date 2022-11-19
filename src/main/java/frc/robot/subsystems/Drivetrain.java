@@ -62,6 +62,7 @@ public class Drivetrain extends SubsystemBase {
       mod.configure();
     }
     pigeon.configFactoryDefault();
+    resetSteerMotorEncodersToAbsolute();
   }
 
   /**
@@ -109,6 +110,12 @@ public class Drivetrain extends SubsystemBase {
 
     for (SN_SwerveModule mod : swerveModules) {
       mod.setDesiredState(desiredStates[mod.moduleNumber], false);
+    }
+  }
+
+  public void resetSteerMotorEncodersToAbsolute() {
+    for (SN_SwerveModule mod : swerveModules) {
+      mod.resetSteerMotorEncoderToAbsolute();
     }
   }
 
