@@ -30,6 +30,8 @@ public class RobotPreferences {
     // applied on joysticks, so units are from -1 to 1
     public static final SN_DoublePreference driveRateLimit = new SN_DoublePreference("driveRateLimit", 100);
     public static final SN_DoublePreference steerRateLimit = new SN_DoublePreference("steerRateLimit", 100);
+
+    public static final SN_DoublePreference controllerDeadband = new SN_DoublePreference("controllerDeadband", 0.01);
   }
 
 }

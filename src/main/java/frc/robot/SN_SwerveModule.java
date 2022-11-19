@@ -130,6 +130,8 @@ public class SN_SwerveModule {
 
     correctedRadians *= constDrivetrain.STEER_ENCODER_INVERT ? -1 : 1;
 
+    correctedRadians %= 2 * Math.PI;
+
     return new Rotation2d(correctedRadians);
   }
 

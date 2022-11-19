@@ -16,7 +16,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     subDrivetrain.setDefaultCommand(
-        new Drive(subDrivetrain, conDriver, false, true));
+        new Drive(subDrivetrain, conDriver, true, true));
 
     configureButtonBindings();
   }
