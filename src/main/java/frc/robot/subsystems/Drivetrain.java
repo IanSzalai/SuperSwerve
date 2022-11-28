@@ -68,14 +68,16 @@ public class Drivetrain extends SubsystemBase {
   /**
    * Drive the drivetrain
    * 
-   * @param velocity      Desired translational and rotational velocity in meters
-   *                      and radians per second respectively
-   * @param fieldRelative Is the desired translational velocity field relative or
-   *                      robot relative
-   * @param isOpenLoop    Is the drive motor velocity controlled using
-   *                      open or closed loop control
+   * @param velocity        Desired translational and rotational velocity in
+   *                        meters
+   *                        and radians per second respectively
+   * @param fieldRelative   Is the desired translational velocity field relative
+   *                        or
+   *                        robot relative
+   * @param isDriveOpenLoop Is the drive motor velocity controlled using
+   *                        open or closed loop control
    */
-  public void drive(Pose2d velocity, boolean fieldRelative, boolean isOpenLoop) {
+  public void drive(Pose2d velocity, boolean fieldRelative, boolean isDriveOpenLoop) {
 
     ChassisSpeeds chassisSpeeds;
 
@@ -94,7 +96,7 @@ public class Drivetrain extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue()));
 
     for (SN_SwerveModule mod : swerveModules) {
-      mod.setDesiredState(states[mod.moduleNumber], isOpenLoop);
+      mod.setDesiredState(states[mod.moduleNumber], isDriveOpenLoop);
     }
   }
 
