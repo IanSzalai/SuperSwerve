@@ -11,18 +11,22 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 
-public class Drive extends CommandBase {
+public class DriveSimple extends CommandBase {
 
   Drivetrain subDrivetrain;
   SN_F310Gamepad conDriver;
   boolean fieldRelative;
-  boolean isOpenLoop;
+  boolean isDriveOpenLoop;
 
-  public Drive(Drivetrain subDrivetrain, SN_F310Gamepad conDriver, boolean fieldRelative, boolean isOpenLoop) {
+  public DriveSimple(
+      Drivetrain subDrivetrain,
+      SN_F310Gamepad conDriver,
+      boolean fieldRelative,
+      boolean isDriveOpenLoop) {
     this.subDrivetrain = subDrivetrain;
     this.conDriver = conDriver;
     this.fieldRelative = fieldRelative;
-    this.isOpenLoop = isOpenLoop;
+    this.isDriveOpenLoop = isDriveOpenLoop;
 
     addRequirements(this.subDrivetrain);
   }
@@ -70,7 +74,7 @@ public class Drive extends CommandBase {
         xVelocity, yVelocity,
         new Rotation2d(rVelocity));
 
-    subDrivetrain.drive(velocity, fieldRelative, isOpenLoop);
+    subDrivetrain.drive(velocity, fieldRelative, isDriveOpenLoop, true);
 
   }
 
