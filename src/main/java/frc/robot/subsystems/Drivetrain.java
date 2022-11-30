@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -33,6 +34,8 @@ public class Drivetrain extends SubsystemBase {
   public SlewRateLimiter driveYSlewRateLimiter;
   public SlewRateLimiter steerSlewRateLimiter;
 
+  private PIDController thetaPIDController;
+
   public Drivetrain() {
 
     swerveModules = new SN_SwerveModule[] {
@@ -51,6 +54,11 @@ public class Drivetrain extends SubsystemBase {
     driveYSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.driveRateLimit.getValue());
     steerSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.steerRateLimit.getValue());
 
+    thetaPIDController = new PIDController(
+        prefDrivetrain.thetaP.getValue(),
+        prefDrivetrain.thetaI.getValue(),
+        prefDrivetrain.thetaD.getValue());
+
     configure();
   }
 
@@ -63,6 +71,15 @@ public class Drivetrain extends SubsystemBase {
     }
     pigeon.configFactoryDefault();
     resetSteerMotorEncodersToAbsolute();
+
+    thetaPIDController.setPID(
+        prefDrivetrain.thetaP.getValue(),
+        prefDrivetrain.thetaI.getValue(),
+        prefDrivetrain.thetaD.getValue());
+
+    thetaPIDController.setTolerance(prefDrivetrain.thetaTolerance.getValue());
+
+    thetaPIDController.enableContinuousInput(0, Math.PI * 2);
   }
 
   /**
@@ -76,19 +93,41 @@ public class Drivetrain extends SubsystemBase {
    *                        robot relative
    * @param isDriveOpenLoop Is the drive motor velocity controlled using
    *                        open or closed loop control
+   * @param isSteerOpenLoop Is steering the entire chassis controlled using open
+   *                        or closed loop control. Open loop is velocity based,
+   *                        closed loop is position based
    */
-  public void drive(Pose2d velocity, boolean fieldRelative, boolean isDriveOpenLoop) {
+  public void drive(Pose2d velocity, boolean fieldRelative, boolean isDriveOpenLoop, boolean isSteerOpenLoop) {
 
     ChassisSpeeds chassisSpeeds;
+    Rotation2d goalRotation = velocity.getRotation();
+    Rotation2d rotation;
+
+    if (isSteerOpenLoop) {
+      rotation = goalRotation;
+    } else {
+      double radians = prefDrivetrain.thetaArbitraryFeedForward.getValue();
+
+      if (goalRotation.getRadians() < getPose().getRotation().getRadians()) {
+        radians *= -1;
+      }
+
+      radians += thetaPIDController.calculate(getPose().getRotation().getRadians(), goalRotation.getRadians());
+
+      rotation = new Rotation2d(radians);
+    }
 
     if (fieldRelative) {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
           velocity.getX(),
           velocity.getY(),
-          velocity.getRotation().getRadians(),
+          rotation.getRadians(),
           getGyroYaw());
     } else {
-      chassisSpeeds = new ChassisSpeeds(velocity.getX(), velocity.getY(), velocity.getRotation().getRadians());
+      chassisSpeeds = new ChassisSpeeds(
+          velocity.getX(),
+          velocity.getY(),
+          rotation.getRadians());
     }
     SwerveModuleState[] states = Constants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
 

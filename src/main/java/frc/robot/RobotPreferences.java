@@ -22,6 +22,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference thetaD = new SN_DoublePreference("thetaD", 0);
     public static final SN_DoublePreference thetaArbitraryFeedForward = new SN_DoublePreference(
         "thetaArbitraryFeedForward", 0);
+    public static final SN_DoublePreference thetaTolerance = new SN_DoublePreference("thetaTolerance", 0);
 
     // FPS: feet per second
     public static final SN_DoublePreference maxSpeedFPS = new SN_DoublePreference(
@@ -38,6 +39,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference steerRateLimit = new SN_DoublePreference("steerRateLimit", 100);
 
     public static final SN_DoublePreference controllerDeadband = new SN_DoublePreference("controllerDeadband", 0.01);
+    public static final SN_DoublePreference absSteerControllerDeadband = new SN_DoublePreference(
+        "absSteerControllerDeadband", 0.5);
   }
 
 }
