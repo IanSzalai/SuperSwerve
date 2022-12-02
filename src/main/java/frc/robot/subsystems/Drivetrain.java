@@ -84,6 +84,10 @@ public class Drivetrain extends SubsystemBase {
     thetaPIDController.setTolerance(prefDrivetrain.thetaTolerance.getValue());
 
     thetaPIDController.enableContinuousInput(0, Math.PI * 2);
+
+    thetaPIDController.setConstraints(new TrapezoidProfile.Constraints(
+        Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue()),
+        Units.degreesToRadians(prefDrivetrain.maxRotationDPSPS.getValue())));
   }
 
   /**
