@@ -30,6 +30,9 @@ public class RobotPreferences {
     // DPS: degrees per second
     public static final SN_DoublePreference maxRotationDPS = new SN_DoublePreference(
         "maxRotationDPS", 360);
+    // DPSPS: DPS per second, or rotational acceleration (rename this at some point)
+    public static final SN_DoublePreference maxRotationDPSPS = new SN_DoublePreference(
+        "maxRotationDPSPS", 180);
 
     public static final SN_DoublePreference percentOfMaxSpeedToSteer = new SN_DoublePreference(
         "percentOfMaxSpeedToSteer", 0.01);
@@ -38,7 +41,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference driveRateLimit = new SN_DoublePreference("driveRateLimit", 100);
     public static final SN_DoublePreference steerRateLimit = new SN_DoublePreference("steerRateLimit", 100);
 
-    public static final SN_DoublePreference controllerDeadband = new SN_DoublePreference("controllerDeadband", 0.01);
+    public static final SN_DoublePreference controllerDeadband = new SN_DoublePreference("controllerDeadband",
+        0.01);
     public static final SN_DoublePreference absSteerControllerDeadband = new SN_DoublePreference(
         "absSteerControllerDeadband", 0.5);
   }
