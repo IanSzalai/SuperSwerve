@@ -110,11 +110,11 @@ public class SN_SwerveModule {
    * encoder
    */
   public void resetSteerMotorEncoderToAbsolute() {
-    double absoluteEncoderCount = SN_Math.degreesToFalcon(
-        getSteerEncoder().getDegrees(),
-        constDrivetrain.STEER_GEAR_RATIO);
+    // double absoluteEncoderCount = SN_Math.degreesToFalcon(
+    // getSteerEncoder().getDegrees(),
+    // constDrivetrain.STEER_GEAR_RATIO);
 
-    steerMotor.setSelectedSensorPosition(absoluteEncoderCount);
+    // steerMotor.setSelectedSensorPosition(absoluteEncoderCount);
   }
 
   /**

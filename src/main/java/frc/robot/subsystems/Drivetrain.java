@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -10,6 +11,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -34,7 +36,9 @@ public class Drivetrain extends SubsystemBase {
   public SlewRateLimiter driveYSlewRateLimiter;
   public SlewRateLimiter steerSlewRateLimiter;
 
-  private PIDController thetaPIDController;
+  private ProfiledPIDController thetaPIDController;
+  // private PIDController xTransPIDController;
+  // private PIDController yTransPidController;
 
   public Drivetrain() {
 
@@ -54,10 +58,13 @@ public class Drivetrain extends SubsystemBase {
     driveYSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.driveRateLimit.getValue());
     steerSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.steerRateLimit.getValue());
 
-    thetaPIDController = new PIDController(
+    thetaPIDController = new ProfiledPIDController(
         prefDrivetrain.thetaP.getValue(),
         prefDrivetrain.thetaI.getValue(),
-        prefDrivetrain.thetaD.getValue());
+        prefDrivetrain.thetaD.getValue(),
+        new TrapezoidProfile.Constraints(
+            Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue()),
+            Units.degreesToRadians(prefDrivetrain.maxRotationDPSPS.getValue())));
 
     configure();
   }
@@ -77,9 +84,18 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.thetaI.getValue(),
         prefDrivetrain.thetaD.getValue());
 
-    thetaPIDController.setTolerance(prefDrivetrain.thetaTolerance.getValue());
+    thetaPIDController.enableContinuousInput(-Math.PI, Math.PI);
 
-    thetaPIDController.enableContinuousInput(0, Math.PI * 2);
+    thetaPIDController.setConstraints(new TrapezoidProfile.Constraints(
+        Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue()),
+        Units.degreesToRadians(prefDrivetrain.maxRotationDPSPS.getValue())));
+  }
+
+  public void driveAlignAngle(Pose2d velocity, boolean isDriveOpenLoop) {
+    thetaPIDController.setGoal(new TrapezoidProfile.State(velocity.getRotation().getRadians(), 0));
+    double goalAngle = thetaPIDController.calculate(getPose().getRotation().getRadians());
+    Pose2d newVelocity = new Pose2d(velocity.getTranslation(), new Rotation2d(goalAngle).unaryMinus());
+    drive(newVelocity, true, isDriveOpenLoop, false);
   }
 
   /**
@@ -100,34 +116,18 @@ public class Drivetrain extends SubsystemBase {
   public void drive(Pose2d velocity, boolean fieldRelative, boolean isDriveOpenLoop, boolean isSteerOpenLoop) {
 
     ChassisSpeeds chassisSpeeds;
-    Rotation2d goalRotation = velocity.getRotation();
-    Rotation2d rotation;
-
-    if (isSteerOpenLoop) {
-      rotation = goalRotation;
-    } else {
-      double radians = prefDrivetrain.thetaArbitraryFeedForward.getValue();
-
-      if (goalRotation.getRadians() < getPose().getRotation().getRadians()) {
-        radians *= -1;
-      }
-
-      radians += thetaPIDController.calculate(getPose().getRotation().getRadians(), goalRotation.getRadians());
-
-      rotation = new Rotation2d(radians);
-    }
 
     if (fieldRelative) {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
           velocity.getX(),
           velocity.getY(),
-          rotation.getRadians(),
+          velocity.getRotation().getRadians(),
           getGyroYaw());
     } else {
       chassisSpeeds = new ChassisSpeeds(
           velocity.getX(),
           velocity.getY(),
-          rotation.getRadians());
+          velocity.getRotation().getRadians());
     }
     SwerveModuleState[] states = Constants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
 

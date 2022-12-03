@@ -22,6 +22,8 @@ public class DriveAbsRotation extends CommandBase {
   boolean fieldRelative;
   boolean isDriveOpenLoop;
 
+  Rotation2d lastAngle = new Rotation2d();
+
   public DriveAbsRotation(
       Drivetrain subDrivetrain,
       SN_F310Gamepad conDriver,
@@ -43,8 +45,8 @@ public class DriveAbsRotation extends CommandBase {
   public void execute() {
 
     // get joystick inputs
-    double xStick = conDriver.getAxisLSX();
-    double yStick = conDriver.getAxisLSY();
+    double xStick = -conDriver.getAxisLSX();
+    double yStick = -conDriver.getAxisLSY();
     double rStickX = conDriver.getAxisRSX();
     double rStickY = conDriver.getAxisRSY();
 
@@ -64,14 +66,26 @@ public class DriveAbsRotation extends CommandBase {
     yStick *= Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
 
     // create rotation from joysticks
-    Rotation2d rotation = new Rotation2d(rStickX, rStickY);
+
+    Rotation2d rotation = new Rotation2d();
+
+    if (rStickX != 0 || rStickY != 0) {
+      rotation = new Rotation2d(
+          Math.atan2(rStickY, rStickX) + Units.degreesToRadians(prefDrivetrain.absSteerOffsetDegrees.getValue()));
+      System.out.println(".....................not 0");
+    } else {
+      System.out.println(".....................yes is 0");
+      rotation = lastAngle;
+    }
 
     SmartDashboard.putNumber(".rotation angle", rotation.getDegrees());
 
     // create velocity vector
     Pose2d velocity = new Pose2d(xStick, yStick, rotation);
 
-    subDrivetrain.drive(velocity, fieldRelative, isDriveOpenLoop, false);
+    subDrivetrain.driveAlignAngle(velocity, isDriveOpenLoop);
+
+    lastAngle = rotation;
   }
 
   @Override
