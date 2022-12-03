@@ -5,6 +5,7 @@ import com.frcteam3255.joystick.SN_F310Gamepad;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotMap.mapControllers;
+import frc.robot.commands.DriveAbsRotation;
 import frc.robot.commands.DriveSimple;
 import frc.robot.subsystems.Drivetrain;
 
@@ -16,7 +17,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     subDrivetrain.setDefaultCommand(
-        new DriveSimple(subDrivetrain, conDriver, true, true));
+        new DriveAbsRotation(subDrivetrain, conDriver, true, true));
 
     configureButtonBindings();
   }
