@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -36,6 +37,8 @@ public class Drivetrain extends SubsystemBase {
   public SlewRateLimiter steerSlewRateLimiter;
 
   private ProfiledPIDController thetaPIDController;
+  // private PIDController xTransPIDController;
+  // private PIDController yTransPidController;
 
   public Drivetrain() {
 
@@ -81,13 +84,18 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.thetaI.getValue(),
         prefDrivetrain.thetaD.getValue());
 
-    thetaPIDController.setTolerance(prefDrivetrain.thetaTolerance.getValue());
-
     thetaPIDController.enableContinuousInput(-Math.PI, Math.PI);
 
     thetaPIDController.setConstraints(new TrapezoidProfile.Constraints(
         Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue()),
         Units.degreesToRadians(prefDrivetrain.maxRotationDPSPS.getValue())));
+  }
+
+  public void driveAlignAngle(Pose2d velocity, boolean isDriveOpenLoop) {
+    thetaPIDController.setGoal(new TrapezoidProfile.State(velocity.getRotation().getRadians(), 0));
+    double goalAngle = thetaPIDController.calculate(getPose().getRotation().getRadians());
+    Pose2d newVelocity = new Pose2d(velocity.getTranslation(), new Rotation2d(goalAngle).unaryMinus());
+    drive(newVelocity, true, isDriveOpenLoop, false);
   }
 
   /**
@@ -108,34 +116,18 @@ public class Drivetrain extends SubsystemBase {
   public void drive(Pose2d velocity, boolean fieldRelative, boolean isDriveOpenLoop, boolean isSteerOpenLoop) {
 
     ChassisSpeeds chassisSpeeds;
-    Rotation2d goalRotation = velocity.getRotation();
-    Rotation2d rotation;
-
-    if (isSteerOpenLoop) {
-      rotation = goalRotation;
-    } else {
-      // double radians =
-      // thetaPIDController.calculate(getPose().getRotation().getRadians(),
-      // goalRotation.getRadians());
-      double radians = -getPose().getRotation().getRadians() *
-          prefDrivetrain.thetaP.getValue();
-
-      rotation = new Rotation2d(radians);
-    }
-    SmartDashboard.putNumber(".goal rotation", goalRotation.getDegrees());
-    SmartDashboard.putNumber(".rotation", rotation.getDegrees());
 
     if (fieldRelative) {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
           velocity.getX(),
           velocity.getY(),
-          rotation.getRadians(),
+          velocity.getRotation().getRadians(),
           getGyroYaw());
     } else {
       chassisSpeeds = new ChassisSpeeds(
           velocity.getX(),
           velocity.getY(),
-          rotation.getRadians());
+          velocity.getRotation().getRadians());
     }
     SwerveModuleState[] states = Constants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
 
