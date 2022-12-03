@@ -83,7 +83,7 @@ public class Drivetrain extends SubsystemBase {
 
     thetaPIDController.setTolerance(prefDrivetrain.thetaTolerance.getValue());
 
-    thetaPIDController.enableContinuousInput(0, Math.PI * 2);
+    thetaPIDController.enableContinuousInput(-Math.PI, Math.PI);
 
     thetaPIDController.setConstraints(new TrapezoidProfile.Constraints(
         Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue()),
@@ -114,16 +114,16 @@ public class Drivetrain extends SubsystemBase {
     if (isSteerOpenLoop) {
       rotation = goalRotation;
     } else {
-      double radians = prefDrivetrain.thetaArbitraryFeedForward.getValue();
-
-      if (goalRotation.getRadians() < getPose().getRotation().getRadians()) {
-        radians *= -1;
-      }
-
-      radians += thetaPIDController.calculate(getPose().getRotation().getRadians(), goalRotation.getRadians());
+      // double radians =
+      // thetaPIDController.calculate(getPose().getRotation().getRadians(),
+      // goalRotation.getRadians());
+      double radians = -getPose().getRotation().getRadians() *
+          prefDrivetrain.thetaP.getValue();
 
       rotation = new Rotation2d(radians);
     }
+    SmartDashboard.putNumber(".goal rotation", goalRotation.getDegrees());
+    SmartDashboard.putNumber(".rotation", rotation.getDegrees());
 
     if (fieldRelative) {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(

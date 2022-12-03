@@ -45,14 +45,16 @@ public class DriveAbsRotation extends CommandBase {
     // get joystick inputs
     double xStick = conDriver.getAxisLSX();
     double yStick = conDriver.getAxisLSY();
-    double rStickX = conDriver.getAxisRSX();
-    double rStickY = conDriver.getAxisRSY();
+    // double rStickX = conDriver.getAxisRSX();
+    // double rStickY = conDriver.getAxisRSY();
 
     // apply deadband
     xStick = MathUtil.applyDeadband(xStick, prefDrivetrain.controllerDeadband.getValue());
     yStick = MathUtil.applyDeadband(yStick, prefDrivetrain.controllerDeadband.getValue());
-    rStickX = MathUtil.applyDeadband(rStickX, prefDrivetrain.absSteerControllerDeadband.getValue());
-    rStickY = MathUtil.applyDeadband(rStickY, prefDrivetrain.absSteerControllerDeadband.getValue());
+    // rStickX = MathUtil.applyDeadband(rStickX,
+    // prefDrivetrain.absSteerControllerDeadband.getValue());
+    // rStickY = MathUtil.applyDeadband(rStickY,
+    // prefDrivetrain.absSteerControllerDeadband.getValue());
 
     // apply slew rate limiter
     xStick = subDrivetrain.driveXSlewRateLimiter.calculate(xStick);
@@ -64,7 +66,10 @@ public class DriveAbsRotation extends CommandBase {
     yStick *= Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
 
     // create rotation from joysticks
-    Rotation2d rotation = new Rotation2d(rStickX, rStickY);
+    // Rotation2d rotation = new Rotation2d(rStickX, rStickY);
+    // rotation.unaryMinus();
+
+    Rotation2d rotation = new Rotation2d(0);
 
     SmartDashboard.putNumber(".rotation angle", rotation.getDegrees());
 

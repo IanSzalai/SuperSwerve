@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.frcteam3255.preferences.SN_Preferences;
+
 import edu.wpi.first.util.net.PortForwarder;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -42,6 +44,8 @@ public class Robot extends TimedRobot {
     PortForwarder.add(5803, "limelight.local", 5803);
     PortForwarder.add(5804, "limelight.local", 5804);
     PortForwarder.add(5805, "limelight.local", 5805);
+    SN_Preferences.usePreferences();
+
   }
 
   /**
