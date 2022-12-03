@@ -41,8 +41,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference driveRateLimit = new SN_DoublePreference("driveRateLimit", 100);
     public static final SN_DoublePreference steerRateLimit = new SN_DoublePreference("steerRateLimit", 100);
 
-    public static final SN_DoublePreference controllerDeadband = new SN_DoublePreference("controllerDeadband",
-        0.01);
+    public static final SN_DoublePreference controllerDeadband = new SN_DoublePreference(
+        "controllerDeadband", 0.01);
     public static final SN_DoublePreference absSteerControllerDeadband = new SN_DoublePreference(
         "absSteerControllerDeadband", 0.5);
   }
