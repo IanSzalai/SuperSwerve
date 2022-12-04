@@ -19,7 +19,6 @@ public class RobotContainer {
   private final SN_F310Gamepad conDriver = new SN_F310Gamepad(mapControllers.DRIVER);
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Vision subVision = new Vision();
-  private final getInRangeOfTag getInRangeOfTag = new getInRangeOfTag(subVision, subDrivetrain);
 
   public RobotContainer() {
 
@@ -33,7 +32,7 @@ public class RobotContainer {
     conDriver.btn_X.whenPressed(new InstantCommand(() -> subDrivetrain.zeroGyroYaw()));
     conDriver.btn_Y.whenPressed(new InstantCommand(() -> subDrivetrain.configure()));
     conDriver.btn_A.whenPressed(new InstantCommand(() -> subDrivetrain.resetPose(new Pose2d())));
-    conDriver.btn_B.whileHeld(new DriveToPosition(subDrivetrain));
+    conDriver.btn_B.whileHeld(new getInRangeOfTag(subVision, subDrivetrain));
   }
 
   public Command getAutonomousCommand() {

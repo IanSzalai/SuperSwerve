@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -40,6 +41,8 @@ public class Drivetrain extends SubsystemBase {
   public ProfiledPIDController thetaPIDController;
   public ProfiledPIDController xTransPIDController;
   public ProfiledPIDController yTransPIDController;
+
+  public Field2d field;
 
   public Drivetrain() {
 
@@ -82,6 +85,8 @@ public class Drivetrain extends SubsystemBase {
         new TrapezoidProfile.Constraints(
             Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue()),
             Units.degreesToRadians(prefDrivetrain.maxRotationDPSPS.getValue())));
+
+    field = new Field2d();
 
     configure();
   }
@@ -162,7 +167,7 @@ public class Drivetrain extends SubsystemBase {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
           velocity.getX(),
           velocity.getY(),
-          velocity.getRotation().getRadians(),
+          velocity.getRotation().unaryMinus().getRadians(),
           getGyroYaw());
     } else {
       chassisSpeeds = new ChassisSpeeds(
@@ -243,6 +248,7 @@ public class Drivetrain extends SubsystemBase {
   public void periodic() {
     odometry.update(getGyroYaw(), getModuleStates());
 
+    SmartDashboard.putData(field);
     if (RobotPreferences.displayPreferences.getValue()) {
 
       for (SN_SwerveModule mod : swerveModules) {

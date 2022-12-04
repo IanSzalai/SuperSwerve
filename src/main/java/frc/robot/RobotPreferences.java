@@ -3,6 +3,8 @@ package frc.robot;
 import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
+import edu.wpi.first.math.util.Units;
+
 public class RobotPreferences {
 
     public static final SN_BooleanPreference displayPreferences = new SN_BooleanPreference("displayPreferences",
@@ -59,14 +61,16 @@ public class RobotPreferences {
         public static final SN_DoublePreference absSteerOffsetDegrees = new SN_DoublePreference(
                 "absSteerOffsetDegrees", 90);
     }
-    
+
     public static final class prefVision {
         // Camera pose relative to robot
         public static final SN_DoublePreference cameraXPosition = new SN_DoublePreference("cameraXPosition", 0);
-        public static final SN_DoublePreference cameraYPosition = new SN_DoublePreference("cameraYPosition", 0);
-        public static final SN_DoublePreference cameraZPosition = new SN_DoublePreference("cameraZPosition", 0);
+        public static final SN_DoublePreference cameraYPosition = new SN_DoublePreference(
+                "cameraYPosition", Units.inchesToMeters(11));
+        public static final SN_DoublePreference cameraZPosition = new SN_DoublePreference(
+                "cameraZPosition", Units.inchesToMeters(8.5));
         public static final SN_DoublePreference cameraPitch = new SN_DoublePreference("cameraPitch", 0);
         public static final SN_DoublePreference cameraYaw = new SN_DoublePreference("cameraYaw", 0);
         public static final SN_DoublePreference cameraRoll = new SN_DoublePreference("cameraRoll", 0);
-      }
+    }
 }
