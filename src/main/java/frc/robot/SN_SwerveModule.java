@@ -155,4 +155,8 @@ public class SN_SwerveModule {
     return new SwerveModuleState(velocity, angle);
   }
 
+  public void resetDriveEncoderCount() {
+    driveMotor.setSelectedSensorPosition(0);
+  }
+
 }

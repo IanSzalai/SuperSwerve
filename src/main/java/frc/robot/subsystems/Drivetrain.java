@@ -7,6 +7,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -36,9 +37,9 @@ public class Drivetrain extends SubsystemBase {
   public SlewRateLimiter driveYSlewRateLimiter;
   public SlewRateLimiter steerSlewRateLimiter;
 
-  private ProfiledPIDController thetaPIDController;
-  // private PIDController xTransPIDController;
-  // private PIDController yTransPidController;
+  public ProfiledPIDController thetaPIDController;
+  public ProfiledPIDController xTransPIDController;
+  public ProfiledPIDController yTransPIDController;
 
   public Drivetrain() {
 
@@ -57,6 +58,22 @@ public class Drivetrain extends SubsystemBase {
     driveXSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.driveRateLimit.getValue());
     driveYSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.driveRateLimit.getValue());
     steerSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.steerRateLimit.getValue());
+
+    xTransPIDController = new ProfiledPIDController(
+        prefDrivetrain.transP.getValue(),
+        prefDrivetrain.transI.getValue(),
+        prefDrivetrain.transD.getValue(),
+        new TrapezoidProfile.Constraints(
+            Units.feetToMeters(prefDrivetrain.transMaxFPS.getValue()),
+            Units.feetToMeters(prefDrivetrain.transMaxFPSPS.getValue())));
+
+    yTransPIDController = new ProfiledPIDController(
+        prefDrivetrain.transP.getValue(),
+        prefDrivetrain.transI.getValue(),
+        prefDrivetrain.transD.getValue(),
+        new TrapezoidProfile.Constraints(
+            Units.feetToMeters(prefDrivetrain.transMaxFPS.getValue()),
+            Units.feetToMeters(prefDrivetrain.transMaxFPSPS.getValue())));
 
     thetaPIDController = new ProfiledPIDController(
         prefDrivetrain.thetaP.getValue(),
@@ -79,6 +96,28 @@ public class Drivetrain extends SubsystemBase {
     pigeon.configFactoryDefault();
     resetSteerMotorEncodersToAbsolute();
 
+    xTransPIDController.setPID(
+        prefDrivetrain.transP.getValue(),
+        prefDrivetrain.transI.getValue(),
+        prefDrivetrain.transD.getValue());
+
+    xTransPIDController.setConstraints(new TrapezoidProfile.Constraints(
+        Units.feetToMeters(prefDrivetrain.transMaxFPS.getValue()),
+        Units.feetToMeters(prefDrivetrain.transMaxFPSPS.getValue())));
+
+    xTransPIDController.setTolerance(Units.inchesToMeters(prefDrivetrain.transTolInches.getValue()));
+
+    yTransPIDController.setPID(
+        prefDrivetrain.transP.getValue(),
+        prefDrivetrain.transI.getValue(),
+        prefDrivetrain.transD.getValue());
+
+    yTransPIDController.setConstraints(new TrapezoidProfile.Constraints(
+        Units.feetToMeters(prefDrivetrain.transMaxFPS.getValue()),
+        Units.feetToMeters(prefDrivetrain.transMaxFPSPS.getValue())));
+
+    yTransPIDController.setTolerance(Units.inchesToMeters(prefDrivetrain.transTolInches.getValue()));
+
     thetaPIDController.setPID(
         prefDrivetrain.thetaP.getValue(),
         prefDrivetrain.thetaI.getValue(),
@@ -89,12 +128,14 @@ public class Drivetrain extends SubsystemBase {
     thetaPIDController.setConstraints(new TrapezoidProfile.Constraints(
         Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue()),
         Units.degreesToRadians(prefDrivetrain.maxRotationDPSPS.getValue())));
+
+    thetaPIDController.reset(getPose().getRotation().getRadians());
   }
 
   public void driveAlignAngle(Pose2d velocity, boolean isDriveOpenLoop) {
     thetaPIDController.setGoal(new TrapezoidProfile.State(velocity.getRotation().getRadians(), 0));
     double goalAngle = thetaPIDController.calculate(getPose().getRotation().getRadians());
-    Pose2d newVelocity = new Pose2d(velocity.getTranslation(), new Rotation2d(goalAngle).unaryMinus());
+    Pose2d newVelocity = new Pose2d(velocity.getTranslation(), new Rotation2d(goalAngle));
     drive(newVelocity, true, isDriveOpenLoop, false);
   }
 
@@ -192,6 +233,10 @@ public class Drivetrain extends SubsystemBase {
 
   public Pose2d getPose() {
     return odometry.getPoseMeters();
+  }
+
+  public void resetPose(Pose2d pose) {
+    odometry.resetPosition(pose, getGyroYaw());
   }
 
   @Override

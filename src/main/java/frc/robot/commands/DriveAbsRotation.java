@@ -45,8 +45,8 @@ public class DriveAbsRotation extends CommandBase {
   public void execute() {
 
     // get joystick inputs
-    double xStick = -conDriver.getAxisLSX();
-    double yStick = -conDriver.getAxisLSY();
+    double xStick = conDriver.getAxisLSX();
+    double yStick = conDriver.getAxisLSY();
     double rStickX = conDriver.getAxisRSX();
     double rStickY = conDriver.getAxisRSY();
 

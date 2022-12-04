@@ -5,7 +5,8 @@ import com.frcteam3255.preferences.SN_DoublePreference;
 
 public class RobotPreferences {
 
-    public static final SN_BooleanPreference displayPreferences = new SN_BooleanPreference("displayPreferences", false);
+    public static final SN_BooleanPreference displayPreferences = new SN_BooleanPreference("displayPreferences",
+            false);
 
     public static final class prefDrivetrain {
         public static final SN_DoublePreference driveF = new SN_DoublePreference("driveF", 1);
@@ -23,6 +24,15 @@ public class RobotPreferences {
         public static final SN_DoublePreference thetaArbitraryFeedForward = new SN_DoublePreference(
                 "thetaArbitraryFeedForward", 0);
         public static final SN_DoublePreference thetaTolerance = new SN_DoublePreference("thetaTolerance", 0);
+
+        public static final SN_DoublePreference transP = new SN_DoublePreference("transP", 1);
+        public static final SN_DoublePreference transI = new SN_DoublePreference("transI", 0);
+        public static final SN_DoublePreference transD = new SN_DoublePreference("transD", 0);
+
+        public static final SN_DoublePreference transTolInches = new SN_DoublePreference("transTolInches", 2);
+
+        public static final SN_DoublePreference transMaxFPS = new SN_DoublePreference("transMaxFPS", 5);
+        public static final SN_DoublePreference transMaxFPSPS = new SN_DoublePreference("transMaxFPSPS", 2);
 
         // FPS: feet per second
         public static final SN_DoublePreference maxSpeedFPS = new SN_DoublePreference(
