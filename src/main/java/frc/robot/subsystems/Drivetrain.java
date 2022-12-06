@@ -114,6 +114,12 @@ public class Drivetrain extends SubsystemBase {
     pigeon.configFactoryDefault();
     resetSteerMotorEncodersToAbsolute();
 
+    poseEstimator.setVisionMeasurementStdDevs(
+        VecBuilder.fill(
+            prefDrivetrain.visionMeasurementStdDevsMeters.getValue(),
+            prefDrivetrain.visionMeasurementStdDevsMeters.getValue(),
+            Units.degreesToRadians(prefDrivetrain.visionMeasurementStdDevsDegrees.getValue())));
+
     xTransPIDController.setPID(
         prefDrivetrain.transP.getValue(),
         prefDrivetrain.transI.getValue(),
