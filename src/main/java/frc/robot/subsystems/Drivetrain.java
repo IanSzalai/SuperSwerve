@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -257,6 +258,31 @@ public class Drivetrain extends SubsystemBase {
     for (SN_SwerveModule mod : swerveModules) {
       mod.resetDriveEncoderCount();
     }
+  }
+
+  /**
+   * Updates the pose estimator with the current robot uptime, the gyro yaw, and
+   * each swerve module state.
+   * <p>
+   * This method should be called every loop.
+   */
+  public void updatePoseEstimator() {
+    poseEstimator.updateWithTime(
+        Timer.getFPGATimestamp(),
+        getGyroYaw(),
+        getModuleStates());
+  }
+
+  /**
+   * Add a vision measurement to the pose estimator. This will not directly set
+   * the pose, it will simply be another data point for the pose estimator to use.
+   * 
+   * @param visionRobotPose Pose of robot as calculated by the vision system
+   */
+  public void addVisionMeasurement(Pose2d visionRobotPose) {
+    poseEstimator.addVisionMeasurement(
+        visionRobotPose,
+        Timer.getFPGATimestamp());
   }
 
   @Override
