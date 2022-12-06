@@ -60,6 +60,18 @@ public class RobotPreferences {
 
         public static final SN_DoublePreference absSteerOffsetDegrees = new SN_DoublePreference(
                 "absSteerOffsetDegrees", 90);
+
+        public static final SN_DoublePreference stateStdDevsMeters = new SN_DoublePreference(
+                "stateStdDevsMeters", 0.05);
+        public static final SN_DoublePreference stateStdDevsDegrees = new SN_DoublePreference(
+                "stateStdDevsThetaDegrees", 5);
+        public static final SN_DoublePreference localMeasurementStdDevsDegrees = new SN_DoublePreference(
+                "localMeasurementStdDevsDegrees", 0.01);
+        public static final SN_DoublePreference visionMeasurementStdDevsMeters = new SN_DoublePreference(
+                "visionMeasurementStdDevsMeters", 0.5);
+        public static final SN_DoublePreference visionMeasurementStdDevsDegrees = new SN_DoublePreference(
+                "visionMeasurementStdDevsDegrees", 30);
+
     }
 
     public static final class prefVision {

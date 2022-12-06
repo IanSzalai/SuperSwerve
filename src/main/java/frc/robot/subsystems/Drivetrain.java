@@ -2,13 +2,14 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -30,7 +31,7 @@ public class Drivetrain extends SubsystemBase {
 
   private SN_SwerveModule[] swerveModules;
   private PigeonIMU pigeon;
-  private SwerveDriveOdometry odometry;
+  private SwerveDrivePoseEstimator poseEstimator;
 
   public SlewRateLimiter driveXSlewRateLimiter;
   public SlewRateLimiter driveYSlewRateLimiter;
@@ -54,7 +55,20 @@ public class Drivetrain extends SubsystemBase {
     pigeon = new PigeonIMU(mapDrivetrain.PIGEON_CAN);
     zeroGyroYaw();
 
-    odometry = new SwerveDriveOdometry(Constants.SWERVE_KINEMATICS, getGyroYaw());
+    poseEstimator = new SwerveDrivePoseEstimator(
+        getGyroYaw(),
+        new Pose2d(),
+        Constants.SWERVE_KINEMATICS,
+        VecBuilder.fill(
+            prefDrivetrain.stateStdDevsMeters.getValue(),
+            prefDrivetrain.stateStdDevsMeters.getValue(),
+            Units.degreesToRadians(prefDrivetrain.stateStdDevsDegrees.getValue())),
+        VecBuilder.fill(
+            Units.degreesToRadians(prefDrivetrain.localMeasurementStdDevsDegrees.getValue())),
+        VecBuilder.fill(
+            prefDrivetrain.visionMeasurementStdDevsMeters.getValue(),
+            prefDrivetrain.visionMeasurementStdDevsMeters.getValue(),
+            Units.degreesToRadians(prefDrivetrain.visionMeasurementStdDevsDegrees.getValue())));
 
     driveXSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.driveRateLimit.getValue());
     driveYSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.driveRateLimit.getValue());
@@ -235,16 +249,18 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public Pose2d getPose() {
-    return odometry.getPoseMeters();
+    return poseEstimator.getEstimatedPosition();
   }
 
   public void resetPose(Pose2d pose) {
-    odometry.resetPosition(pose, getGyroYaw());
+    poseEstimator.resetPosition(pose, getGyroYaw());
+    for (SN_SwerveModule mod : swerveModules) {
+      mod.resetDriveEncoderCount();
+    }
   }
 
   @Override
   public void periodic() {
-    odometry.update(getGyroYaw(), getModuleStates());
 
     SmartDashboard.putData(field);
     if (RobotPreferences.displayPreferences.getValue()) {
