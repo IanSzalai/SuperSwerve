@@ -23,6 +23,8 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
 // Note: This command assumes that you know where you are on the field, since every other position is relative to you
+// Ok so I kinda wanna throw this command into a fire and start over so I understand it better B)
+// Also it would just be better and I kinda need to anyway
 
 public class getInRangeOfTag extends CommandBase {
 
@@ -96,12 +98,6 @@ public class getInRangeOfTag extends CommandBase {
       goalPose = targetPose.transformBy(goalTranslation);
 
       // // go to goalPose
-      // speeds = subDrivetrain.driveController.calculate(
-      // subDrivetrain.getPose(),
-      // goalPose.toPose2d(),
-      // 1,
-      // goalPose.getRotation().toRotation2d());
-
       // If we have seen a target (so speeds has a value)
       subDrivetrain.xTransPIDController.setGoal(new TrapezoidProfile.State(goalPose.getX(), 0));
       subDrivetrain.yTransPIDController.setGoal(new TrapezoidProfile.State(goalPose.getY(), 0));
