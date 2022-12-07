@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.DriveSimple;
 import frc.robot.commands.UpdatePoseEstimator;
-import frc.robot.commands.calculatePoseFromVision;
-import frc.robot.commands.getInRangeOfTag;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
@@ -25,7 +23,6 @@ public class RobotContainer {
         new DriveSimple(subDrivetrain, conDriver, true, true));
 
     new UpdatePoseEstimator(subDrivetrain, subVision).perpetually();
-    new calculatePoseFromVision(subVision, subDrivetrain).perpetually();
 
     configureButtonBindings();
   }
@@ -34,7 +31,6 @@ public class RobotContainer {
     conDriver.btn_X.whenPressed(new InstantCommand(() -> subDrivetrain.zeroGyroYaw()));
     conDriver.btn_Y.whenPressed(new InstantCommand(() -> subDrivetrain.configure()));
     conDriver.btn_A.whenPressed(new InstantCommand(() -> subDrivetrain.resetPose(new Pose2d())));
-    conDriver.btn_B.whileHeld(new getInRangeOfTag(subVision, subDrivetrain));
   }
 
   public Command getAutonomousCommand() {
