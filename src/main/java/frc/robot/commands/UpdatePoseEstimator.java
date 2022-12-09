@@ -7,6 +7,9 @@ package frc.robot.commands;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.constVision.PoseEstimationType;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
@@ -27,10 +30,25 @@ public class UpdatePoseEstimator extends CommandBase {
 
   @Override
   public void execute() {
-    subDrivetrain.updatePoseEstimator();
     PhotonPipelineResult result = subVision.photonCamera.getLatestResult();
-    if(subVision.isPoseValid(result)){
-      subDrivetrain.addVisionMeasurement(subVision.getVisionPose(result), result.getTimestampSeconds());
+    
+    switch (RobotContainer.poseEstimationType) {
+      case GYRO_ONLY:
+        subDrivetrain.updatePoseEstimator();  
+        break;
+      case VISION_ONLY:
+        if(subVision.isPoseValid(result)){
+          subDrivetrain.addVisionMeasurement(subVision.getVisionPose(result), result.getTimestampSeconds());
+        }
+        break;
+      case GYRO_AND_VISION:
+        subDrivetrain.updatePoseEstimator(); 
+        if(subVision.isPoseValid(result)){
+          subDrivetrain.addVisionMeasurement(subVision.getVisionPose(result), result.getTimestampSeconds());
+        }
+        break;
+      case NONE:
+        break;
     }
   }
 

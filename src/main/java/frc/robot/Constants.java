@@ -100,4 +100,10 @@ public final class Constants {
     public static final boolean GYRO_INVERT = false;
 
   }
+
+  public static final class constVision {
+    public enum PoseEstimationType {
+      GYRO_ONLY, VISION_ONLY, GYRO_AND_VISION, NONE
+    }
+  }
 }

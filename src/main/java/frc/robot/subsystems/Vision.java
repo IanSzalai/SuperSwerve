@@ -44,9 +44,6 @@ public class Vision extends SubsystemBase {
     Transform3d cameraToRobot = new Transform3d(new Pose3d(0, 0, 0, new Rotation3d(0, 0, 0)), cameraPose);
       
     Transform3d cameraToTag = target.getBestCameraToTarget();
-    // TODO: create some a dictionary or something to store mutliple constant tag locations and use it here
-    // WPI will do it for us, but I literally just need to know what "type of dictionary" to use to implement it now 
-    // (I don't know enough Java) (and its 12:22 am) (also it would be cool)
     Pose3d targetPose = new Pose3d(0,0,0, new Rotation3d(0,0,0));
         
     Pose3d cameraOnField = targetPose.transformBy(cameraToTag);
