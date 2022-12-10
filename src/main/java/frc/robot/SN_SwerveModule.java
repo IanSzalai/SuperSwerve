@@ -3,13 +3,13 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.sensors.CANCoder;
 import com.frcteam3255.utils.CTREModuleState;
 import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Constants.constDrivetrain;
 import frc.robot.RobotPreferences.prefDrivetrain;
 
@@ -23,7 +23,7 @@ public class SN_SwerveModule {
   public int moduleNumber;
   private TalonFX driveMotor;
   private TalonFX steerMotor;
-  private DutyCycleEncoder steerEncoder;
+  private CANCoder steerEncoder;
   private double steerEncoderOffset;
 
   private TalonFXConfiguration driveConfiguration;
@@ -36,7 +36,7 @@ public class SN_SwerveModule {
 
     driveMotor = new TalonFX(moduleConstants.driveMotorID);
     steerMotor = new TalonFX(moduleConstants.steerMotorID);
-    steerEncoder = new DutyCycleEncoder(moduleConstants.steerEncoderID);
+    steerEncoder = new CANCoder(moduleConstants.steerEncoderID);
     steerEncoderOffset = moduleConstants.steerEncoderOffset;
 
     lastAngle = getState().angle;
@@ -67,6 +67,8 @@ public class SN_SwerveModule {
     steerMotor.configAllSettings(steerConfiguration);
     steerMotor.setNeutralMode(constDrivetrain.STEER_NEUTRAL_MODE);
     steerMotor.setInverted(constDrivetrain.STEER_INVERT);
+
+    steerEncoder.configFactoryDefault();
   }
 
   /**
@@ -110,11 +112,11 @@ public class SN_SwerveModule {
    * encoder
    */
   public void resetSteerMotorEncoderToAbsolute() {
-    // double absoluteEncoderCount = SN_Math.degreesToFalcon(
-    // getSteerEncoder().getDegrees(),
-    // constDrivetrain.STEER_GEAR_RATIO);
+    double absoluteEncoderCount = SN_Math.degreesToFalcon(
+        getSteerEncoder().getDegrees(),
+        constDrivetrain.STEER_GEAR_RATIO);
 
-    // steerMotor.setSelectedSensorPosition(absoluteEncoderCount);
+    steerMotor.setSelectedSensorPosition(absoluteEncoderCount);
   }
 
   /**
