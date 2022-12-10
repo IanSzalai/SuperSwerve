@@ -24,7 +24,7 @@ public final class Constants {
     public static final SN_SwerveModuleConstants CONSTANTS = new SN_SwerveModuleConstants(
         mapDrivetrain.FRONT_LEFT_DRIVE_CAN,
         mapDrivetrain.FRONT_LEFT_STEER_CAN,
-        mapDrivetrain.FRONT_LEFT_STEER_ENCODER_DIO,
+        mapDrivetrain.FRONT_LEFT_STEER_ENCODER_CAN,
         STEER_ENCODER_OFFSET,
         POSITION,
         0);
@@ -39,7 +39,7 @@ public final class Constants {
     public static final SN_SwerveModuleConstants CONSTANTS = new SN_SwerveModuleConstants(
         mapDrivetrain.FRONT_RIGHT_DRIVE_CAN,
         mapDrivetrain.FRONT_RIGHT_STEER_CAN,
-        mapDrivetrain.FRONT_RIGHT_STEER_ENCODER_DIO,
+        mapDrivetrain.FRONT_RIGHT_STEER_ENCODER_CAN,
         STEER_ENCODER_OFFSET,
         POSITION,
         1);
@@ -54,7 +54,7 @@ public final class Constants {
     public static final SN_SwerveModuleConstants CONSTANTS = new SN_SwerveModuleConstants(
         mapDrivetrain.BACK_LEFT_DRIVE_CAN,
         mapDrivetrain.BACK_LEFT_STEER_CAN,
-        mapDrivetrain.BACK_LEFT_STEER_ENCODER_DIO,
+        mapDrivetrain.BACK_LEFT_STEER_ENCODER_CAN,
         STEER_ENCODER_OFFSET,
         POSITION,
         2);
@@ -69,7 +69,7 @@ public final class Constants {
     public static final SN_SwerveModuleConstants CONSTANTS = new SN_SwerveModuleConstants(
         mapDrivetrain.BACK_RIGHT_DRIVE_CAN,
         mapDrivetrain.BACK_RIGHT_STEER_CAN,
-        mapDrivetrain.BACK_RIGHT_STEER_ENCODER_DIO,
+        mapDrivetrain.BACK_RIGHT_STEER_ENCODER_CAN,
         STEER_ENCODER_OFFSET,
         POSITION,
         3);
