@@ -69,6 +69,7 @@ public class SN_SwerveModule {
     steerMotor.setInverted(constDrivetrain.STEER_INVERT);
 
     steerEncoder.configFactoryDefault();
+    steerEncoder.setPositionToAbsolute();
   }
 
   /**
@@ -126,8 +127,8 @@ public class SN_SwerveModule {
    */
   public Rotation2d getSteerEncoder() {
 
-    double rotations = steerEncoder.getAbsolutePosition();
-    double radians = Units.rotationsToRadians(rotations);
+    double degrees = steerEncoder.getAbsolutePosition();
+    double radians = Units.degreesToRadians(degrees);
 
     double correctedRadians = radians + ((2 * Math.PI) - steerEncoderOffset);
 
