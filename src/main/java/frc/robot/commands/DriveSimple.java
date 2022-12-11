@@ -41,7 +41,7 @@ public class DriveSimple extends CommandBase {
     // get joystick inputs
     double xStick = conDriver.getAxisLSX();
     double yStick = conDriver.getAxisLSY();
-    double rStick = conDriver.getAxisRSX();
+    double rStick = -conDriver.getAxisRSX();
 
     xStick = MathUtil.applyDeadband(xStick, prefDrivetrain.controllerDeadband.getValue());
     yStick = MathUtil.applyDeadband(yStick, prefDrivetrain.controllerDeadband.getValue());
@@ -65,9 +65,13 @@ public class DriveSimple extends CommandBase {
     double yVelocity = yStickSlewed * Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
     double rVelocity = rStickSlewed * Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue());
 
-    SmartDashboard.putNumber("x Velocity", xVelocity);
-    SmartDashboard.putNumber("y Velocity", yVelocity);
-    SmartDashboard.putNumber("r Velocity", rVelocity);
+    SmartDashboard.putNumber("x Velocity MPS", xVelocity);
+    SmartDashboard.putNumber("y Velocity MPS", yVelocity);
+    SmartDashboard.putNumber("r Velocity RPS", rVelocity);
+
+    SmartDashboard.putNumber("x Velocity FPS", Units.metersToFeet(xVelocity));
+    SmartDashboard.putNumber("y Velocity FPS", Units.metersToFeet(yVelocity));
+    SmartDashboard.putNumber("r Velocity DPS", Units.radiansToDegrees(rVelocity));
 
     // create velocity pose with scaled, slewed joystick inputs
     Pose2d velocity = new Pose2d(

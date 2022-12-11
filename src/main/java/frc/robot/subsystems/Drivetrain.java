@@ -186,7 +186,7 @@ public class Drivetrain extends SubsystemBase {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
           velocity.getX(),
           velocity.getY(),
-          velocity.getRotation().unaryMinus().getRadians(),
+          velocity.getRotation().getRadians(),
           getGyroYaw());
     } else {
       chassisSpeeds = new ChassisSpeeds(
