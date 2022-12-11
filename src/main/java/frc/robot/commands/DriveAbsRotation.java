@@ -22,7 +22,7 @@ public class DriveAbsRotation extends CommandBase {
   boolean fieldRelative;
   boolean isDriveOpenLoop;
 
-  Rotation2d lastAngle = new Rotation2d();
+  Rotation2d lastAngle;
 
   public DriveAbsRotation(
       Drivetrain subDrivetrain,
@@ -34,11 +34,14 @@ public class DriveAbsRotation extends CommandBase {
     this.fieldRelative = fieldRelative;
     this.isDriveOpenLoop = isDriveOpenLoop;
 
+    lastAngle = subDrivetrain.getPose().getRotation();
+
     addRequirements(this.subDrivetrain);
   }
 
   @Override
   public void initialize() {
+    lastAngle = subDrivetrain.getPose().getRotation();
   }
 
   @Override

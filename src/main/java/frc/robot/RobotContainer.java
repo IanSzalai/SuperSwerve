@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.constVision.PoseEstimationType;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.commands.DriveSimple;
+import frc.robot.commands.DriveAbsRotation;
 import frc.robot.commands.UpdatePoseEstimator;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
@@ -23,7 +23,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     subDrivetrain.setDefaultCommand(
-        new DriveSimple(subDrivetrain, conDriver, true, true));
+        new DriveAbsRotation(subDrivetrain, conDriver, true, true));
 
     new UpdatePoseEstimator(subDrivetrain, subVision).perpetually();
 
