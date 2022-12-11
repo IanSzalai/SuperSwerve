@@ -21,6 +21,7 @@ public class UpdatePoseEstimator extends CommandBase {
     this.subDrivetrain = subDrivetrain;
     this.subVision = subVision;
     // does not require drivetrain
+    addRequirements(subVision);
   }
 
   @Override
@@ -30,22 +31,28 @@ public class UpdatePoseEstimator extends CommandBase {
   @Override
   public void execute() {
     PhotonPipelineResult result = subVision.photonCamera.getLatestResult();
-    PhotonTrackedTarget[] filteredResult = subVision.getValidTargets(result); 
-    
+    PhotonTrackedTarget[] filteredResult = subVision.getValidTargets(result);
+
     switch (RobotContainer.poseEstimationType) {
       case GYRO_ONLY:
-        subDrivetrain.updatePoseEstimator();  
+        subDrivetrain.updatePoseEstimator();
         break;
       case VISION_ONLY:
-        if (!(filteredResult.length < 1)) {
-          subDrivetrain.addVisionMeasurement(subVision.calculatePoseFromTargets(filteredResult), result.getTimestampSeconds());
-        }  
+        if (result.getTargets().size() > 0) {
+          if (!(filteredResult.length < 1)) {
+            subDrivetrain.addVisionMeasurement(subVision.calculatePoseFromTargets(filteredResult),
+                result.getTimestampSeconds());
+          }
+        }
         break;
       case GYRO_AND_VISION:
-        subDrivetrain.updatePoseEstimator(); 
-        if (!(filteredResult.length < 1)) {
-          subDrivetrain.addVisionMeasurement(subVision.calculatePoseFromTargets(filteredResult), result.getTimestampSeconds());
-        } 
+        subDrivetrain.updatePoseEstimator();
+        if (result.getTargets().size() > 0) {
+          if (!(filteredResult.length < 1)) {
+            subDrivetrain.addVisionMeasurement(subVision.calculatePoseFromTargets(filteredResult),
+                result.getTimestampSeconds());
+          }
+        }
         break;
       case NONE:
         break;

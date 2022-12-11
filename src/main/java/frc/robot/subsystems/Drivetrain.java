@@ -294,6 +294,7 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
 
+    field.setRobotPose(getPose());
     SmartDashboard.putData(field);
     if (RobotPreferences.displayPreferences.getValue()) {
 
