@@ -16,60 +16,52 @@ public final class Constants {
       Module3.POSITION);
 
   public static final class Module0 {
-    // public static final double STEER_ENCODER_OFFSET =
-    // Units.degreesToRadians(221.611326);
-    public static final double STEER_ENCODER_OFFSET = Units.degreesToRadians(0);
+    public static final double STEER_ENCODER_OFFSET = Units.degreesToRadians(308.056641 + 90);
     public static final Translation2d POSITION = new Translation2d(-constDrivetrain.TRACK_WIDTH / 2,
         constDrivetrain.WHEEL_BASE / 2);
     public static final SN_SwerveModuleConstants CONSTANTS = new SN_SwerveModuleConstants(
         mapDrivetrain.FRONT_LEFT_DRIVE_CAN,
         mapDrivetrain.FRONT_LEFT_STEER_CAN,
-        mapDrivetrain.FRONT_LEFT_STEER_ENCODER_DIO,
+        mapDrivetrain.FRONT_LEFT_STEER_ENCODER_CAN,
         STEER_ENCODER_OFFSET,
         POSITION,
         0);
   }
 
   public static final class Module1 {
-    // public static final double STEER_ENCODER_OFFSET =
-    // Units.degreesToRadians(337.033880);
-    public static final double STEER_ENCODER_OFFSET = Units.degreesToRadians(0);
+    public static final double STEER_ENCODER_OFFSET = Units.degreesToRadians(336.445312 + 90);
     public static final Translation2d POSITION = new Translation2d(constDrivetrain.TRACK_WIDTH / 2,
         constDrivetrain.WHEEL_BASE / 2);
     public static final SN_SwerveModuleConstants CONSTANTS = new SN_SwerveModuleConstants(
         mapDrivetrain.FRONT_RIGHT_DRIVE_CAN,
         mapDrivetrain.FRONT_RIGHT_STEER_CAN,
-        mapDrivetrain.FRONT_RIGHT_STEER_ENCODER_DIO,
+        mapDrivetrain.FRONT_RIGHT_STEER_ENCODER_CAN,
         STEER_ENCODER_OFFSET,
         POSITION,
         1);
   }
 
   public static final class Module2 {
-    // public static final double STEER_ENCODER_OFFSET =
-    // Units.degreesToRadians(119.334819);
-    public static final double STEER_ENCODER_OFFSET = Units.degreesToRadians(0);
+    public static final double STEER_ENCODER_OFFSET = Units.degreesToRadians(210.058594 + 90);
     public static final Translation2d POSITION = new Translation2d(-constDrivetrain.TRACK_WIDTH / 2,
         -constDrivetrain.WHEEL_BASE / 2);
     public static final SN_SwerveModuleConstants CONSTANTS = new SN_SwerveModuleConstants(
         mapDrivetrain.BACK_LEFT_DRIVE_CAN,
         mapDrivetrain.BACK_LEFT_STEER_CAN,
-        mapDrivetrain.BACK_LEFT_STEER_ENCODER_DIO,
+        mapDrivetrain.BACK_LEFT_STEER_ENCODER_CAN,
         STEER_ENCODER_OFFSET,
         POSITION,
         2);
   }
 
   public static final class Module3 {
-    // public static final double STEER_ENCODER_OFFSET =
-    // Units.degreesToRadians(137.775018);
-    public static final double STEER_ENCODER_OFFSET = Units.degreesToRadians(0);
+    public static final double STEER_ENCODER_OFFSET = Units.degreesToRadians(140.449219 + 90);
     public static final Translation2d POSITION = new Translation2d(constDrivetrain.TRACK_WIDTH / 2,
         -constDrivetrain.WHEEL_BASE / 2);
     public static final SN_SwerveModuleConstants CONSTANTS = new SN_SwerveModuleConstants(
         mapDrivetrain.BACK_RIGHT_DRIVE_CAN,
         mapDrivetrain.BACK_RIGHT_STEER_CAN,
-        mapDrivetrain.BACK_RIGHT_STEER_ENCODER_DIO,
+        mapDrivetrain.BACK_RIGHT_STEER_ENCODER_CAN,
         STEER_ENCODER_OFFSET,
         POSITION,
         3);
