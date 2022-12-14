@@ -47,9 +47,9 @@ public class RobotPreferences {
     public static final SN_DoublePreference percentOfMaxSpeedToSteer = new SN_DoublePreference(
         "percentOfMaxSpeedToSteer", 0.01);
 
-    // applied on joysticks, so units are from -1 to 1
-    public static final SN_DoublePreference driveRateLimit = new SN_DoublePreference("driveRateLimit", 100);
-    public static final SN_DoublePreference steerRateLimit = new SN_DoublePreference("steerRateLimit", 100);
+    // seconds to go from zero to one on the joystick input
+    public static final SN_DoublePreference driveSecondsToMax = new SN_DoublePreference("driveSecondsToMax", 0.01);
+    public static final SN_DoublePreference steerSecondsToMax = new SN_DoublePreference("steerSecondsToMax", 0.01);
 
     public static final SN_DoublePreference controllerDeadband = new SN_DoublePreference(
         "controllerDeadband", 0.01);
