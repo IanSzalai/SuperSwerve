@@ -199,7 +199,7 @@ public class Drivetrain extends SubsystemBase {
     SwerveModuleState[] states = Constants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
 
     // mutates states with desaturated wheel speeds
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue()));
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, constDrivetrain.MAX_SPEED);
 
     for (SN_SwerveModule mod : swerveModules) {
       mod.setDesiredState(states[mod.moduleNumber], isDriveOpenLoop);
@@ -213,8 +213,7 @@ public class Drivetrain extends SubsystemBase {
    * @param desiredStates List of each desired state
    */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates,
-        Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue()));
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, constDrivetrain.MAX_SPEED);
 
     for (SN_SwerveModule mod : swerveModules) {
       mod.setDesiredState(desiredStates[mod.moduleNumber], false);

@@ -83,6 +83,8 @@ public final class Constants {
     public static final double DRIVE_GEAR_RATIO = 6.75; // SDS MK4 L2
     public static final double STEER_GEAR_RATIO = 12.8; // SDS MK4 & MK3 (all drive gearings)
 
+    public static final double MAX_SPEED = Units.feetToMeters(16.3);
+
     public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
     public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
 

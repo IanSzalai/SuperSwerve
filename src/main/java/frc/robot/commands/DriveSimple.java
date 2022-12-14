@@ -61,8 +61,8 @@ public class DriveSimple extends CommandBase {
     SmartDashboard.putNumber("r Stick Slewed", rStickSlewed);
 
     // scale slewed joystick inputs to proper units
-    double xVelocity = xStickSlewed * Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
-    double yVelocity = yStickSlewed * Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
+    double xVelocity = xStickSlewed * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFPS.getValue());
+    double yVelocity = yStickSlewed * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFPS.getValue());
     double rVelocity = rStickSlewed * Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue());
 
     SmartDashboard.putNumber("x Velocity MPS", xVelocity);

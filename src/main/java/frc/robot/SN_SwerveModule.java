@@ -85,7 +85,7 @@ public class SN_SwerveModule {
     SwerveModuleState state = CTREModuleState.optimize(desiredState, getState().angle);
 
     if (isOpenLoop) {
-      double percentOutput = state.speedMetersPerSecond / Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
+      double percentOutput = state.speedMetersPerSecond / constDrivetrain.MAX_SPEED;
       driveMotor.set(ControlMode.PercentOutput, percentOutput);
 
     } else {

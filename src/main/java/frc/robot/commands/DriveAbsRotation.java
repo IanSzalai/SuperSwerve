@@ -65,8 +65,8 @@ public class DriveAbsRotation extends CommandBase {
     // can't slew rate limit the steer sticks
 
     // scale to proper units
-    xStick *= Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
-    yStick *= Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
+    xStick *= Units.feetToMeters(prefDrivetrain.maxChassisSpeedFPS.getValue());
+    yStick *= Units.feetToMeters(prefDrivetrain.maxChassisSpeedFPS.getValue());
 
     // create rotation from joysticks
 
