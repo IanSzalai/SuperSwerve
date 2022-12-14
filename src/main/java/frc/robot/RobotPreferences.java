@@ -7,8 +7,8 @@ import edu.wpi.first.math.util.Units;
 
 public class RobotPreferences {
 
-  public static final SN_BooleanPreference displayPreferences = new SN_BooleanPreference("displayPreferences",
-      false);
+  public static final SN_BooleanPreference displayPreferences = new SN_BooleanPreference(
+      "displayPreferences", false);
 
   public static final class prefDrivetrain {
     public static final SN_DoublePreference driveF = new SN_DoublePreference("driveF", 1);
@@ -23,20 +23,22 @@ public class RobotPreferences {
     public static final SN_DoublePreference thetaP = new SN_DoublePreference("thetaP", 10);
     public static final SN_DoublePreference thetaI = new SN_DoublePreference("thetaI", 0);
     public static final SN_DoublePreference thetaD = new SN_DoublePreference("thetaD", 0);
-    public static final SN_DoublePreference thetaToleranceDegrees = new SN_DoublePreference("thetaToleranceDegrees", 0);
+    public static final SN_DoublePreference thetaToleranceDegrees = new SN_DoublePreference(
+        "thetaToleranceDegrees", 0);
 
     public static final SN_DoublePreference transP = new SN_DoublePreference("transP", 1);
     public static final SN_DoublePreference transI = new SN_DoublePreference("transI", 0);
     public static final SN_DoublePreference transD = new SN_DoublePreference("transD", 0);
 
-    public static final SN_DoublePreference transTolInches = new SN_DoublePreference("transTolInches", 2);
+    public static final SN_DoublePreference transToleranceInches = new SN_DoublePreference("transToleranceInches",
+        2);
 
     public static final SN_DoublePreference transMaxFPS = new SN_DoublePreference("transMaxFPS", 5);
     public static final SN_DoublePreference transMaxFPSPS = new SN_DoublePreference("transMaxFPSPS", 2);
 
     // maximum chassis speed in feet per second
     public static final SN_DoublePreference maxChassisSpeedFeet = new SN_DoublePreference(
-        "maxChassisSpeedFPS", 16.3);
+        "maxChassisSpeedFeet", 16.3);
     // maximum chassis rotation speed in degrees per second
     public static final SN_DoublePreference maxChassisRotSpeedDegrees = new SN_DoublePreference(
         "maxChassisRotSpeedDegrees", 360);
@@ -59,7 +61,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference stateStdDevsMeters = new SN_DoublePreference(
         "stateStdDevsMeters", 0.05);
     public static final SN_DoublePreference stateStdDevsDegrees = new SN_DoublePreference(
-        "stateStdDevsThetaDegrees", 5);
+        "stateStdDevsDegrees", 5);
     public static final SN_DoublePreference localMeasurementStdDevsDegrees = new SN_DoublePreference(
         "localMeasurementStdDevsDegrees", 0.01);
     public static final SN_DoublePreference visionMeasurementStdDevsMeters = new SN_DoublePreference(
