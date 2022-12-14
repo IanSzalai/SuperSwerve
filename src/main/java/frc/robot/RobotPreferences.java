@@ -56,9 +56,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference absSteerControllerDeadband = new SN_DoublePreference(
         "absSteerControllerDeadband", 0.5);
 
-    public static final SN_DoublePreference absSteerOffsetDegrees = new SN_DoublePreference(
-        "absSteerOffsetDegrees", 90);
-
     public static final SN_DoublePreference stateStdDevsMeters = new SN_DoublePreference(
         "stateStdDevsMeters", 0.05);
     public static final SN_DoublePreference stateStdDevsDegrees = new SN_DoublePreference(

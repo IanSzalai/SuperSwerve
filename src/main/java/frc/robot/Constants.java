@@ -94,4 +94,8 @@ public final class Constants {
     public static final boolean GYRO_INVERT = false;
 
   }
+
+  public static final class constController {
+    public static final double ABSOLUTE_STEER_OFFSET = Units.degreesToRadians(90);
+  }
 }
