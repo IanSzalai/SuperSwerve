@@ -29,12 +29,15 @@ public class RobotPreferences {
     public static final SN_DoublePreference transP = new SN_DoublePreference("transP", 1);
     public static final SN_DoublePreference transI = new SN_DoublePreference("transI", 0);
     public static final SN_DoublePreference transD = new SN_DoublePreference("transD", 0);
+    public static final SN_DoublePreference transToleranceInches = new SN_DoublePreference(
+        "transToleranceInches", 2);
 
-    public static final SN_DoublePreference transToleranceInches = new SN_DoublePreference("transToleranceInches",
-        2);
-
-    public static final SN_DoublePreference transMaxFPS = new SN_DoublePreference("transMaxFPS", 5);
-    public static final SN_DoublePreference transMaxFPSPS = new SN_DoublePreference("transMaxFPSPS", 2);
+    // maximum translational speed in feet per second
+    public static final SN_DoublePreference transMaxSpeedFeet = new SN_DoublePreference(
+        "transMaxSpeedFeet", 5);
+    // maximum translationl acceleration in feet per second per second
+    public static final SN_DoublePreference transMaxAccelFeet = new SN_DoublePreference(
+        "transMaxAccelFeet", 2);
 
     // maximum chassis speed in feet per second
     public static final SN_DoublePreference maxChassisSpeedFeet = new SN_DoublePreference(

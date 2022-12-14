@@ -80,16 +80,16 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.transI.getValue(),
         prefDrivetrain.transD.getValue(),
         new TrapezoidProfile.Constraints(
-            Units.feetToMeters(prefDrivetrain.transMaxFPS.getValue()),
-            Units.feetToMeters(prefDrivetrain.transMaxFPSPS.getValue())));
+            Units.feetToMeters(prefDrivetrain.transMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.transMaxAccelFeet.getValue())));
 
     yTransPIDController = new ProfiledPIDController(
         prefDrivetrain.transP.getValue(),
         prefDrivetrain.transI.getValue(),
         prefDrivetrain.transD.getValue(),
         new TrapezoidProfile.Constraints(
-            Units.feetToMeters(prefDrivetrain.transMaxFPS.getValue()),
-            Units.feetToMeters(prefDrivetrain.transMaxFPSPS.getValue())));
+            Units.feetToMeters(prefDrivetrain.transMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.transMaxAccelFeet.getValue())));
 
     thetaPIDController = new ProfiledPIDController(
         prefDrivetrain.thetaP.getValue(),
@@ -126,10 +126,10 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.transD.getValue());
 
     xTransPIDController.setConstraints(new TrapezoidProfile.Constraints(
-        Units.feetToMeters(prefDrivetrain.transMaxFPS.getValue()),
-        Units.feetToMeters(prefDrivetrain.transMaxFPSPS.getValue())));
+        Units.feetToMeters(prefDrivetrain.transMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.transMaxAccelFeet.getValue())));
 
-    xTransPIDController.setTolerance(Units.inchesToMeters(prefDrivetrain.transTolInches.getValue()));
+    xTransPIDController.setTolerance(Units.inchesToMeters(prefDrivetrain.transToleranceInches.getValue()));
 
     yTransPIDController.setPID(
         prefDrivetrain.transP.getValue(),
@@ -137,10 +137,10 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.transD.getValue());
 
     yTransPIDController.setConstraints(new TrapezoidProfile.Constraints(
-        Units.feetToMeters(prefDrivetrain.transMaxFPS.getValue()),
-        Units.feetToMeters(prefDrivetrain.transMaxFPSPS.getValue())));
+        Units.feetToMeters(prefDrivetrain.transMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.transMaxAccelFeet.getValue())));
 
-    yTransPIDController.setTolerance(Units.inchesToMeters(prefDrivetrain.transTolInches.getValue()));
+    yTransPIDController.setTolerance(Units.inchesToMeters(prefDrivetrain.transToleranceInches.getValue()));
 
     thetaPIDController.setPID(
         prefDrivetrain.thetaP.getValue(),
