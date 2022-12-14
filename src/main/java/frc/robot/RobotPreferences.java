@@ -34,15 +34,15 @@ public class RobotPreferences {
     public static final SN_DoublePreference transMaxFPS = new SN_DoublePreference("transMaxFPS", 5);
     public static final SN_DoublePreference transMaxFPSPS = new SN_DoublePreference("transMaxFPSPS", 2);
 
-    // FPS: feet per second
-    public static final SN_DoublePreference maxChassisSpeedFPS = new SN_DoublePreference(
+    // maximum chassis speed in feet per second
+    public static final SN_DoublePreference maxChassisSpeedFeet = new SN_DoublePreference(
         "maxChassisSpeedFPS", 16.3);
-    // DPS: degrees per second
-    public static final SN_DoublePreference maxRotationDPS = new SN_DoublePreference(
-        "maxRotationDPS", 360);
-    // DPSPS: DPS per second, or rotational acceleration (rename this at some point)
-    public static final SN_DoublePreference maxRotationDPSPS = new SN_DoublePreference(
-        "maxRotationDPSPS", 180);
+    // maximum chassis rotation speed in degrees per second
+    public static final SN_DoublePreference maxChassisRotSpeedDegrees = new SN_DoublePreference(
+        "maxChassisRotSpeedDegrees", 360);
+    // maximum chassis rotation speed in degrees per second per second
+    public static final SN_DoublePreference maxChassisRotAccelDegrees = new SN_DoublePreference(
+        "maxChassisRotAccelDegrees", 360);
 
     public static final SN_DoublePreference percentOfMaxSpeedToSteer = new SN_DoublePreference(
         "percentOfMaxSpeedToSteer", 0.01);

@@ -96,8 +96,8 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.thetaI.getValue(),
         prefDrivetrain.thetaD.getValue(),
         new TrapezoidProfile.Constraints(
-            Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue()),
-            Units.degreesToRadians(prefDrivetrain.maxRotationDPSPS.getValue())));
+            Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue()),
+            Units.degreesToRadians(prefDrivetrain.maxChassisRotAccelDegrees.getValue())));
 
     field = new Field2d();
 
@@ -152,8 +152,8 @@ public class Drivetrain extends SubsystemBase {
     thetaPIDController.setTolerance(Units.degreesToRadians(prefDrivetrain.thetaToleranceDegrees.getValue()));
 
     thetaPIDController.setConstraints(new TrapezoidProfile.Constraints(
-        Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue()),
-        Units.degreesToRadians(prefDrivetrain.maxRotationDPSPS.getValue())));
+        Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue()),
+        Units.degreesToRadians(prefDrivetrain.maxChassisRotAccelDegrees.getValue())));
 
     thetaPIDController.reset(getPose().getRotation().getRadians());
   }
