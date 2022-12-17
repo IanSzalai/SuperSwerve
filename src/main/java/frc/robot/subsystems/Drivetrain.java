@@ -71,33 +71,33 @@ public class Drivetrain extends SubsystemBase {
             prefDrivetrain.visionMeasurementStdDevsMeters.getValue(),
             Units.degreesToRadians(prefDrivetrain.visionMeasurementStdDevsDegrees.getValue())));
 
-    driveXSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.driveRateLimit.getValue());
-    driveYSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.driveRateLimit.getValue());
-    steerSlewRateLimiter = new SlewRateLimiter(prefDrivetrain.steerRateLimit.getValue());
+    driveXSlewRateLimiter = new SlewRateLimiter(1 / prefDrivetrain.driveSecondsToMax.getValue());
+    driveYSlewRateLimiter = new SlewRateLimiter(1 / prefDrivetrain.driveSecondsToMax.getValue());
+    steerSlewRateLimiter = new SlewRateLimiter(1 / prefDrivetrain.steerSecondsToMax.getValue());
 
     xTransPIDController = new ProfiledPIDController(
         prefDrivetrain.transP.getValue(),
         prefDrivetrain.transI.getValue(),
         prefDrivetrain.transD.getValue(),
         new TrapezoidProfile.Constraints(
-            Units.feetToMeters(prefDrivetrain.transMaxFPS.getValue()),
-            Units.feetToMeters(prefDrivetrain.transMaxFPSPS.getValue())));
+            Units.feetToMeters(prefDrivetrain.transMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.transMaxAccelFeet.getValue())));
 
     yTransPIDController = new ProfiledPIDController(
         prefDrivetrain.transP.getValue(),
         prefDrivetrain.transI.getValue(),
         prefDrivetrain.transD.getValue(),
         new TrapezoidProfile.Constraints(
-            Units.feetToMeters(prefDrivetrain.transMaxFPS.getValue()),
-            Units.feetToMeters(prefDrivetrain.transMaxFPSPS.getValue())));
+            Units.feetToMeters(prefDrivetrain.transMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.transMaxAccelFeet.getValue())));
 
     thetaPIDController = new ProfiledPIDController(
         prefDrivetrain.thetaP.getValue(),
         prefDrivetrain.thetaI.getValue(),
         prefDrivetrain.thetaD.getValue(),
         new TrapezoidProfile.Constraints(
-            Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue()),
-            Units.degreesToRadians(prefDrivetrain.maxRotationDPSPS.getValue())));
+            Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue()),
+            Units.degreesToRadians(prefDrivetrain.maxChassisRotAccelDegrees.getValue())));
 
     field = new Field2d();
 
@@ -126,10 +126,10 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.transD.getValue());
 
     xTransPIDController.setConstraints(new TrapezoidProfile.Constraints(
-        Units.feetToMeters(prefDrivetrain.transMaxFPS.getValue()),
-        Units.feetToMeters(prefDrivetrain.transMaxFPSPS.getValue())));
+        Units.feetToMeters(prefDrivetrain.transMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.transMaxAccelFeet.getValue())));
 
-    xTransPIDController.setTolerance(Units.inchesToMeters(prefDrivetrain.transTolInches.getValue()));
+    xTransPIDController.setTolerance(Units.inchesToMeters(prefDrivetrain.transToleranceInches.getValue()));
 
     yTransPIDController.setPID(
         prefDrivetrain.transP.getValue(),
@@ -137,10 +137,10 @@ public class Drivetrain extends SubsystemBase {
         prefDrivetrain.transD.getValue());
 
     yTransPIDController.setConstraints(new TrapezoidProfile.Constraints(
-        Units.feetToMeters(prefDrivetrain.transMaxFPS.getValue()),
-        Units.feetToMeters(prefDrivetrain.transMaxFPSPS.getValue())));
+        Units.feetToMeters(prefDrivetrain.transMaxSpeedFeet.getValue()),
+        Units.feetToMeters(prefDrivetrain.transMaxAccelFeet.getValue())));
 
-    yTransPIDController.setTolerance(Units.inchesToMeters(prefDrivetrain.transTolInches.getValue()));
+    yTransPIDController.setTolerance(Units.inchesToMeters(prefDrivetrain.transToleranceInches.getValue()));
 
     thetaPIDController.setPID(
         prefDrivetrain.thetaP.getValue(),
@@ -149,9 +149,11 @@ public class Drivetrain extends SubsystemBase {
 
     thetaPIDController.enableContinuousInput(-Math.PI, Math.PI);
 
+    thetaPIDController.setTolerance(Units.degreesToRadians(prefDrivetrain.thetaToleranceDegrees.getValue()));
+
     thetaPIDController.setConstraints(new TrapezoidProfile.Constraints(
-        Units.degreesToRadians(prefDrivetrain.maxRotationDPS.getValue()),
-        Units.degreesToRadians(prefDrivetrain.maxRotationDPSPS.getValue())));
+        Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue()),
+        Units.degreesToRadians(prefDrivetrain.maxChassisRotAccelDegrees.getValue())));
 
     thetaPIDController.reset(getPose().getRotation().getRadians());
   }
@@ -197,7 +199,7 @@ public class Drivetrain extends SubsystemBase {
     SwerveModuleState[] states = Constants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
 
     // mutates states with desaturated wheel speeds
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue()));
+    SwerveDriveKinematics.desaturateWheelSpeeds(states, constDrivetrain.MAX_SPEED);
 
     for (SN_SwerveModule mod : swerveModules) {
       mod.setDesiredState(states[mod.moduleNumber], isDriveOpenLoop);
@@ -211,8 +213,7 @@ public class Drivetrain extends SubsystemBase {
    * @param desiredStates List of each desired state
    */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates,
-        Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue()));
+    SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, constDrivetrain.MAX_SPEED);
 
     for (SN_SwerveModule mod : swerveModules) {
       mod.setDesiredState(desiredStates[mod.moduleNumber], false);

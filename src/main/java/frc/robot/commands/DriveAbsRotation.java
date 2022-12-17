@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.constController;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 
@@ -65,8 +66,8 @@ public class DriveAbsRotation extends CommandBase {
     // can't slew rate limit the steer sticks
 
     // scale to proper units
-    xStick *= Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
-    yStick *= Units.feetToMeters(prefDrivetrain.maxSpeedFPS.getValue());
+    xStick *= Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
+    yStick *= Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
 
     // create rotation from joysticks
 
@@ -74,7 +75,7 @@ public class DriveAbsRotation extends CommandBase {
 
     if (rStickX != 0 || rStickY != 0) {
       rotation = new Rotation2d(
-          Math.atan2(rStickY, rStickX) + Units.degreesToRadians(prefDrivetrain.absSteerOffsetDegrees.getValue()));
+          Math.atan2(rStickY, rStickX) + Units.degreesToRadians(constController.ABSOLUTE_STEER_OFFSET));
       System.out.println(".....................not 0");
     } else {
       System.out.println(".....................yes is 0");
