@@ -99,6 +99,8 @@ public final class Constants {
     public enum PoseEstimationType {
       GYRO_ONLY, VISION_ONLY, GYRO_AND_VISION, NONE
     }
+  }
+
   public static final class constController {
     public static final double ABSOLUTE_STEER_OFFSET = Units.degreesToRadians(90);
   }
