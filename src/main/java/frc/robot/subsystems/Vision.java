@@ -62,7 +62,7 @@ public class Vision extends SubsystemBase {
 
     for (PhotonTrackedTarget t : filteredResult) {
       Transform3d cameraToTag = t.getBestCameraToTarget();
-      Pose3d targetPose = new Pose3d(2, 0, 0, new Rotation3d(0, 0, 0)); // This is where WPI Array code would go, for
+      Pose3d targetPose = new Pose3d(2, 2, 0, new Rotation3d(0, 0, 0)); // This is where WPI Array code would go, for
                                                                         // now just only use 1 tag
       Pose3d cameraOnField = targetPose.transformBy(cameraToTag);
       Pose3d robotOnField = cameraOnField.transformBy(cameraToRobot);
@@ -97,9 +97,11 @@ public class Vision extends SubsystemBase {
     Quaternion calculatedQuaternion = new Quaternion(averageW, averageX, averageY, averageZ);
     Pose3d calculatedPose = new Pose3d(averageTranslation, new Rotation3d(calculatedQuaternion));
 
-    SmartDashboard.putNumber("robot calced pose x", calculatedPose.getX());
-    SmartDashboard.putNumber("robot calced pose y", calculatedPose.getY());
-    SmartDashboard.putNumber("robot calced pose rot", calculatedPose.getRotation().getZ());
+    SmartDashboard.putNumber("robot calced pose x", calculatedPose.toPose2d().getX());
+    SmartDashboard.putNumber("robot calced pose y", calculatedPose.toPose2d().getY());
+    SmartDashboard.putNumber("robot calced pose rot", calculatedPose.toPose2d().getRotation().getDegrees());
+
+    System.out.println(calculatedPose);
 
     return calculatedPose.toPose2d();
   }
