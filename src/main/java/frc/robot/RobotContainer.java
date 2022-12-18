@@ -24,7 +24,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     subDrivetrain.setDefaultCommand(
-        new DriveAbsRotation(subDrivetrain, conDriver, true, true));
+        new DriveSimple(subDrivetrain, conDriver, true, true));
 
     subVision.setDefaultCommand(new UpdatePoseEstimator(subDrivetrain, subVision));
 

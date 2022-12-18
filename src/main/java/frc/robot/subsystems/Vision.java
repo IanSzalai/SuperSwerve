@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Quaternion;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences.prefVision;
 
@@ -95,6 +96,10 @@ public class Vision extends SubsystemBase {
 
     Quaternion calculatedQuaternion = new Quaternion(averageW, averageX, averageY, averageZ);
     Pose3d calculatedPose = new Pose3d(averageTranslation, new Rotation3d(calculatedQuaternion));
+
+    SmartDashboard.putNumber("robot calced pose x", calculatedPose.getX());
+    SmartDashboard.putNumber("robot calced pose y", calculatedPose.getY());
+    SmartDashboard.putNumber("robot calced pose rot", calculatedPose.getRotation().getZ());
 
     return calculatedPose.toPose2d();
   }

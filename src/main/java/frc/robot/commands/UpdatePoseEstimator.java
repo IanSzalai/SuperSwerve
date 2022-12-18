@@ -7,6 +7,7 @@ package frc.robot.commands;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
@@ -39,7 +40,7 @@ public class UpdatePoseEstimator extends CommandBase {
         break;
       case VISION_ONLY:
         if (result.getTargets().size() > 0) {
-          if (!(filteredResult.length < 1)) {
+          if (filteredResult != null && !(filteredResult.length < 1)) {
             subDrivetrain.addVisionMeasurement(subVision.calculatePoseFromTargets(filteredResult),
                 result.getTimestampSeconds());
           }
@@ -48,7 +49,7 @@ public class UpdatePoseEstimator extends CommandBase {
       case GYRO_AND_VISION:
         subDrivetrain.updatePoseEstimator();
         if (result.getTargets().size() > 0) {
-          if (!(filteredResult.length < 1)) {
+          if (filteredResult != null && !(filteredResult.length < 1)) {
             subDrivetrain.addVisionMeasurement(subVision.calculatePoseFromTargets(filteredResult),
                 result.getTimestampSeconds());
           }
