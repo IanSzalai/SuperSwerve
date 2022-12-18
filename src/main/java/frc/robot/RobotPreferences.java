@@ -77,7 +77,7 @@ public class RobotPreferences {
   public static final class prefVision {
 
     public static final SN_BooleanPreference useVision = new SN_BooleanPreference(
-        "useVision", true);
+        "useVision", false);
 
     // Camera pose relative to robot
     public static final SN_DoublePreference cameraXPosition = new SN_DoublePreference(
