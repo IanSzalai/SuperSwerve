@@ -43,6 +43,7 @@ public class Vision extends SubsystemBase {
   public Pose2d calculatePoseFromTargets(PhotonTrackedTarget[] filteredResult) {
     Translation3d totalTranslation = new Translation3d(0, 0, 0);
     Quaternion initialQuaternion = null;
+    Quaternion newQuaternion = null;
     double totalW = 0;
     double totalX = 0;
     double totalY = 0;
@@ -69,8 +70,9 @@ public class Vision extends SubsystemBase {
 
       if (initialQuaternion == null) {
         initialQuaternion = robotOnField.getRotation().getQuaternion();
+        newQuaternion = initialQuaternion;
       } else {
-        Quaternion newQuaternion = robotOnField.getRotation().getQuaternion();
+        newQuaternion = robotOnField.getRotation().getQuaternion();
         // dot: ensure every value is within 180 degrees of init. quaternion
         double dot = (initialQuaternion.getW() * newQuaternion.getW())
             + (initialQuaternion.getX() * newQuaternion.getX()) + (initialQuaternion.getY() * newQuaternion.getY())
@@ -78,11 +80,11 @@ public class Vision extends SubsystemBase {
         if (dot < 0) {
           newQuaternion = newQuaternion.inverse();
         }
-        totalW += newQuaternion.getW();
-        totalX += newQuaternion.getX();
-        totalY += newQuaternion.getY();
-        totalZ += newQuaternion.getZ();
       }
+      totalW += newQuaternion.getW();
+      totalX += newQuaternion.getX();
+      totalY += newQuaternion.getY();
+      totalZ += newQuaternion.getZ();
     }
 
     Translation3d averageTranslation = totalTranslation.div(filteredResult.length);
