@@ -120,6 +120,10 @@ public class Drivetrain extends SubsystemBase {
             prefDrivetrain.visionMeasurementStdDevsMeters.getValue(),
             Units.degreesToRadians(prefDrivetrain.visionMeasurementStdDevsDegrees.getValue())));
 
+    driveXSlewRateLimiter = new SlewRateLimiter(1 / prefDrivetrain.driveSecondsToMax.getValue());
+    driveYSlewRateLimiter = new SlewRateLimiter(1 / prefDrivetrain.driveSecondsToMax.getValue());
+    steerSlewRateLimiter = new SlewRateLimiter(1 / prefDrivetrain.steerSecondsToMax.getValue());
+
     xTransPIDController.setPID(
         prefDrivetrain.transP.getValue(),
         prefDrivetrain.transI.getValue(),
