@@ -40,7 +40,7 @@ public class UpdatePoseEstimator extends CommandBase {
         break;
       case VISION_ONLY:
         if (result.getTargets().size() > 0) {
-          if (filteredResult != null && !(filteredResult.length < 1)) {
+          if (filteredResult != null && filteredResult.length > 0) {
             subDrivetrain.addVisionMeasurement(subVision.calculatePoseFromTargets(filteredResult),
                 result.getTimestampSeconds());
           }
@@ -48,11 +48,10 @@ public class UpdatePoseEstimator extends CommandBase {
         break;
       case GYRO_AND_VISION:
         subDrivetrain.updatePoseEstimator();
-        if (result.getTargets().size() > 0) {
-          if (filteredResult != null && !(filteredResult.length < 1)) {
-            subDrivetrain.addVisionMeasurement(subVision.calculatePoseFromTargets(filteredResult),
-                result.getTimestampSeconds());
-          }
+        if (result.getTargets().size() > 0 && filteredResult != null && filteredResult.length > 0) {
+          subDrivetrain.addVisionMeasurement(subVision.calculatePoseFromTargets(filteredResult),
+              result.getTimestampSeconds());
+
         }
         break;
       case NONE:
