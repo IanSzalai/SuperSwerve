@@ -96,9 +96,6 @@ public final class Constants {
   }
 
   public static final class constVision {
-    public enum PoseEstimationType {
-      GYRO_ONLY, VISION_ONLY, GYRO_AND_VISION, NONE
-    }
   }
 
   public static final class constController {
