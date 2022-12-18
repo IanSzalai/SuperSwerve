@@ -5,7 +5,6 @@ import com.frcteam3255.joystick.SN_F310Gamepad;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.constVision.PoseEstimationType;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.commands.DriveSimple;
 import frc.robot.commands.UpdatePoseEstimator;
@@ -18,16 +17,12 @@ public class RobotContainer {
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Vision subVision = new Vision();
 
-  public static PoseEstimationType poseEstimationType;
-
   public RobotContainer() {
 
     subDrivetrain.setDefaultCommand(
         new DriveSimple(subDrivetrain, conDriver, true, true));
 
     subVision.setDefaultCommand(new UpdatePoseEstimator(subDrivetrain, subVision));
-
-    poseEstimationType = PoseEstimationType.GYRO_AND_VISION;
 
     configureButtonBindings();
   }

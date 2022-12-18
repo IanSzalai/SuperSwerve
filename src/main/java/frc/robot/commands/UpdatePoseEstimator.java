@@ -8,7 +8,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+import frc.robot.RobotPreferences.prefVision;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
@@ -30,31 +30,16 @@ public class UpdatePoseEstimator extends CommandBase {
 
   @Override
   public void execute() {
+    subDrivetrain.updatePoseEstimator();
+
     PhotonPipelineResult result = subVision.photonCamera.getLatestResult();
     PhotonTrackedTarget[] filteredResult = subVision.getValidTargets(result);
 
-    switch (RobotContainer.poseEstimationType) {
-      case GYRO_ONLY:
-        subDrivetrain.updatePoseEstimator();
-        break;
-      case VISION_ONLY:
-        if (result.getTargets().size() > 0) {
-          if (filteredResult != null && filteredResult.length > 0) {
-            subDrivetrain.addVisionMeasurement(subVision.calculatePoseFromTargets(filteredResult),
-                result.getTimestampSeconds());
-          }
-        }
-        break;
-      case GYRO_AND_VISION:
-        subDrivetrain.updatePoseEstimator();
-        if (result.getTargets().size() > 0 && filteredResult != null && filteredResult.length > 0) {
-          subDrivetrain.addVisionMeasurement(subVision.calculatePoseFromTargets(filteredResult),
-              result.getTimestampSeconds());
-
-        }
-        break;
-      case NONE:
-        break;
+    if (prefVision.useVision.getValue()) {
+      if (result.getTargets().size() > 0 && filteredResult != null && filteredResult.length > 0) {
+        subDrivetrain.addVisionMeasurement(subVision.calculatePoseFromTargets(filteredResult),
+            result.getTimestampSeconds());
+      }
     }
   }
 
