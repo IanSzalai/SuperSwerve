@@ -76,13 +76,15 @@ public class DriveAbsRotation extends CommandBase {
     if (rStickX != 0 || rStickY != 0) {
       rotation = new Rotation2d(
           Math.atan2(rStickY, rStickX) + Units.degreesToRadians(constController.ABSOLUTE_STEER_OFFSET));
-      System.out.println(".....................not 0");
     } else {
-      System.out.println(".....................yes is 0");
       rotation = lastAngle;
+
+      if (conDriver.getPOV() > -1) {
+        rotation = Rotation2d.fromDegrees(conDriver.getPOV() + constController.ABSOLUTE_STEER_OFFSET);
+      }
     }
 
-    SmartDashboard.putNumber(".rotation angle", rotation.getDegrees());
+    SmartDashboard.putNumber("controller rotation angle", rotation.getDegrees());
 
     // create velocity vector
     Pose2d velocity = new Pose2d(xStick, yStick, rotation);
