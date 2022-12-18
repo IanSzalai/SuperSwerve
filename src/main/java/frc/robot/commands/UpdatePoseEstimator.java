@@ -4,7 +4,11 @@
 
 package frc.robot.commands;
 
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.RobotPreferences.prefVision;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
@@ -17,6 +21,7 @@ public class UpdatePoseEstimator extends CommandBase {
     this.subDrivetrain = subDrivetrain;
     this.subVision = subVision;
     // does not require drivetrain
+    addRequirements(subVision);
   }
 
   @Override
@@ -26,6 +31,16 @@ public class UpdatePoseEstimator extends CommandBase {
   @Override
   public void execute() {
     subDrivetrain.updatePoseEstimator();
+
+    PhotonPipelineResult result = subVision.photonCamera.getLatestResult();
+    PhotonTrackedTarget[] filteredResult = subVision.getValidTargets(result);
+
+    if (prefVision.useVision.getValue()) {
+      if (result.getTargets().size() > 0 && filteredResult != null && filteredResult.length > 0) {
+        subDrivetrain.addVisionMeasurement(subVision.calculatePoseFromTargets(filteredResult),
+            result.getTimestampSeconds());
+      }
+    }
   }
 
   @Override

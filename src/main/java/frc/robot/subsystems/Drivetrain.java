@@ -290,15 +290,16 @@ public class Drivetrain extends SubsystemBase {
    * 
    * @param visionRobotPose Pose of robot as calculated by the vision system
    */
-  public void addVisionMeasurement(Pose2d visionRobotPose) {
+  public void addVisionMeasurement(Pose2d visionRobotPose, double timestampSeconds) {
     poseEstimator.addVisionMeasurement(
         visionRobotPose,
-        Timer.getFPGATimestamp());
+        timestampSeconds);
   }
 
   @Override
   public void periodic() {
 
+    field.setRobotPose(getPose());
     SmartDashboard.putData(field);
     if (RobotPreferences.displayPreferences.getValue()) {
 
