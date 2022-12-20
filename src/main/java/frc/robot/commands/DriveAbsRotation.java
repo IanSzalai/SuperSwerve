@@ -78,10 +78,6 @@ public class DriveAbsRotation extends CommandBase {
           Math.atan2(rStickY, rStickX) + Units.degreesToRadians(constController.ABSOLUTE_STEER_OFFSET));
     } else {
       rotation = lastAngle;
-
-      if (conDriver.getPOV() > -1) {
-        rotation = Rotation2d.fromDegrees(conDriver.getPOV() + constController.ABSOLUTE_STEER_OFFSET);
-      }
     }
 
     SmartDashboard.putNumber("controller rotation angle", rotation.getDegrees());
