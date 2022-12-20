@@ -60,11 +60,6 @@ public class FlickStick extends CommandBase {
     rStickX = MathUtil.applyDeadband(rStickX, prefDrivetrain.absSteerControllerDeadband.getValue());
     rStickY = MathUtil.applyDeadband(rStickY, prefDrivetrain.absSteerControllerDeadband.getValue());
 
-    // apply slew rate limiter
-    xStick = subDrivetrain.driveXSlewRateLimiter.calculate(xStick);
-    yStick = subDrivetrain.driveYSlewRateLimiter.calculate(yStick);
-    // can't slew rate limit the steer sticks
-
     // scale to proper units
     xStick *= Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
     yStick *= Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());

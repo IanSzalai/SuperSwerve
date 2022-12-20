@@ -56,13 +56,10 @@ public class TriggerSimple extends CommandBase {
     double translationMagnitude = rTrigger - lTrigger;
     Rotation2d translationDirection = new Rotation2d(xStick, yStick);
 
-    // apply slew rate limiter
-    double rStickSlewed = subDrivetrain.steerSlewRateLimiter.calculate(rStick);
-
     // scale values to proper units
     double translationVelocity = translationMagnitude
         * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
-    double rotationVelocity = rStickSlewed
+    double rotationVelocity = rStick
         * Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue());
 
     // create velocity pose

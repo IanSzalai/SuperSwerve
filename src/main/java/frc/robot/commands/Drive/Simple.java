@@ -51,19 +51,10 @@ public class Simple extends CommandBase {
     SmartDashboard.putNumber("y Stick", yStick);
     SmartDashboard.putNumber("r Stick", rStick);
 
-    // apply slew rate limiter
-    double xStickSlewed = subDrivetrain.driveXSlewRateLimiter.calculate(xStick);
-    double yStickSlewed = subDrivetrain.driveYSlewRateLimiter.calculate(yStick);
-    double rStickSlewed = subDrivetrain.steerSlewRateLimiter.calculate(rStick);
-
-    SmartDashboard.putNumber("x Stick Slewed", xStickSlewed);
-    SmartDashboard.putNumber("y Stick Slewed", yStickSlewed);
-    SmartDashboard.putNumber("r Stick Slewed", rStickSlewed);
-
-    // scale slewed joystick inputs to proper units
-    double xVelocity = xStickSlewed * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
-    double yVelocity = yStickSlewed * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
-    double rVelocity = rStickSlewed * Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue());
+    // scale joystick inputs to proper units
+    double xVelocity = xStick * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
+    double yVelocity = xStick * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
+    double rVelocity = xStick * Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue());
 
     SmartDashboard.putNumber("x Velocity MPS", xVelocity);
     SmartDashboard.putNumber("y Velocity MPS", yVelocity);
@@ -73,7 +64,7 @@ public class Simple extends CommandBase {
     SmartDashboard.putNumber("y Velocity FPS", Units.metersToFeet(yVelocity));
     SmartDashboard.putNumber("r Velocity DPS", Units.radiansToDegrees(rVelocity));
 
-    // create velocity pose with scaled, slewed joystick inputs
+    // create velocity pose with scaled joystick inputs
     Pose2d velocity = new Pose2d(
         xVelocity, yVelocity,
         new Rotation2d(rVelocity));

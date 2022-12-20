@@ -186,19 +186,24 @@ public class Drivetrain extends SubsystemBase {
    */
   public void drive(Pose2d velocity, boolean fieldRelative, boolean isDriveOpenLoop, boolean isSteerOpenLoop) {
 
+    Pose2d slewedVelocity = new Pose2d(
+        driveXSlewRateLimiter.calculate(velocity.getX()),
+        driveYSlewRateLimiter.calculate(velocity.getY()),
+        new Rotation2d(steerSlewRateLimiter.calculate(velocity.getRotation().getRadians())));
+
     ChassisSpeeds chassisSpeeds;
 
     if (fieldRelative) {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-          velocity.getX(),
-          velocity.getY(),
-          velocity.getRotation().getRadians(),
+          slewedVelocity.getX(),
+          slewedVelocity.getY(),
+          slewedVelocity.getRotation().getRadians(),
           getGyroYaw());
     } else {
       chassisSpeeds = new ChassisSpeeds(
-          velocity.getX(),
-          velocity.getY(),
-          velocity.getRotation().getRadians());
+          slewedVelocity.getX(),
+          slewedVelocity.getY(),
+          slewedVelocity.getRotation().getRadians());
     }
     SwerveModuleState[] states = Constants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
 
