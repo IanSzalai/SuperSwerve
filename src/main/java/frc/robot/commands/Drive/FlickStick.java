@@ -16,7 +16,7 @@ import frc.robot.Constants.constController;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 
-public class DriveAbsRotation extends CommandBase {
+public class FlickStick extends CommandBase {
 
   Drivetrain subDrivetrain;
   SN_F310Gamepad conDriver;
@@ -25,7 +25,7 @@ public class DriveAbsRotation extends CommandBase {
 
   Rotation2d lastAngle;
 
-  public DriveAbsRotation(
+  public FlickStick(
       Drivetrain subDrivetrain,
       SN_F310Gamepad conDriver,
       boolean fieldRelative,

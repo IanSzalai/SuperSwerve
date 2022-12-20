@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 
-public class DriveSimple extends CommandBase {
+public class Simple extends CommandBase {
 
   Drivetrain subDrivetrain;
   SN_F310Gamepad conDriver;
   boolean fieldRelative;
   boolean isDriveOpenLoop;
 
-  public DriveSimple(
+  public Simple(
       Drivetrain subDrivetrain,
       SN_F310Gamepad conDriver,
       boolean fieldRelative,
