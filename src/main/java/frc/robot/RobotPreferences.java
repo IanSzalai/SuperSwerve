@@ -56,8 +56,14 @@ public class RobotPreferences {
     public static final SN_DoublePreference driveSecondsToMax = new SN_DoublePreference("driveSecondsToMax", 0.01);
     public static final SN_DoublePreference steerSecondsToMax = new SN_DoublePreference("steerSecondsToMax", 0.01);
 
-    public static final SN_DoublePreference controllerDeadband = new SN_DoublePreference(
-        "controllerDeadband", 0.01);
+    public static final SN_DoublePreference rightStickDeadband = new SN_DoublePreference(
+        "rightStickDeadband", 0.01);
+    public static final SN_DoublePreference leftStickDeadband = new SN_DoublePreference(
+        "leftStickDeadband", 0.01);
+    public static final SN_DoublePreference rightTriggerDeadband = new SN_DoublePreference(
+        "rightTriggerDeadband", 0.01);
+    public static final SN_DoublePreference leftTriggerDeadband = new SN_DoublePreference(
+        "leftTriggerDeadband", 0.01);
     public static final SN_DoublePreference absSteerControllerDeadband = new SN_DoublePreference(
         "absSteerControllerDeadband", 0.5);
 

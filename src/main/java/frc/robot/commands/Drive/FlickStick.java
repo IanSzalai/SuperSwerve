@@ -55,8 +55,8 @@ public class FlickStick extends CommandBase {
     double rStickY = conDriver.getAxisRSY();
 
     // apply deadband
-    xStick = MathUtil.applyDeadband(xStick, prefDrivetrain.controllerDeadband.getValue());
-    yStick = MathUtil.applyDeadband(yStick, prefDrivetrain.controllerDeadband.getValue());
+    xStick = MathUtil.applyDeadband(xStick, prefDrivetrain.leftStickDeadband.getValue());
+    yStick = MathUtil.applyDeadband(yStick, prefDrivetrain.leftStickDeadband.getValue());
     rStickX = MathUtil.applyDeadband(rStickX, prefDrivetrain.absSteerControllerDeadband.getValue());
     rStickY = MathUtil.applyDeadband(rStickY, prefDrivetrain.absSteerControllerDeadband.getValue());
 

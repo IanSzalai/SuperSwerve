@@ -5,20 +5,20 @@ import com.frcteam3255.joystick.SN_F310Gamepad;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 
-public class Simple extends CommandBase {
+public class TriggerSimple extends CommandBase {
 
   Drivetrain subDrivetrain;
   SN_F310Gamepad conDriver;
   boolean fieldRelative;
   boolean isDriveOpenLoop;
 
-  public Simple(
+  public TriggerSimple(
       Drivetrain subDrivetrain,
       SN_F310Gamepad conDriver,
       boolean fieldRelative,
@@ -38,48 +38,39 @@ public class Simple extends CommandBase {
   @Override
   public void execute() {
 
-    // get joystick inputs
+    // get controller inputs
     double xStick = conDriver.getAxisLSX();
     double yStick = conDriver.getAxisLSY();
     double rStick = -conDriver.getAxisRSX();
+    double rTrigger = conDriver.getAxisRT();
+    double lTrigger = conDriver.getAxisLT();
 
+    // apply deadbands
     xStick = MathUtil.applyDeadband(xStick, prefDrivetrain.leftStickDeadband.getValue());
     yStick = MathUtil.applyDeadband(yStick, prefDrivetrain.leftStickDeadband.getValue());
     rStick = MathUtil.applyDeadband(rStick, prefDrivetrain.rightStickDeadband.getValue());
+    rTrigger = MathUtil.applyDeadband(rTrigger, prefDrivetrain.rightTriggerDeadband.getValue());
+    lTrigger = MathUtil.applyDeadband(lTrigger, prefDrivetrain.leftTriggerDeadband.getValue());
 
-    SmartDashboard.putNumber("x Stick", xStick);
-    SmartDashboard.putNumber("y Stick", yStick);
-    SmartDashboard.putNumber("r Stick", rStick);
+    // calculate components of translation
+    double translationMagnitude = rTrigger - lTrigger;
+    Rotation2d translationDirection = new Rotation2d(xStick, yStick);
 
     // apply slew rate limiter
-    double xStickSlewed = subDrivetrain.driveXSlewRateLimiter.calculate(xStick);
-    double yStickSlewed = subDrivetrain.driveYSlewRateLimiter.calculate(yStick);
     double rStickSlewed = subDrivetrain.steerSlewRateLimiter.calculate(rStick);
 
-    SmartDashboard.putNumber("x Stick Slewed", xStickSlewed);
-    SmartDashboard.putNumber("y Stick Slewed", yStickSlewed);
-    SmartDashboard.putNumber("r Stick Slewed", rStickSlewed);
+    // scale values to proper units
+    double translationVelocity = translationMagnitude
+        * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
+    double rotationVelocity = rStickSlewed
+        * Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue());
 
-    // scale slewed joystick inputs to proper units
-    double xVelocity = xStickSlewed * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
-    double yVelocity = yStickSlewed * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
-    double rVelocity = rStickSlewed * Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue());
-
-    SmartDashboard.putNumber("x Velocity MPS", xVelocity);
-    SmartDashboard.putNumber("y Velocity MPS", yVelocity);
-    SmartDashboard.putNumber("r Velocity RPS", rVelocity);
-
-    SmartDashboard.putNumber("x Velocity FPS", Units.metersToFeet(xVelocity));
-    SmartDashboard.putNumber("y Velocity FPS", Units.metersToFeet(yVelocity));
-    SmartDashboard.putNumber("r Velocity DPS", Units.radiansToDegrees(rVelocity));
-
-    // create velocity pose with scaled, slewed joystick inputs
+    // create velocity pose
     Pose2d velocity = new Pose2d(
-        xVelocity, yVelocity,
-        new Rotation2d(rVelocity));
+        new Translation2d(translationVelocity, translationDirection),
+        new Rotation2d(rotationVelocity));
 
     subDrivetrain.drive(velocity, fieldRelative, isDriveOpenLoop, true);
-
   }
 
   @Override
