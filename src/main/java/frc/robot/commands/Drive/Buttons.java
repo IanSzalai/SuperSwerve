@@ -26,21 +26,13 @@ import frc.robot.subsystems.Drivetrain;
 public class Buttons extends CommandBase {
   Drivetrain subDrivetrain;
   SN_F310Gamepad conDriver;
-  boolean fieldRelative;
-  boolean isDriveOpenLoop;
 
   boolean isPositionSet;
 
-  public Buttons(
-      Drivetrain subDrivetrain,
-      SN_F310Gamepad conDriver,
-      boolean fieldRelative,
-      boolean isDriveOpenLoop) {
+  public Buttons(Drivetrain subDrivetrain, SN_F310Gamepad conDriver) {
 
     this.subDrivetrain = subDrivetrain;
     this.conDriver = conDriver;
-    this.fieldRelative = fieldRelative;
-    this.isDriveOpenLoop = isDriveOpenLoop;
 
     isPositionSet = false;
 

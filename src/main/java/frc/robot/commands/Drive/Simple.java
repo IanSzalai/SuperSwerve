@@ -23,18 +23,11 @@ public class Simple extends CommandBase {
 
   Drivetrain subDrivetrain;
   SN_F310Gamepad conDriver;
-  boolean fieldRelative;
-  boolean isDriveOpenLoop;
 
-  public Simple(
-      Drivetrain subDrivetrain,
-      SN_F310Gamepad conDriver,
-      boolean fieldRelative,
-      boolean isDriveOpenLoop) {
+  public Simple(Drivetrain subDrivetrain, SN_F310Gamepad conDriver) {
+
     this.subDrivetrain = subDrivetrain;
     this.conDriver = conDriver;
-    this.fieldRelative = fieldRelative;
-    this.isDriveOpenLoop = isDriveOpenLoop;
 
     addRequirements(this.subDrivetrain);
   }

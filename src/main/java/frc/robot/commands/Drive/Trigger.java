@@ -29,15 +29,10 @@ public class Trigger extends CommandBase {
   boolean fieldRelative;
   boolean isDriveOpenLoop;
 
-  public Trigger(
-      Drivetrain subDrivetrain,
-      SN_F310Gamepad conDriver,
-      boolean fieldRelative,
-      boolean isDriveOpenLoop) {
+  public Trigger(Drivetrain subDrivetrain, SN_F310Gamepad conDriver) {
+
     this.subDrivetrain = subDrivetrain;
     this.conDriver = conDriver;
-    this.fieldRelative = fieldRelative;
-    this.isDriveOpenLoop = isDriveOpenLoop;
 
     addRequirements(this.subDrivetrain);
   }
