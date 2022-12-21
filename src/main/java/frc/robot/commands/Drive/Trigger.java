@@ -26,8 +26,6 @@ public class Trigger extends CommandBase {
 
   Drivetrain subDrivetrain;
   SN_F310Gamepad conDriver;
-  boolean fieldRelative;
-  boolean isDriveOpenLoop;
 
   public Trigger(Drivetrain subDrivetrain, SN_F310Gamepad conDriver) {
 
