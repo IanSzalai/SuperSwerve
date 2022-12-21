@@ -28,9 +28,9 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    conDriver.btn_X.whenPressed(new InstantCommand(() -> subDrivetrain.zeroGyroYaw()));
-    conDriver.btn_Y.whenPressed(new InstantCommand(() -> subDrivetrain.configure()));
-    conDriver.btn_A.whenPressed(new InstantCommand(() -> subDrivetrain.resetPose(new Pose2d())));
+    conDriver.btn_LBump.whenPressed(new InstantCommand(() -> subDrivetrain.zeroGyroYaw()));
+    conDriver.btn_RBump.whenPressed(new InstantCommand(() -> subDrivetrain.configure()));
+    conDriver.btn_Start.whenPressed(new InstantCommand(() -> subDrivetrain.resetPose(new Pose2d())));
   }
 
   public Command getAutonomousCommand() {
