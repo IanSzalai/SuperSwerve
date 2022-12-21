@@ -20,7 +20,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     subDrivetrain.setDefaultCommand(
-        new Simple(subDrivetrain, conDriver, true, true));
+        new Simple(subDrivetrain, conDriver));
 
     subVision.setDefaultCommand(new UpdatePoseEstimator(subDrivetrain, subVision));
 
