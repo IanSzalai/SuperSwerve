@@ -44,6 +44,8 @@ public class Drivetrain extends SubsystemBase {
 
   public Field2d field;
 
+  private boolean fieldRelative;
+
   public Drivetrain() {
 
     swerveModules = new SN_SwerveModule[] {
@@ -100,6 +102,8 @@ public class Drivetrain extends SubsystemBase {
             Units.degreesToRadians(prefDrivetrain.maxChassisRotAccelDegrees.getValue())));
 
     field = new Field2d();
+
+    fieldRelative = true;
 
     configure();
   }
@@ -166,22 +170,18 @@ public class Drivetrain extends SubsystemBase {
     thetaPIDController.setGoal(new TrapezoidProfile.State(velocity.getRotation().getRadians(), 0));
     double goalAngle = thetaPIDController.calculate(getPose().getRotation().getRadians());
     Pose2d newVelocity = new Pose2d(velocity.getTranslation(), new Rotation2d(goalAngle));
-    drive(newVelocity, true, isDriveOpenLoop);
+    drive(newVelocity, isDriveOpenLoop);
   }
 
   /**
    * Drive the drivetrain
    * 
    * @param velocity        Desired translational and rotational velocity in
-   *                        meters
-   *                        and radians per second respectively
-   * @param fieldRelative   Is the desired translational velocity field relative
-   *                        or
-   *                        robot relative
+   *                        meters and radians per second respectively
    * @param isDriveOpenLoop Is the drive motor velocity controlled using
    *                        open or closed loop control
    */
-  public void drive(Pose2d velocity, boolean fieldRelative, boolean isDriveOpenLoop) {
+  public void drive(Pose2d velocity, boolean isDriveOpenLoop) {
 
     Pose2d slewedVelocity = new Pose2d(
         driveXSlewRateLimiter.calculate(velocity.getX()),
@@ -245,6 +245,20 @@ public class Drivetrain extends SubsystemBase {
     }
 
     return states;
+  }
+
+  /**
+   * Set the desired translational velocity to be field relative
+   */
+  public void setFieldRelative() {
+    fieldRelative = true;
+  }
+
+  /**
+   * Set the desired translational velocity to be robot relative
+   */
+  public void setRobotRelative() {
+    fieldRelative = false;
   }
 
   /**

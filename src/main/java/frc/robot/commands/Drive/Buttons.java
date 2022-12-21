@@ -109,7 +109,7 @@ public class Buttons extends CommandBase {
     }
     // if the steer stick was used, drive with open loop steer
     else {
-      subDrivetrain.drive(velocity, fieldRelative, isDriveOpenLoop);
+      subDrivetrain.drive(velocity, isDriveOpenLoop);
     }
   }
 
