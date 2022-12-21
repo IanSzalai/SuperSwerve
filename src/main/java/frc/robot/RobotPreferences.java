@@ -32,6 +32,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference transToleranceInches = new SN_DoublePreference(
         "transToleranceInches", 2);
 
+    public static final SN_DoublePreference autoThetaP = new SN_DoublePreference("autoThetaP", 1);
+    public static final SN_DoublePreference autoThetaI = new SN_DoublePreference("autoThetaI", 0);
+    public static final SN_DoublePreference autoThetaD = new SN_DoublePreference("autoThetaD", 0);
+
     // maximum translational speed in feet per second
     public static final SN_DoublePreference transMaxSpeedFeet = new SN_DoublePreference(
         "transMaxSpeedFeet", 5);
