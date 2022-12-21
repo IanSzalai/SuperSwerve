@@ -24,6 +24,7 @@ import frc.robot.subsystems.Drivetrain;
  * y (rotation)
  */
 public class Buttons extends CommandBase {
+
   Drivetrain subDrivetrain;
   SN_F310Gamepad conDriver;
 
