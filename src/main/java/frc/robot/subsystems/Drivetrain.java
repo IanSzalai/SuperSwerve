@@ -259,6 +259,10 @@ public class Drivetrain extends SubsystemBase {
     fieldRelative = false;
   }
 
+  public void toggleFieldRelative() {
+    fieldRelative = fieldRelative ? false : true;
+  }
+
   /**
    * Get the yaw as reported by the Pigeon IMU
    * 

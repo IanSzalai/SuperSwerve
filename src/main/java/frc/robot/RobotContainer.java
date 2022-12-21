@@ -31,6 +31,7 @@ public class RobotContainer {
     conDriver.btn_LBump.whenPressed(new InstantCommand(() -> subDrivetrain.zeroGyroYaw()));
     conDriver.btn_RBump.whenPressed(new InstantCommand(() -> subDrivetrain.configure()));
     conDriver.btn_Start.whenPressed(new InstantCommand(() -> subDrivetrain.resetPose(new Pose2d())));
+    conDriver.btn_Back.whenPressed(new InstantCommand(() -> subDrivetrain.toggleFieldRelative()));
   }
 
   public Command getAutonomousCommand() {
