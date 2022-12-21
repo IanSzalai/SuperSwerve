@@ -14,6 +14,14 @@ import frc.robot.subsystems.Drivetrain;
  * Drive the robot using simple control, except that buttons will set the
  * rotational position. This position will be locked after a button press, until
  * another normal steering input (or different button).
+ * 
+ * sticks/buttons required:
+ * left stick (translation)
+ * right stick (rotation)
+ * a (rotation)
+ * b (rotation)
+ * x (rotation)
+ * y (rotation)
  */
 public class Buttons extends CommandBase {
   Drivetrain subDrivetrain;

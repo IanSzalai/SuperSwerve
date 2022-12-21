@@ -15,6 +15,12 @@ import frc.robot.subsystems.Drivetrain;
  * Drive the robot using triggers to control translational speed, and the left
  * stick to control the translational direction. Right stick controls the rate
  * and direction of the translation like simple.
+ * 
+ * sticks/buttons requires:
+ * left stick (translation)
+ * right stick (rotation)
+ * left trigger (translation)
+ * right trigger (translation)
  */
 public class Trigger extends CommandBase {
 

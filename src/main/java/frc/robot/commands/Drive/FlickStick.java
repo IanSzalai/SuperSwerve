@@ -23,6 +23,10 @@ import frc.robot.subsystems.Drivetrain;
  * up will make the robot face away from the driver, and to the right will make
  * the robot to the right. This steering method is currently limited to field
  * relative steering but could be easily adapted to work like an FPS flick stick
+ * 
+ * sticks/buttons requires:
+ * left stick (translation)
+ * right stick (rotation)
  */
 public class FlickStick extends CommandBase {
 

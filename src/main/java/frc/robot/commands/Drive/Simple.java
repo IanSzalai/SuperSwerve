@@ -14,6 +14,10 @@ import frc.robot.subsystems.Drivetrain;
  * Drive the robot using simple control. Left stick controls the direction and
  * speed of translation, right stick controls the rate and direction of
  * rotation.
+ * 
+ * sticks/buttons requires:
+ * left stick (translation)
+ * right stick (rotation)
  */
 public class Simple extends CommandBase {
 
