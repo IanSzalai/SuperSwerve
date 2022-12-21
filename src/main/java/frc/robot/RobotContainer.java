@@ -25,6 +25,22 @@ public class RobotContainer {
   private final Drivetrain subDrivetrain = new Drivetrain();
   private final Vision subVision = new Vision();
 
+  SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+      subDrivetrain::getPose,
+      subDrivetrain::resetPose,
+      Constants.SWERVE_KINEMATICS,
+      new PIDConstants(
+          prefDrivetrain.transP.getValue(),
+          prefDrivetrain.transI.getValue(),
+          prefDrivetrain.transD.getValue()),
+      new PIDConstants(
+          prefDrivetrain.autoThetaP.getValue(),
+          prefDrivetrain.autoThetaI.getValue(),
+          prefDrivetrain.autoThetaD.getValue()),
+      subDrivetrain::setModuleStates,
+      new HashMap<>(),
+      subDrivetrain);
+
   public RobotContainer() {
 
     subDrivetrain.setDefaultCommand(
@@ -44,22 +60,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     PathPlannerTrajectory SCurvePath = PathPlanner.loadPath("SCurvePath", new PathConstraints(2, 1));
-
-    SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
-        subDrivetrain::getPose,
-        subDrivetrain::resetPose,
-        Constants.SWERVE_KINEMATICS,
-        new PIDConstants(
-            prefDrivetrain.transP.getValue(),
-            prefDrivetrain.transI.getValue(),
-            prefDrivetrain.transD.getValue()),
-        new PIDConstants(
-            prefDrivetrain.autoThetaP.getValue(),
-            prefDrivetrain.autoThetaI.getValue(),
-            prefDrivetrain.autoThetaD.getValue()),
-        subDrivetrain::setModuleStates,
-        new HashMap<>(),
-        subDrivetrain);
 
     return autoBuilder.fullAuto(SCurvePath);
   }
