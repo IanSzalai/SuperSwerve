@@ -105,11 +105,11 @@ public class Buttons extends CommandBase {
 
     // if the steer stick wasn't used and a button was, drive with closed loop steer
     if (isPositionSet) {
-      subDrivetrain.driveAlignAngle(velocity, isDriveOpenLoop);
+      subDrivetrain.driveAlignAngle(velocity);
     }
     // if the steer stick was used, drive with open loop steer
     else {
-      subDrivetrain.drive(velocity, isDriveOpenLoop);
+      subDrivetrain.drive(velocity);
     }
   }
 

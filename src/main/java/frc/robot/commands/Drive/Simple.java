@@ -65,7 +65,7 @@ public class Simple extends CommandBase {
         xVelocity, yVelocity,
         new Rotation2d(rVelocity));
 
-    subDrivetrain.drive(velocity, isDriveOpenLoop);
+    subDrivetrain.drive(velocity);
 
   }
 

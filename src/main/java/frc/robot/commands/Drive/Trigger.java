@@ -78,7 +78,7 @@ public class Trigger extends CommandBase {
         new Translation2d(translationVelocity, translationDirection),
         new Rotation2d(rotationVelocity));
 
-    subDrivetrain.drive(velocity, isDriveOpenLoop);
+    subDrivetrain.drive(velocity);
   }
 
   @Override

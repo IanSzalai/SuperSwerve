@@ -166,22 +166,20 @@ public class Drivetrain extends SubsystemBase {
     thetaPIDController.reset(getPose().getRotation().getRadians());
   }
 
-  public void driveAlignAngle(Pose2d velocity, boolean isDriveOpenLoop) {
+  public void driveAlignAngle(Pose2d velocity) {
     thetaPIDController.setGoal(new TrapezoidProfile.State(velocity.getRotation().getRadians(), 0));
     double goalAngle = thetaPIDController.calculate(getPose().getRotation().getRadians());
     Pose2d newVelocity = new Pose2d(velocity.getTranslation(), new Rotation2d(goalAngle));
-    drive(newVelocity, isDriveOpenLoop);
+    drive(newVelocity);
   }
 
   /**
    * Drive the drivetrain
    * 
-   * @param velocity        Desired translational and rotational velocity in
-   *                        meters and radians per second respectively
-   * @param isDriveOpenLoop Is the drive motor velocity controlled using
-   *                        open or closed loop control
+   * @param velocity Desired translational and rotational velocity in
+   *                 meters and radians per second respectively
    */
-  public void drive(Pose2d velocity, boolean isDriveOpenLoop) {
+  public void drive(Pose2d velocity) {
 
     Pose2d slewedVelocity = new Pose2d(
         driveXSlewRateLimiter.calculate(velocity.getX()),
@@ -208,7 +206,7 @@ public class Drivetrain extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, constDrivetrain.MAX_SPEED);
 
     for (SN_SwerveModule mod : swerveModules) {
-      mod.setDesiredState(states[mod.moduleNumber], isDriveOpenLoop);
+      mod.setDesiredState(states[mod.moduleNumber], prefDrivetrain.isDriveOpenLoop.getValue());
     }
   }
 

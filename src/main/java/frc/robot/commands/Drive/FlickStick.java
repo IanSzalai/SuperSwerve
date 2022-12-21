@@ -90,7 +90,7 @@ public class FlickStick extends CommandBase {
     // create velocity vector
     Pose2d velocity = new Pose2d(xStick, yStick, rotation);
 
-    subDrivetrain.driveAlignAngle(velocity, isDriveOpenLoop);
+    subDrivetrain.driveAlignAngle(velocity);
 
     lastAngle = rotation;
   }

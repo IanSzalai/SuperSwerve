@@ -78,6 +78,8 @@ public class RobotPreferences {
     public static final SN_DoublePreference visionMeasurementStdDevsDegrees = new SN_DoublePreference(
         "visionMeasurementStdDevsDegrees", 30);
 
+    // Is the drive motor velocity controlled using open or closed loop control
+    public static final SN_BooleanPreference isDriveOpenLoop = new SN_BooleanPreference("isDriveOpenLoop", false);
   }
 
   public static final class prefVision {
