@@ -16,14 +16,14 @@ import frc.robot.subsystems.Drivetrain;
  * stick to control the translational direction. Right stick controls the rate
  * and direction of the translation like simple.
  */
-public class TriggerSimple extends CommandBase {
+public class Trigger extends CommandBase {
 
   Drivetrain subDrivetrain;
   SN_F310Gamepad conDriver;
   boolean fieldRelative;
   boolean isDriveOpenLoop;
 
-  public TriggerSimple(
+  public Trigger(
       Drivetrain subDrivetrain,
       SN_F310Gamepad conDriver,
       boolean fieldRelative,
