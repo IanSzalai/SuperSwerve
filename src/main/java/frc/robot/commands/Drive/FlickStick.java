@@ -10,12 +10,20 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.constController;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 
+/**
+ * Drive the robot using flick stick control. The translation is same as simple
+ * with the left stick controlling direction and speed of translation. The
+ * steering uses a flick stick, which means that direction of the right stick
+ * will control the direction of the robot. For example, flicking the joystick
+ * up will make the robot face away from the driver, and to the right will make
+ * the robot to the right. This steering method is currently limited to field
+ * relative steering but could be easily adapted to work like an FPS flick stick
+ */
 public class FlickStick extends CommandBase {
 
   Drivetrain subDrivetrain;
@@ -74,8 +82,6 @@ public class FlickStick extends CommandBase {
     } else {
       rotation = lastAngle;
     }
-
-    SmartDashboard.putNumber("controller rotation angle", rotation.getDegrees());
 
     // create velocity vector
     Pose2d velocity = new Pose2d(xStick, yStick, rotation);

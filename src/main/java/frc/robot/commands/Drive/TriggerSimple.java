@@ -11,6 +11,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 
+/**
+ * Drive the robot using triggers to control translational speed, and the left
+ * stick to control the translational direction. Right stick controls the rate
+ * and direction of the translation like simple.
+ */
 public class TriggerSimple extends CommandBase {
 
   Drivetrain subDrivetrain;
