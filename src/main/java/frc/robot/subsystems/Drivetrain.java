@@ -166,7 +166,7 @@ public class Drivetrain extends SubsystemBase {
     thetaPIDController.setGoal(new TrapezoidProfile.State(velocity.getRotation().getRadians(), 0));
     double goalAngle = thetaPIDController.calculate(getPose().getRotation().getRadians());
     Pose2d newVelocity = new Pose2d(velocity.getTranslation(), new Rotation2d(goalAngle));
-    drive(newVelocity, true, isDriveOpenLoop, false);
+    drive(newVelocity, true, isDriveOpenLoop);
   }
 
   /**
@@ -180,11 +180,8 @@ public class Drivetrain extends SubsystemBase {
    *                        robot relative
    * @param isDriveOpenLoop Is the drive motor velocity controlled using
    *                        open or closed loop control
-   * @param isSteerOpenLoop Is steering the entire chassis controlled using open
-   *                        or closed loop control. Open loop is velocity based,
-   *                        closed loop is position based
    */
-  public void drive(Pose2d velocity, boolean fieldRelative, boolean isDriveOpenLoop, boolean isSteerOpenLoop) {
+  public void drive(Pose2d velocity, boolean fieldRelative, boolean isDriveOpenLoop) {
 
     Pose2d slewedVelocity = new Pose2d(
         driveXSlewRateLimiter.calculate(velocity.getX()),
