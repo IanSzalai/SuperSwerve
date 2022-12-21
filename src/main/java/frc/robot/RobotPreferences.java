@@ -56,10 +56,12 @@ public class RobotPreferences {
     public static final SN_DoublePreference driveSecondsToMax = new SN_DoublePreference("driveSecondsToMax", 0.01);
     public static final SN_DoublePreference steerSecondsToMax = new SN_DoublePreference("steerSecondsToMax", 0.01);
 
+    // deadband for my (ian) personal xbox controller. need to retune for each
+    // controller
     public static final SN_DoublePreference rightStickDeadband = new SN_DoublePreference(
-        "rightStickDeadband", 0.01);
+        "rightStickDeadband", 0.1);
     public static final SN_DoublePreference leftStickDeadband = new SN_DoublePreference(
-        "leftStickDeadband", 0.01);
+        "leftStickDeadband", 0.13);
     public static final SN_DoublePreference rightTriggerDeadband = new SN_DoublePreference(
         "rightTriggerDeadband", 0.01);
     public static final SN_DoublePreference leftTriggerDeadband = new SN_DoublePreference(
@@ -79,7 +81,7 @@ public class RobotPreferences {
         "visionMeasurementStdDevsDegrees", 30);
 
     // Is the drive motor velocity controlled using open or closed loop control
-    public static final SN_BooleanPreference isDriveOpenLoop = new SN_BooleanPreference("isDriveOpenLoop", false);
+    public static final SN_BooleanPreference isDriveOpenLoop = new SN_BooleanPreference("isDriveOpenLoop", true);
   }
 
   public static final class prefVision {

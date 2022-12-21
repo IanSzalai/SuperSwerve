@@ -6,6 +6,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
@@ -44,14 +45,27 @@ public class Simple extends CommandBase {
     double yStick = conDriver.getAxisLSY();
     double rStick = -conDriver.getAxisRSX();
 
+    SmartDashboard.putNumber(".raw stick x", xStick);
+    SmartDashboard.putNumber(".raw stick y", yStick);
+    SmartDashboard.putNumber(".raw stick r", rStick);
+    SmartDashboard.putNumber(".raw stick ry", conDriver.getAxisRSY());
+
     xStick = MathUtil.applyDeadband(xStick, prefDrivetrain.leftStickDeadband.getValue());
     yStick = MathUtil.applyDeadband(yStick, prefDrivetrain.leftStickDeadband.getValue());
     rStick = MathUtil.applyDeadband(rStick, prefDrivetrain.rightStickDeadband.getValue());
 
+    SmartDashboard.putNumber(".stick x", xStick);
+    SmartDashboard.putNumber(".stick y", yStick);
+    SmartDashboard.putNumber(".stick r", rStick);
+
     // scale joystick inputs to proper units
     double xVelocity = xStick * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
-    double yVelocity = xStick * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
-    double rVelocity = xStick * Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue());
+    double yVelocity = yStick * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
+    double rVelocity = rStick * Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue());
+
+    SmartDashboard.putNumber(".velocity x", xVelocity);
+    SmartDashboard.putNumber(".velocity y", yVelocity);
+    SmartDashboard.putNumber(".velocity r", rVelocity);
 
     // create velocity pose with scaled joystick inputs
     Pose2d velocity = new Pose2d(

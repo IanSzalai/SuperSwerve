@@ -186,6 +186,10 @@ public class Drivetrain extends SubsystemBase {
         driveYSlewRateLimiter.calculate(velocity.getY()),
         new Rotation2d(steerSlewRateLimiter.calculate(velocity.getRotation().getRadians())));
 
+    SmartDashboard.putNumber(".slewed x", slewedVelocity.getX());
+    SmartDashboard.putNumber(".slewed y", slewedVelocity.getY());
+    SmartDashboard.putNumber(".slewed degrees", slewedVelocity.getRotation().getDegrees());
+
     ChassisSpeeds chassisSpeeds;
 
     if (fieldRelative) {
@@ -337,6 +341,8 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("Drivetrain Pose X", getPose().getX());
       SmartDashboard.putNumber("Drivetrain Pose Y", getPose().getY());
       SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
+
+      SmartDashboard.putBoolean("Drivetrain field relative", fieldRelative);
 
     }
   }

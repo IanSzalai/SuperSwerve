@@ -27,10 +27,14 @@ public class Trigger extends CommandBase {
   Drivetrain subDrivetrain;
   SN_F310Gamepad conDriver;
 
+  Rotation2d lastTranslationDirection;
+
   public Trigger(Drivetrain subDrivetrain, SN_F310Gamepad conDriver) {
 
     this.subDrivetrain = subDrivetrain;
     this.conDriver = conDriver;
+
+    lastTranslationDirection = new Rotation2d();
 
     addRequirements(this.subDrivetrain);
   }
@@ -58,7 +62,12 @@ public class Trigger extends CommandBase {
 
     // calculate components of translation
     double translationMagnitude = rTrigger - lTrigger;
-    Rotation2d translationDirection = new Rotation2d(xStick, yStick);
+    Rotation2d translationDirection = new Rotation2d();
+    if (xStick != 0 || yStick != 0) {
+      translationDirection = new Rotation2d(xStick, yStick);
+    } else {
+      translationDirection = lastTranslationDirection;
+    }
 
     // scale values to proper units
     double translationVelocity = translationMagnitude
