@@ -167,7 +167,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void driveAlignAngle(Pose2d velocity) {
-    thetaPIDController.setGoal(new TrapezoidProfile.State(velocity.getRotation().getRadians(), 0));
+    thetaPIDController.setGoal(new TrapezoidProfile.State(velocity.getRotation().getRadians(), 0.0));
     double goalAngle = thetaPIDController.calculate(getPose().getRotation().getRadians());
     Pose2d newVelocity = new Pose2d(velocity.getTranslation(), new Rotation2d(goalAngle));
     drive(newVelocity);

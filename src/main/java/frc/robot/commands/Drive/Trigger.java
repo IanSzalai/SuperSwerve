@@ -68,7 +68,7 @@ public class Trigger extends CommandBase {
     } else {
       translationDirection = lastTranslationDirection;
     }
-
+    lastTranslationDirection = translationDirection;
     // scale values to proper units
     double translationVelocity = translationMagnitude
         * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());

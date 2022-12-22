@@ -10,8 +10,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.constController;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 
@@ -75,10 +75,12 @@ public class FlickStick extends CommandBase {
 
     if (rStickX != 0 || rStickY != 0) {
       rotation = new Rotation2d(
-          Math.atan2(rStickY, rStickX) + Units.degreesToRadians(constController.ABSOLUTE_STEER_OFFSET));
+          Math.atan2(rStickY, rStickX) - Math.PI / 2);
     } else {
       rotation = lastAngle;
     }
+
+    SmartDashboard.putNumber(".flick stick", rotation.getDegrees());
 
     // create velocity vector
     Pose2d velocity = new Pose2d(xStick, yStick, rotation);

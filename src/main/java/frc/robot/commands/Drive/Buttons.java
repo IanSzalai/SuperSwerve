@@ -29,6 +29,7 @@ public class Buttons extends CommandBase {
   SN_F310Gamepad conDriver;
 
   boolean isPositionSet;
+  Rotation2d rotation;
 
   public Buttons(Drivetrain subDrivetrain, SN_F310Gamepad conDriver) {
 
@@ -43,6 +44,7 @@ public class Buttons extends CommandBase {
   @Override
   public void initialize() {
     isPositionSet = false;
+    rotation = new Rotation2d();
   }
 
   @Override
@@ -63,7 +65,6 @@ public class Buttons extends CommandBase {
     double rVelocity = rStick * Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue());
 
     // create rotation using stick input
-    Rotation2d rotation = new Rotation2d(rVelocity);
     /**
      * button layout:
      * ......Y......
@@ -72,27 +73,30 @@ public class Buttons extends CommandBase {
      */
 
     // if there is a steer stick input ignore buttons
-    if (rStick > 0) {
+    if (Math.abs(rStick) > 0) {
       isPositionSet = false;
+      rotation = new Rotation2d(rVelocity);
     }
     // if there is not a steer stick input, look at buttons and change the rotation
     // to match the angle of the button (0 degrees is facing right)
     else {
       if (conDriver.btn_A.get()) {
         isPositionSet = true;
-        rotation = Rotation2d.fromDegrees(90);
-      } else if (conDriver.btn_B.get()) {
-        isPositionSet = true;
-        rotation = Rotation2d.fromDegrees(0);
-      } else if (conDriver.btn_X.get()) {
-        isPositionSet = true;
         rotation = Rotation2d.fromDegrees(180);
-      } else if (conDriver.btn_Y.get()) {
+      }
+      if (conDriver.btn_B.get()) {
         isPositionSet = true;
         rotation = Rotation2d.fromDegrees(270);
       }
+      if (conDriver.btn_X.get()) {
+        isPositionSet = true;
+        rotation = Rotation2d.fromDegrees(90);
+      }
+      if (conDriver.btn_Y.get()) {
+        isPositionSet = true;
+        rotation = Rotation2d.fromDegrees(0);
+      }
     }
-
     // create a velocity pose with the x, y, and rotational components
     Pose2d velocity = new Pose2d(xVelocity, yVelocity, rotation);
 
