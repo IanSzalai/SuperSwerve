@@ -1,14 +1,9 @@
 package frc.robot;
 
-import java.util.HashMap;
-
 import com.frcteam3255.joystick.SN_F310Gamepad;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.PIDConstants;
-import com.pathplanner.lib.auto.SwerveAutoBuilder;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -44,12 +39,16 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
 
+    PathPlannerTrajectory DiamondPath = PathPlanner.loadPath("Diamond",
+        new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
+    PathPlannerTrajectory Figure8 = PathPlanner.loadPath("Figure8",
+        new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
     PathPlannerTrajectory SCurvePath = PathPlanner.loadPath("SCurve",
         new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
-    PathPlannerTrajectory figure8 = PathPlanner.loadPath("figure8",
+    PathPlannerTrajectory ThreeMeter = PathPlanner.loadPath("ThreeMeter",
         new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
 
-    return subDrivetrain.autoBuilder.fullAuto(figure8)
+    return subDrivetrain.autoBuilder.fullAuto(Figure8)
         .andThen(new InstantCommand(() -> subDrivetrain.neutralOutputs(), subDrivetrain));
   }
 }
