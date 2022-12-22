@@ -1,13 +1,16 @@
 package frc.robot;
 
 import com.frcteam3255.joystick.SN_F310Gamepad;
-
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotMap.mapControllers;
-import frc.robot.commands.DriveSimple;
+import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.commands.UpdatePoseEstimator;
+import frc.robot.commands.Drive.Simple;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
@@ -20,7 +23,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     subDrivetrain.setDefaultCommand(
-        new DriveSimple(subDrivetrain, conDriver, true, true));
+        new Simple(subDrivetrain, conDriver));
 
     subVision.setDefaultCommand(new UpdatePoseEstimator(subDrivetrain, subVision));
 
@@ -28,12 +31,24 @@ public class RobotContainer {
   }
 
   private void configureButtonBindings() {
-    conDriver.btn_X.whenPressed(new InstantCommand(() -> subDrivetrain.zeroGyroYaw()));
-    conDriver.btn_Y.whenPressed(new InstantCommand(() -> subDrivetrain.configure()));
-    conDriver.btn_A.whenPressed(new InstantCommand(() -> subDrivetrain.resetPose(new Pose2d())));
+    conDriver.btn_LBump.whenPressed(new InstantCommand(() -> subDrivetrain.zeroGyroYaw()));
+    conDriver.btn_RBump.whenPressed(new InstantCommand(() -> subDrivetrain.configure()));
+    conDriver.btn_Start.whenPressed(new InstantCommand(() -> subDrivetrain.resetPose(new Pose2d())));
+    conDriver.btn_Back.whenPressed(new InstantCommand(() -> subDrivetrain.toggleFieldRelative()));
   }
 
   public Command getAutonomousCommand() {
-    return null;
+
+    PathPlannerTrajectory DiamondPath = PathPlanner.loadPath("Diamond",
+        new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
+    PathPlannerTrajectory Figure8 = PathPlanner.loadPath("Figure8",
+        new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
+    PathPlannerTrajectory SCurvePath = PathPlanner.loadPath("SCurve",
+        new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
+    PathPlannerTrajectory ThreeMeter = PathPlanner.loadPath("ThreeMeter",
+        new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
+
+    return subDrivetrain.autoBuilder.fullAuto(Figure8)
+        .andThen(new InstantCommand(() -> subDrivetrain.neutralOutputs(), subDrivetrain));
   }
 }

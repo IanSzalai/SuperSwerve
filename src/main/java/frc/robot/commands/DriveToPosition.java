@@ -40,7 +40,7 @@ public class DriveToPosition extends CommandBase {
 
     Pose2d velocityPose = new Pose2d(xVelocity, yVelocity, new Rotation2d(thetaVelocity));
 
-    subDrivetrain.driveAlignAngle(velocityPose, true);
+    subDrivetrain.driveAlignAngle(velocityPose);
 
   }
 
