@@ -38,7 +38,8 @@ public class chaseAprilTag extends CommandBase {
         new Translation3d(RobotPreferences.prefVision.goalDistToTag.getValue(), 0, 0), new Rotation3d(0, 0, 0));
 
     // Filtering is done in goalPose to include an ID filter
-    Pose2d goalPose = subVision.getTargetGoalPose(RobotPreferences.prefVision.chasingTagID.getValue(), desiredDistance,
+    Pose2d goalPose = subVision.getTargetRelativeGoalPose(RobotPreferences.prefVision.chasingTagID.getValue(),
+        desiredDistance,
         subDrivetrain.getPose(), result);
 
     if (goalPose != null) {

@@ -91,7 +91,6 @@ public class RobotPreferences {
     public static final SN_DoublePreference cameraRoll = new SN_DoublePreference("cameraRoll", 0);
 
     public static final SN_DoublePreference chasingTagID = new SN_DoublePreference("chasingTagID", 1);
-    // TODO: name this one better: desired distance in front of chased tag
     public static final SN_DoublePreference goalDistToTag = new SN_DoublePreference("distanceInFrontOfTag", 2);
   }
 }
