@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Drive;
 
 import com.frcteam3255.joystick.SN_F310Gamepad;
 
@@ -12,28 +12,33 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.constController;
 import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 
-public class DriveAbsRotation extends CommandBase {
+/**
+ * Drive the robot using flick stick control. The translation is same as simple
+ * with the left stick controlling direction and speed of translation. The
+ * steering uses a flick stick, which means that direction of the right stick
+ * will control the direction of the robot. For example, flicking the joystick
+ * up will make the robot face away from the driver, and to the right will make
+ * the robot to the right. This steering method is currently limited to field
+ * relative steering but could be easily adapted to work like an FPS flick stick
+ * 
+ * sticks/buttons requires:
+ * left stick (translation)
+ * right stick (rotation)
+ */
+public class FlickStick extends CommandBase {
 
   Drivetrain subDrivetrain;
   SN_F310Gamepad conDriver;
-  boolean fieldRelative;
-  boolean isDriveOpenLoop;
 
   Rotation2d lastAngle;
 
-  public DriveAbsRotation(
-      Drivetrain subDrivetrain,
-      SN_F310Gamepad conDriver,
-      boolean fieldRelative,
-      boolean isDriveOpenLoop) {
+  public FlickStick(Drivetrain subDrivetrain, SN_F310Gamepad conDriver) {
+
     this.subDrivetrain = subDrivetrain;
     this.conDriver = conDriver;
-    this.fieldRelative = fieldRelative;
-    this.isDriveOpenLoop = isDriveOpenLoop;
 
     lastAngle = subDrivetrain.getPose().getRotation();
 
@@ -55,15 +60,10 @@ public class DriveAbsRotation extends CommandBase {
     double rStickY = conDriver.getAxisRSY();
 
     // apply deadband
-    xStick = MathUtil.applyDeadband(xStick, prefDrivetrain.controllerDeadband.getValue());
-    yStick = MathUtil.applyDeadband(yStick, prefDrivetrain.controllerDeadband.getValue());
+    xStick = MathUtil.applyDeadband(xStick, prefDrivetrain.leftStickDeadband.getValue());
+    yStick = MathUtil.applyDeadband(yStick, prefDrivetrain.leftStickDeadband.getValue());
     rStickX = MathUtil.applyDeadband(rStickX, prefDrivetrain.absSteerControllerDeadband.getValue());
     rStickY = MathUtil.applyDeadband(rStickY, prefDrivetrain.absSteerControllerDeadband.getValue());
-
-    // apply slew rate limiter
-    xStick = subDrivetrain.driveXSlewRateLimiter.calculate(xStick);
-    yStick = subDrivetrain.driveYSlewRateLimiter.calculate(yStick);
-    // can't slew rate limit the steer sticks
 
     // scale to proper units
     xStick *= Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
@@ -75,19 +75,17 @@ public class DriveAbsRotation extends CommandBase {
 
     if (rStickX != 0 || rStickY != 0) {
       rotation = new Rotation2d(
-          Math.atan2(rStickY, rStickX) + Units.degreesToRadians(constController.ABSOLUTE_STEER_OFFSET));
-      System.out.println(".....................not 0");
+          Math.atan2(rStickY, rStickX) - Math.PI / 2);
     } else {
-      System.out.println(".....................yes is 0");
       rotation = lastAngle;
     }
 
-    SmartDashboard.putNumber(".rotation angle", rotation.getDegrees());
+    SmartDashboard.putNumber(".flick stick", rotation.getDegrees());
 
     // create velocity vector
     Pose2d velocity = new Pose2d(xStick, yStick, rotation);
 
-    subDrivetrain.driveAlignAngle(velocity, isDriveOpenLoop);
+    subDrivetrain.driveAlignAngle(velocity);
 
     lastAngle = rotation;
   }

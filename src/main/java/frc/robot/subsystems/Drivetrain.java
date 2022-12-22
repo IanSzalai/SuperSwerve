@@ -44,6 +44,8 @@ public class Drivetrain extends SubsystemBase {
 
   public Field2d field;
 
+  private boolean fieldRelative;
+
   public Drivetrain() {
 
     swerveModules = new SN_SwerveModule[] {
@@ -100,6 +102,8 @@ public class Drivetrain extends SubsystemBase {
             Units.degreesToRadians(prefDrivetrain.maxChassisRotAccelDegrees.getValue())));
 
     field = new Field2d();
+
+    fieldRelative = true;
 
     configure();
   }
@@ -162,43 +166,43 @@ public class Drivetrain extends SubsystemBase {
     thetaPIDController.reset(getPose().getRotation().getRadians());
   }
 
-  public void driveAlignAngle(Pose2d velocity, boolean isDriveOpenLoop) {
-    thetaPIDController.setGoal(new TrapezoidProfile.State(velocity.getRotation().getRadians(), 0));
+  public void driveAlignAngle(Pose2d velocity) {
+    thetaPIDController.setGoal(new TrapezoidProfile.State(velocity.getRotation().getRadians(), 0.0));
     double goalAngle = thetaPIDController.calculate(getPose().getRotation().getRadians());
     Pose2d newVelocity = new Pose2d(velocity.getTranslation(), new Rotation2d(goalAngle));
-    drive(newVelocity, true, isDriveOpenLoop, false);
+    drive(newVelocity);
   }
 
   /**
    * Drive the drivetrain
    * 
-   * @param velocity        Desired translational and rotational velocity in
-   *                        meters
-   *                        and radians per second respectively
-   * @param fieldRelative   Is the desired translational velocity field relative
-   *                        or
-   *                        robot relative
-   * @param isDriveOpenLoop Is the drive motor velocity controlled using
-   *                        open or closed loop control
-   * @param isSteerOpenLoop Is steering the entire chassis controlled using open
-   *                        or closed loop control. Open loop is velocity based,
-   *                        closed loop is position based
+   * @param velocity Desired translational and rotational velocity in
+   *                 meters and radians per second respectively
    */
-  public void drive(Pose2d velocity, boolean fieldRelative, boolean isDriveOpenLoop, boolean isSteerOpenLoop) {
+  public void drive(Pose2d velocity) {
+
+    Pose2d slewedVelocity = new Pose2d(
+        driveXSlewRateLimiter.calculate(velocity.getX()),
+        driveYSlewRateLimiter.calculate(velocity.getY()),
+        new Rotation2d(steerSlewRateLimiter.calculate(velocity.getRotation().getRadians())));
+
+    SmartDashboard.putNumber(".slewed x", slewedVelocity.getX());
+    SmartDashboard.putNumber(".slewed y", slewedVelocity.getY());
+    SmartDashboard.putNumber(".slewed degrees", slewedVelocity.getRotation().getDegrees());
 
     ChassisSpeeds chassisSpeeds;
 
     if (fieldRelative) {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-          velocity.getX(),
-          velocity.getY(),
-          velocity.getRotation().getRadians(),
+          slewedVelocity.getX(),
+          slewedVelocity.getY(),
+          slewedVelocity.getRotation().getRadians(),
           getGyroYaw());
     } else {
       chassisSpeeds = new ChassisSpeeds(
-          velocity.getX(),
-          velocity.getY(),
-          velocity.getRotation().getRadians());
+          slewedVelocity.getX(),
+          slewedVelocity.getY(),
+          slewedVelocity.getRotation().getRadians());
     }
     SwerveModuleState[] states = Constants.SWERVE_KINEMATICS.toSwerveModuleStates(chassisSpeeds);
 
@@ -206,7 +210,7 @@ public class Drivetrain extends SubsystemBase {
     SwerveDriveKinematics.desaturateWheelSpeeds(states, constDrivetrain.MAX_SPEED);
 
     for (SN_SwerveModule mod : swerveModules) {
-      mod.setDesiredState(states[mod.moduleNumber], isDriveOpenLoop);
+      mod.setDesiredState(states[mod.moduleNumber], prefDrivetrain.isDriveOpenLoop.getValue());
     }
   }
 
@@ -243,6 +247,24 @@ public class Drivetrain extends SubsystemBase {
     }
 
     return states;
+  }
+
+  /**
+   * Set the desired translational velocity to be field relative
+   */
+  public void setFieldRelative() {
+    fieldRelative = true;
+  }
+
+  /**
+   * Set the desired translational velocity to be robot relative
+   */
+  public void setRobotRelative() {
+    fieldRelative = false;
+  }
+
+  public void toggleFieldRelative() {
+    fieldRelative = fieldRelative ? false : true;
   }
 
   /**
@@ -319,6 +341,8 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("Drivetrain Pose X", getPose().getX());
       SmartDashboard.putNumber("Drivetrain Pose Y", getPose().getY());
       SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
+
+      SmartDashboard.putBoolean("Drivetrain field relative", fieldRelative);
 
     }
   }
