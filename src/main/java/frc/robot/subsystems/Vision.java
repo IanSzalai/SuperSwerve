@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -74,7 +76,8 @@ public class Vision extends SubsystemBase {
         newQuaternion = initialQuaternion;
       } else {
         newQuaternion = robotOnField.getRotation().getQuaternion();
-        // dot: ensure every value is within 180 degrees of init. quaternion
+        // dot: ensure every value is within 180 degrees of init. quaternion. rahh
+        // gimbal lock
         double dot = (initialQuaternion.getW() * newQuaternion.getW())
             + (initialQuaternion.getX() * newQuaternion.getX()) + (initialQuaternion.getY() * newQuaternion.getY())
             + (initialQuaternion.getZ() * newQuaternion.getZ());
@@ -105,6 +108,36 @@ public class Vision extends SubsystemBase {
 
     return calculatedPose.toPose2d();
   }
+
+  // TODO: Come up with a better name for this method
+  // Calculates a Field-relative goal pose relative to a visible target.
+  public Pose2d getTargetGoalPose(Double desiredTargetID, Transform3d desiredDistance, Pose2d robotPose,
+      PhotonPipelineResult result) {
+    Pose3d desiredPose = null;
+
+    Optional<PhotonTrackedTarget> filteredResult = result.getTargets().stream()
+        .filter(t -> t.getPoseAmbiguity() <= .2 && t.getPoseAmbiguity() != -1 && t.getFiducialId() == 1).findFirst();
+
+    if (filteredResult.isPresent()) {
+      PhotonTrackedTarget target = filteredResult.get();
+
+      Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0,
+          new Rotation3d(0, 0, robotPose.getRotation().getRadians()));
+      Pose3d cameraPose = new Pose3d(prefVision.cameraXPosition.getValue(), prefVision.cameraYPosition.getValue(),
+          prefVision.cameraZPosition.getValue(),
+          new Rotation3d(prefVision.cameraRoll.getValue(), prefVision.cameraPitch.getValue(),
+              prefVision.cameraYaw.getValue()));
+      Transform3d cameraToRobot = new Transform3d(new Pose3d(0, 0, 0, new Rotation3d(0, 0, 0)), cameraPose);
+
+      Transform3d targetToCamera = target.getBestCameraToTarget();
+      Transform3d targetToRobot = cameraToRobot.plus(targetToCamera);
+      Pose3d targetFieldRelativePose = robotPose3d.transformBy(targetToRobot);
+
+      desiredPose = targetFieldRelativePose.transformBy(desiredDistance);
+    }
+
+    return desiredPose.toPose2d();
+  };
 
   @Override
   public void periodic() {
