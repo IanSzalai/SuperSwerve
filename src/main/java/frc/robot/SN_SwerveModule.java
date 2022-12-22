@@ -21,7 +21,7 @@ import frc.robot.RobotPreferences.prefDrivetrain;
 public class SN_SwerveModule {
 
   public int moduleNumber;
-  private TalonFX driveMotor;
+  public TalonFX driveMotor;
   private TalonFX steerMotor;
   private CANCoder steerEncoder;
   private double steerEncoderOffset;
@@ -30,6 +30,8 @@ public class SN_SwerveModule {
   private TalonFXConfiguration steerConfiguration;
 
   private double lastAngle;
+
+  public double vGoal;
 
   public SN_SwerveModule(SN_SwerveModuleConstants moduleConstants) {
     moduleNumber = moduleConstants.moduleNumber;
@@ -94,6 +96,7 @@ public class SN_SwerveModule {
           constDrivetrain.WHEEL_CIRCUMFERENCE,
           constDrivetrain.DRIVE_GEAR_RATIO);
       driveMotor.set(ControlMode.Velocity, velocity);
+      vGoal = state.speedMetersPerSecond;
     }
 
     double angle = SN_Math.degreesToFalcon(state.angle.getDegrees(), constDrivetrain.STEER_GEAR_RATIO);

@@ -46,10 +46,10 @@ public class RobotContainer {
 
     PathPlannerTrajectory SCurvePath = PathPlanner.loadPath("SCurve",
         new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
-    PathPlannerTrajectory ThreeMeter = PathPlanner.loadPath("3Meter",
+    PathPlannerTrajectory figure8 = PathPlanner.loadPath("figure8",
         new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
 
-    return subDrivetrain.autoBuilder.fullAuto(SCurvePath)
+    return subDrivetrain.autoBuilder.fullAuto(figure8)
         .andThen(new InstantCommand(() -> subDrivetrain.neutralOutputs(), subDrivetrain));
   }
 }

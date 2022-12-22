@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import java.util.HashMap;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.frcteam3255.utils.SN_Math;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
@@ -357,9 +358,14 @@ public class Drivetrain extends SubsystemBase {
         SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Steer Encoder",
             mod.getSteerEncoder().getDegrees());
         SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Drive Motor Velocity ",
-            Units.metersToFeet(mod.getState().speedMetersPerSecond));
+            Units.metersToFeet(Math.abs(mod.getState().speedMetersPerSecond)));
         SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Steer Motor Angle ",
             mod.getState().angle.getDegrees());
+        SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Drive Motor Error ",
+            Units.metersToFeet(SN_Math.falconToMPS(Math.abs(mod.driveMotor.getClosedLoopError()),
+                constDrivetrain.WHEEL_CIRCUMFERENCE, constDrivetrain.DRIVE_GEAR_RATIO)));
+        SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Drive Motor Goal Velocity",
+            Math.abs(Units.metersToFeet(mod.vGoal)));
 
       }
 
