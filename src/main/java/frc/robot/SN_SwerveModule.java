@@ -31,6 +31,8 @@ public class SN_SwerveModule {
 
   private double lastAngle;
 
+  public double goalVelocity;
+
   public SN_SwerveModule(SN_SwerveModuleConstants moduleConstants) {
     moduleNumber = moduleConstants.moduleNumber;
 
@@ -43,6 +45,8 @@ public class SN_SwerveModule {
 
     driveConfiguration = new TalonFXConfiguration();
     steerConfiguration = new TalonFXConfiguration();
+
+    goalVelocity = 0;
 
     configure();
   }
@@ -94,6 +98,7 @@ public class SN_SwerveModule {
           constDrivetrain.WHEEL_CIRCUMFERENCE,
           constDrivetrain.DRIVE_GEAR_RATIO);
       driveMotor.set(ControlMode.Velocity, velocity);
+      goalVelocity = velocity;
     }
 
     double angle = SN_Math.degreesToFalcon(state.angle.getDegrees(), constDrivetrain.STEER_GEAR_RATIO);
@@ -106,6 +111,10 @@ public class SN_SwerveModule {
     steerMotor.set(ControlMode.Position, angle);
     lastAngle = angle;
 
+  }
+
+  public void neutralDriveOutput() {
+    driveMotor.neutralOutput();
   }
 
   /**
@@ -137,6 +146,10 @@ public class SN_SwerveModule {
     correctedRadians %= 2 * Math.PI;
 
     return new Rotation2d(correctedRadians);
+  }
+
+  public double getDriveMotorClosedLoopError() {
+    return driveMotor.getClosedLoopError();
   }
 
   /**

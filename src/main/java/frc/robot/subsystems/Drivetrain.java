@@ -1,6 +1,11 @@
 package frc.robot.subsystems;
 
+import java.util.HashMap;
+
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.frcteam3255.utils.SN_Math;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -44,6 +49,7 @@ public class Drivetrain extends SubsystemBase {
 
   public Field2d field;
 
+  public SwerveAutoBuilder autoBuilder;
   private boolean fieldRelative;
 
   public Drivetrain() {
@@ -164,6 +170,22 @@ public class Drivetrain extends SubsystemBase {
         Units.degreesToRadians(prefDrivetrain.maxChassisRotAccelDegrees.getValue())));
 
     thetaPIDController.reset(getPose().getRotation().getRadians());
+
+    autoBuilder = new SwerveAutoBuilder(
+        this::getPose,
+        this::resetPose,
+        Constants.SWERVE_KINEMATICS,
+        new PIDConstants(
+            prefDrivetrain.transP.getValue(),
+            prefDrivetrain.transI.getValue(),
+            prefDrivetrain.transD.getValue()),
+        new PIDConstants(
+            prefDrivetrain.autoThetaP.getValue(),
+            prefDrivetrain.autoThetaI.getValue(),
+            prefDrivetrain.autoThetaD.getValue()),
+        this::setModuleStates,
+        new HashMap<>(),
+        this);
   }
 
   public void driveAlignAngle(Pose2d velocity) {
@@ -225,6 +247,12 @@ public class Drivetrain extends SubsystemBase {
 
     for (SN_SwerveModule mod : swerveModules) {
       mod.setDesiredState(desiredStates[mod.moduleNumber], false);
+    }
+  }
+
+  public void neutralOutputs() {
+    for (SN_SwerveModule mod : swerveModules) {
+      mod.neutralDriveOutput();
     }
   }
 
@@ -327,12 +355,22 @@ public class Drivetrain extends SubsystemBase {
 
       for (SN_SwerveModule mod : swerveModules) {
 
+        // steer encoder
         SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Steer Encoder",
             mod.getSteerEncoder().getDegrees());
+        // drive motor velocity
         SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Drive Motor Velocity ",
-            Units.metersToFeet(mod.getState().speedMetersPerSecond));
+            Units.metersToFeet(Math.abs(mod.getState().speedMetersPerSecond)));
+        // steer motor angle
         SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Steer Motor Angle ",
             mod.getState().angle.getDegrees());
+        // drive motor closed loop error
+        SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Drive Motor Error ",
+            Units.metersToFeet(SN_Math.falconToMPS(Math.abs(mod.getDriveMotorClosedLoopError()),
+                constDrivetrain.WHEEL_CIRCUMFERENCE, constDrivetrain.DRIVE_GEAR_RATIO)));
+        // drive motor closed loop goal velocity
+        SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Drive Motor Goal Velocity",
+            Math.abs(Units.metersToFeet(mod.goalVelocity)));
 
       }
 

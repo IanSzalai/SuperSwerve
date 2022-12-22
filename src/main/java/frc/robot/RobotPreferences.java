@@ -11,10 +11,10 @@ public class RobotPreferences {
       "displayPreferences", false);
 
   public static final class prefDrivetrain {
-    public static final SN_DoublePreference driveF = new SN_DoublePreference("driveF", 1);
-    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0);
-    public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0);
-    public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 0);
+    public static final SN_DoublePreference driveF = new SN_DoublePreference("driveF", 0.045);
+    public static final SN_DoublePreference driveP = new SN_DoublePreference("driveP", 0.1);
+    public static final SN_DoublePreference driveI = new SN_DoublePreference("driveI", 0.0);
+    public static final SN_DoublePreference driveD = new SN_DoublePreference("driveD", 1.0);
 
     public static final SN_DoublePreference steerP = new SN_DoublePreference("steerP", 0.6);
     public static final SN_DoublePreference steerI = new SN_DoublePreference("steerI", 0);
@@ -31,6 +31,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference transD = new SN_DoublePreference("transD", 0);
     public static final SN_DoublePreference transToleranceInches = new SN_DoublePreference(
         "transToleranceInches", 2);
+
+    public static final SN_DoublePreference autoThetaP = new SN_DoublePreference("autoThetaP", 1);
+    public static final SN_DoublePreference autoThetaI = new SN_DoublePreference("autoThetaI", 0);
+    public static final SN_DoublePreference autoThetaD = new SN_DoublePreference("autoThetaD", 0);
 
     // maximum translational speed in feet per second
     public static final SN_DoublePreference transMaxSpeedFeet = new SN_DoublePreference(
