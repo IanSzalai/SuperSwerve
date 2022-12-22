@@ -44,7 +44,7 @@ public class RobotContainer {
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
-    PathPlannerTrajectory Figure8 = PathPlanner.loadPath("Figure8",
+    PathPlannerTrajectory Figure8Path = PathPlanner.loadPath("Figure8",
         new PathConstraints(
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
@@ -57,7 +57,7 @@ public class RobotContainer {
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    return subDrivetrain.autoBuilder.fullAuto(Figure8)
+    return subDrivetrain.autoBuilder.fullAuto(Figure8Path)
         .andThen(new InstantCommand(() -> subDrivetrain.neutralOutputs(), subDrivetrain));
   }
 }
