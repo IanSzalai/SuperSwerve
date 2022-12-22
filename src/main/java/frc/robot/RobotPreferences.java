@@ -52,11 +52,10 @@ public class RobotPreferences {
     public static final SN_DoublePreference percentOfMaxSpeedToSteer = new SN_DoublePreference(
         "percentOfMaxSpeedToSteer", 0.01);
 
-    // seconds to go from zero to one on the joystick input
     public static final SN_DoublePreference slewMaxAccelFeet = new SN_DoublePreference(
-        "slewMaxAccelFeet", 0.01);
+        "slewMaxAccelFeet", 100);
     public static final SN_DoublePreference slewMaxRotAccelDegrees = new SN_DoublePreference(
-        "slewMaxRotAccelDegrees", 0.01);
+        "slewMaxRotAccelDegrees", 3600);
 
     // deadband for my (ian) personal xbox controller. need to retune for each
     // controller
