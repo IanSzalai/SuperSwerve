@@ -108,6 +108,10 @@ public class SN_SwerveModule {
 
   }
 
+  public void neutralDriveOutput() {
+    driveMotor.neutralOutput();
+  }
+
   /**
    * Reset the steer motor encoder to match the angle of the absolute steer
    * encoder

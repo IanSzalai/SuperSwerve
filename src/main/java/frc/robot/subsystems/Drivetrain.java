@@ -1,6 +1,10 @@
 package frc.robot.subsystems;
 
+import java.util.HashMap;
+
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -43,6 +47,8 @@ public class Drivetrain extends SubsystemBase {
   public ProfiledPIDController yTransPIDController;
 
   public Field2d field;
+
+  public SwerveAutoBuilder autoBuilder;
 
   public Drivetrain() {
 
@@ -160,6 +166,22 @@ public class Drivetrain extends SubsystemBase {
         Units.degreesToRadians(prefDrivetrain.maxChassisRotAccelDegrees.getValue())));
 
     thetaPIDController.reset(getPose().getRotation().getRadians());
+
+    autoBuilder = new SwerveAutoBuilder(
+        this::getPose,
+        this::resetPose,
+        Constants.SWERVE_KINEMATICS,
+        new PIDConstants(
+            prefDrivetrain.transP.getValue(),
+            prefDrivetrain.transI.getValue(),
+            prefDrivetrain.transD.getValue()),
+        new PIDConstants(
+            prefDrivetrain.autoThetaP.getValue(),
+            prefDrivetrain.autoThetaI.getValue(),
+            prefDrivetrain.autoThetaD.getValue()),
+        this::setModuleStates,
+        new HashMap<>(),
+        this);
   }
 
   public void driveAlignAngle(Pose2d velocity, boolean isDriveOpenLoop) {
@@ -221,6 +243,12 @@ public class Drivetrain extends SubsystemBase {
 
     for (SN_SwerveModule mod : swerveModules) {
       mod.setDesiredState(desiredStates[mod.moduleNumber], false);
+    }
+  }
+
+  public void neutralOutputs() {
+    for (SN_SwerveModule mod : swerveModules) {
+      mod.neutralDriveOutput();
     }
   }
 
