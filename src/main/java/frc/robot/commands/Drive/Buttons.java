@@ -60,9 +60,9 @@ public class Buttons extends CommandBase {
     rStick = MathUtil.applyDeadband(rStick, prefDrivetrain.rightStickDeadband.getValue());
 
     // scale joystick inputs to proper units
-    double xVelocity = xStick * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
-    double yVelocity = yStick * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
-    double rVelocity = rStick * Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue());
+    double xVelocity = xStick * Units.feetToMeters(prefDrivetrain.teleMaxSpeedFeet.getValue());
+    double yVelocity = yStick * Units.feetToMeters(prefDrivetrain.teleMaxSpeedFeet.getValue());
+    double rVelocity = rStick * Units.degreesToRadians(prefDrivetrain.teleMaxRotSpeedDegrees.getValue());
 
     // create rotation using stick input
     /**
