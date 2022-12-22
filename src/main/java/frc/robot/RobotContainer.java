@@ -41,14 +41,14 @@ public class RobotContainer {
 
     PathPlannerTrajectory DiamondPath = PathPlanner.loadPath("Diamond",
         new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
-    PathPlannerTrajectory Figure8 = PathPlanner.loadPath("Figure8",
+    PathPlannerTrajectory Figure8Path = PathPlanner.loadPath("Figure8",
         new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
     PathPlannerTrajectory SCurvePath = PathPlanner.loadPath("SCurve",
         new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
     PathPlannerTrajectory ThreeMeter = PathPlanner.loadPath("ThreeMeter",
         new PathConstraints(prefDrivetrain.transMaxSpeedFeet.getValue(), prefDrivetrain.transMaxAccelFeet.getValue()));
 
-    return subDrivetrain.autoBuilder.fullAuto(Figure8)
+    return subDrivetrain.autoBuilder.fullAuto(Figure8Path)
         .andThen(new InstantCommand(() -> subDrivetrain.neutralOutputs(), subDrivetrain));
   }
 }
