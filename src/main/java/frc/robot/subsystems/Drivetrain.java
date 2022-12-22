@@ -355,17 +355,22 @@ public class Drivetrain extends SubsystemBase {
 
       for (SN_SwerveModule mod : swerveModules) {
 
+        // steer encoder
         SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Steer Encoder",
             mod.getSteerEncoder().getDegrees());
+        // drive motor velocity
         SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Drive Motor Velocity ",
             Units.metersToFeet(Math.abs(mod.getState().speedMetersPerSecond)));
+        // steer motor angle
         SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Steer Motor Angle ",
             mod.getState().angle.getDegrees());
+        // drive motor closed loop error
         SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Drive Motor Error ",
-            Units.metersToFeet(SN_Math.falconToMPS(Math.abs(mod.driveMotor.getClosedLoopError()),
+            Units.metersToFeet(SN_Math.falconToMPS(Math.abs(mod.getDriveMotorClosedLoopError()),
                 constDrivetrain.WHEEL_CIRCUMFERENCE, constDrivetrain.DRIVE_GEAR_RATIO)));
+        // drive motor closed loop goal velocity
         SmartDashboard.putNumber("Drivetrain Module " + mod.moduleNumber + " Drive Motor Goal Velocity",
-            Math.abs(Units.metersToFeet(mod.vGoal)));
+            Math.abs(Units.metersToFeet(mod.goalVelocity)));
 
       }
 

@@ -21,7 +21,7 @@ import frc.robot.RobotPreferences.prefDrivetrain;
 public class SN_SwerveModule {
 
   public int moduleNumber;
-  public TalonFX driveMotor;
+  private TalonFX driveMotor;
   private TalonFX steerMotor;
   private CANCoder steerEncoder;
   private double steerEncoderOffset;
@@ -31,7 +31,7 @@ public class SN_SwerveModule {
 
   private double lastAngle;
 
-  public double vGoal;
+  public double goalVelocity;
 
   public SN_SwerveModule(SN_SwerveModuleConstants moduleConstants) {
     moduleNumber = moduleConstants.moduleNumber;
@@ -45,6 +45,8 @@ public class SN_SwerveModule {
 
     driveConfiguration = new TalonFXConfiguration();
     steerConfiguration = new TalonFXConfiguration();
+
+    goalVelocity = 0;
 
     configure();
   }
@@ -96,7 +98,7 @@ public class SN_SwerveModule {
           constDrivetrain.WHEEL_CIRCUMFERENCE,
           constDrivetrain.DRIVE_GEAR_RATIO);
       driveMotor.set(ControlMode.Velocity, velocity);
-      vGoal = state.speedMetersPerSecond;
+      goalVelocity = velocity;
     }
 
     double angle = SN_Math.degreesToFalcon(state.angle.getDegrees(), constDrivetrain.STEER_GEAR_RATIO);
@@ -144,6 +146,10 @@ public class SN_SwerveModule {
     correctedRadians %= 2 * Math.PI;
 
     return new Rotation2d(correctedRadians);
+  }
+
+  public double getDriveMotorClosedLoopError() {
+    return driveMotor.getClosedLoopError();
   }
 
   /**
