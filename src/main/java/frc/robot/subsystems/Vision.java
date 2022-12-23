@@ -110,7 +110,10 @@ public class Vision extends SubsystemBase {
   }
 
   // Calculates a Field-relative goal pose relative to a visible target.
-  public Pose2d getTargetRelativeGoalPose(Double desiredTargetID, Transform3d desiredDistance, Pose2d robotPose,
+  public Pose2d getTargetRelativeGoalPose(
+      double desiredTargetID,
+      Transform3d desiredDistance,
+      Pose2d robotPose,
       PhotonPipelineResult result) {
     Pose2d returnedPose = new Pose2d();
 
