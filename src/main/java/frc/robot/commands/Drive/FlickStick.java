@@ -66,8 +66,8 @@ public class FlickStick extends CommandBase {
     rStickY = MathUtil.applyDeadband(rStickY, prefDrivetrain.absSteerControllerDeadband.getValue());
 
     // scale to proper units
-    xStick *= Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
-    yStick *= Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
+    xStick *= Units.feetToMeters(prefDrivetrain.teleMaxSpeedFeet.getValue());
+    yStick *= Units.feetToMeters(prefDrivetrain.teleMaxSpeedFeet.getValue());
 
     // create rotation from joysticks
 

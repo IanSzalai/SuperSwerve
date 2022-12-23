@@ -71,9 +71,9 @@ public class Trigger extends CommandBase {
     lastTranslationDirection = translationDirection;
     // scale values to proper units
     double translationVelocity = translationMagnitude
-        * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
+        * Units.feetToMeters(prefDrivetrain.teleMaxSpeedFeet.getValue());
     double rotationVelocity = rStick
-        * Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue());
+        * Units.degreesToRadians(prefDrivetrain.teleMaxRotSpeedDegrees.getValue());
 
     // create velocity pose
     Pose2d velocity = new Pose2d(

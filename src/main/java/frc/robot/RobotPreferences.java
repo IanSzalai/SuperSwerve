@@ -20,45 +20,42 @@ public class RobotPreferences {
     public static final SN_DoublePreference steerI = new SN_DoublePreference("steerI", 0);
     public static final SN_DoublePreference steerD = new SN_DoublePreference("steerD", 6);
 
-    public static final SN_DoublePreference thetaP = new SN_DoublePreference("thetaP", 10);
-    public static final SN_DoublePreference thetaI = new SN_DoublePreference("thetaI", 0);
-    public static final SN_DoublePreference thetaD = new SN_DoublePreference("thetaD", 0);
-    public static final SN_DoublePreference thetaToleranceDegrees = new SN_DoublePreference(
-        "thetaToleranceDegrees", 0);
-
-    public static final SN_DoublePreference transP = new SN_DoublePreference("transP", 1);
-    public static final SN_DoublePreference transI = new SN_DoublePreference("transI", 0);
-    public static final SN_DoublePreference transD = new SN_DoublePreference("transD", 0);
-    public static final SN_DoublePreference transToleranceInches = new SN_DoublePreference(
-        "transToleranceInches", 2);
-
     public static final SN_DoublePreference autoThetaP = new SN_DoublePreference("autoThetaP", 1);
     public static final SN_DoublePreference autoThetaI = new SN_DoublePreference("autoThetaI", 0);
     public static final SN_DoublePreference autoThetaD = new SN_DoublePreference("autoThetaD", 0);
 
+    public static final SN_DoublePreference autoTransP = new SN_DoublePreference("autoTransP", 1);
+    public static final SN_DoublePreference autoTransI = new SN_DoublePreference("autoTransI", 0);
+    public static final SN_DoublePreference autoTransD = new SN_DoublePreference("autoTransD", 0);
     // maximum translational speed in feet per second
-    public static final SN_DoublePreference transMaxSpeedFeet = new SN_DoublePreference(
-        "transMaxSpeedFeet", 5);
+    public static final SN_DoublePreference autoMaxSpeedFeet = new SN_DoublePreference(
+        "autoMaxSpeedFeet", 5);
     // maximum translationl acceleration in feet per second per second
-    public static final SN_DoublePreference transMaxAccelFeet = new SN_DoublePreference(
-        "transMaxAccelFeet", 2);
+    public static final SN_DoublePreference autoMaxAccelFeet = new SN_DoublePreference(
+        "autoMaxAccelFeet", 2);
 
-    // maximum chassis speed in feet per second
-    public static final SN_DoublePreference maxChassisSpeedFeet = new SN_DoublePreference(
-        "maxChassisSpeedFeet", 16.3);
-    // maximum chassis rotation speed in degrees per second
-    public static final SN_DoublePreference maxChassisRotSpeedDegrees = new SN_DoublePreference(
-        "maxChassisRotSpeedDegrees", 360);
-    // maximum chassis rotation speed in degrees per second per second
-    public static final SN_DoublePreference maxChassisRotAccelDegrees = new SN_DoublePreference(
-        "maxChassisRotAccelDegrees", 360);
+    public static final SN_DoublePreference teleThetaP = new SN_DoublePreference("teleThetaP", 10);
+    public static final SN_DoublePreference teleThetaI = new SN_DoublePreference("teleThetaI", 0);
+    public static final SN_DoublePreference teleThetaD = new SN_DoublePreference("teleThetaD", 0);
+    public static final SN_DoublePreference teleThetaToleranceDegrees = new SN_DoublePreference(
+        "teleThetaToleranceDegrees", 0);
+    public static final SN_DoublePreference teleThetaMaxRotSpeedDegrees = new SN_DoublePreference(
+        "teleThetaMaxRotSpeedDegrees", 360);
+    public static final SN_DoublePreference teleThetaMaxRotAccelDegrees = new SN_DoublePreference(
+        "teleThetaMaxRotAccelDegrees", 360);
+
+    public static final SN_DoublePreference teleMaxSpeedFeet = new SN_DoublePreference(
+        "teleMaxSpeedFeet", 16.3);
+    public static final SN_DoublePreference teleMaxRotSpeedDegrees = new SN_DoublePreference(
+        "teleMaxRotSpeedDegrees", 360);
 
     public static final SN_DoublePreference percentOfMaxSpeedToSteer = new SN_DoublePreference(
         "percentOfMaxSpeedToSteer", 0.01);
 
-    // seconds to go from zero to one on the joystick input
-    public static final SN_DoublePreference driveSecondsToMax = new SN_DoublePreference("driveSecondsToMax", 0.01);
-    public static final SN_DoublePreference steerSecondsToMax = new SN_DoublePreference("steerSecondsToMax", 0.01);
+    public static final SN_DoublePreference slewMaxAccelFeet = new SN_DoublePreference(
+        "slewMaxAccelFeet", 100);
+    public static final SN_DoublePreference slewMaxRotAccelDegrees = new SN_DoublePreference(
+        "slewMaxRotAccelDegrees", 3600);
 
     // deadband for my (ian) personal xbox controller. need to retune for each
     // controller

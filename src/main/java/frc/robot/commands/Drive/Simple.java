@@ -59,9 +59,9 @@ public class Simple extends CommandBase {
     SmartDashboard.putNumber(".stick r", rStick);
 
     // scale joystick inputs to proper units
-    double xVelocity = xStick * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
-    double yVelocity = yStick * Units.feetToMeters(prefDrivetrain.maxChassisSpeedFeet.getValue());
-    double rVelocity = rStick * Units.degreesToRadians(prefDrivetrain.maxChassisRotSpeedDegrees.getValue());
+    double xVelocity = xStick * Units.feetToMeters(prefDrivetrain.teleMaxSpeedFeet.getValue());
+    double yVelocity = yStick * Units.feetToMeters(prefDrivetrain.teleMaxSpeedFeet.getValue());
+    double rVelocity = rStick * Units.degreesToRadians(prefDrivetrain.teleMaxRotSpeedDegrees.getValue());
 
     SmartDashboard.putNumber(".velocity x", xVelocity);
     SmartDashboard.putNumber(".velocity y", yVelocity);
