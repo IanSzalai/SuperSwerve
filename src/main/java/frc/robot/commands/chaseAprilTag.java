@@ -10,16 +10,17 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotPreferences;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
-public class chaseAprilTag extends CommandBase {
+public class ChaseAprilTag extends CommandBase {
   Vision subVision;
   Drivetrain subDrivetrain;
 
-  public chaseAprilTag(Vision subVision, Drivetrain subDrivetrain) {
+  public ChaseAprilTag(Vision subVision, Drivetrain subDrivetrain) {
     this.subVision = subVision;
     this.subDrivetrain = subDrivetrain;
 
@@ -37,13 +38,19 @@ public class chaseAprilTag extends CommandBase {
     Transform3d desiredDistance = new Transform3d(
         new Translation3d(RobotPreferences.prefVision.goalDistToTag.getValue(), 0, 0), new Rotation3d(0, 0, 0));
 
+    Pose2d goalPose = null;
     // Filtering is done in goalPose to include an ID filter
-    Pose2d goalPose = subVision.getTargetRelativeGoalPose(RobotPreferences.prefVision.chasingTagID.getValue(),
-        desiredDistance,
-        subDrivetrain.getPose(), result);
+    if (result != null && result.hasTargets()) {
+      goalPose = subVision.getTargetRelativeGoalPose(
+          RobotPreferences.prefVision.chasingTagID.getValue(),
+          desiredDistance,
+          subDrivetrain.getPose(),
+          result);
+    }
 
     if (goalPose != null) {
-      subDrivetrain.driveToPosition(goalPose);
+      // subDrivetrain.driveToPosition(goalPose);
+      SmartDashboard.putString(".goal pose", goalPose.toString());
     }
   }
 

@@ -112,7 +112,7 @@ public class Vision extends SubsystemBase {
   // Calculates a Field-relative goal pose relative to a visible target.
   public Pose2d getTargetRelativeGoalPose(Double desiredTargetID, Transform3d desiredDistance, Pose2d robotPose,
       PhotonPipelineResult result) {
-    Pose3d desiredPose = null;
+    Pose3d desiredPose = new Pose3d();
 
     Optional<PhotonTrackedTarget> filteredResult = result.getTargets().stream()
         .filter(t -> t.getPoseAmbiguity() <= .2 && t.getPoseAmbiguity() != -1 && t.getFiducialId() == 1).findFirst();
