@@ -57,7 +57,7 @@ public class RobotContainer {
             Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())));
 
-    return subDrivetrain.autoBuilder.fullAuto(Figure8Path)
+    return subDrivetrain.autoBuilder.fullAuto(ThreeMeter)
         .andThen(new InstantCommand(() -> subDrivetrain.neutralOutputs(), subDrivetrain));
   }
 }

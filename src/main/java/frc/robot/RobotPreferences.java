@@ -24,7 +24,7 @@ public class RobotPreferences {
     public static final SN_DoublePreference autoThetaI = new SN_DoublePreference("autoThetaI", 0);
     public static final SN_DoublePreference autoThetaD = new SN_DoublePreference("autoThetaD", 0);
 
-    public static final SN_DoublePreference autoTransP = new SN_DoublePreference("autoTransP", 1);
+    public static final SN_DoublePreference autoTransP = new SN_DoublePreference("autoTransP", 18);
     public static final SN_DoublePreference autoTransI = new SN_DoublePreference("autoTransI", 0);
     public static final SN_DoublePreference autoTransD = new SN_DoublePreference("autoTransD", 0);
     // maximum translational speed in feet per second
@@ -45,7 +45,7 @@ public class RobotPreferences {
         "teleThetaMaxRotAccelDegrees", 360);
 
     public static final SN_DoublePreference teleMaxSpeedFeet = new SN_DoublePreference(
-        "teleMaxSpeedFeet", 16.3);
+        "teleMaxSpeedFeet", 13.5);
     public static final SN_DoublePreference teleMaxRotSpeedDegrees = new SN_DoublePreference(
         "teleMaxRotSpeedDegrees", 360);
 
