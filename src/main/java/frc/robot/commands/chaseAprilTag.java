@@ -4,14 +4,21 @@
 
 package frc.robot.commands;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPoint;
+
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotPreferences;
+import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
@@ -44,6 +51,11 @@ public class chaseAprilTag extends CommandBase {
 
     if (goalPose != null) {
       // auto drive
+      PathPlannerTrajectory goalTrajectory = PathPlanner.generatePath(new PathConstraints(
+          Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
+          Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())),
+          new PathPoint(subDrivetrain.getPose().getTranslation(), subDrivetrain.getPose().getRotation()),
+          new PathPoint(goalPose.getTranslation(), goalPose.getRotation()));
     }
   }
 
