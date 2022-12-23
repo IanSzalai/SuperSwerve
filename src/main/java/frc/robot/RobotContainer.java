@@ -5,11 +5,15 @@ import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefDrivetrain;
+import frc.robot.RobotPreferences.prefVision;
 import frc.robot.commands.UpdatePoseEstimator;
 import frc.robot.commands.Drive.Simple;
 import frc.robot.subsystems.Drivetrain;
@@ -36,6 +40,12 @@ public class RobotContainer {
     conDriver.btn_RBump.whenPressed(new InstantCommand(() -> subDrivetrain.configure()));
     conDriver.btn_Start.whenPressed(new InstantCommand(() -> subDrivetrain.resetPose(new Pose2d())));
     conDriver.btn_Back.whenPressed(new InstantCommand(() -> subDrivetrain.toggleFieldRelative()));
+
+    Transform3d desiredDistance = new Transform3d(
+        new Translation3d(RobotPreferences.prefVision.goalDistToTag.getValue(), 0, 0), new Rotation3d(0, 0, 0));
+    conDriver.btn_A.whileHeld(
+        subDrivetrain.autoBuilder.followPath(subVision.getTargetRelativeGoalPose(prefVision.chasingTagID.getValue(),
+            desiredDistance, subDrivetrain.getPose(), subVision.photonCamera.getLatestResult())));
   }
 
   public Command getAutonomousCommand() {
