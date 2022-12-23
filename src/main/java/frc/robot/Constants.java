@@ -77,13 +77,13 @@ public final class Constants {
     public static final double TRACK_WIDTH = Units.inchesToMeters(19.75); // side to side
     public static final double WHEEL_BASE = Units.inchesToMeters(15.75); // front to back
 
-    public static final double WHEEL_DIAMETER = Units.inchesToMeters(4);
+    public static final double WHEEL_DIAMETER = Units.inchesToMeters(3.8);
     public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
 
-    public static final double DRIVE_GEAR_RATIO = 6.75; // SDS MK4 L2
+    public static final double DRIVE_GEAR_RATIO = 8.14; // SDS MK4 L1
     public static final double STEER_GEAR_RATIO = 12.8; // SDS MK4 & MK3 (all drive gearings)
 
-    public static final double MAX_SPEED = Units.feetToMeters(16.3);
+    public static final double MAX_SPEED = Units.feetToMeters(13.5);
 
     public static final NeutralMode DRIVE_NEUTRAL_MODE = NeutralMode.Brake;
     public static final NeutralMode STEER_NEUTRAL_MODE = NeutralMode.Coast;
