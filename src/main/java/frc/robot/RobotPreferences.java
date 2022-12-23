@@ -101,15 +101,18 @@ public class RobotPreferences {
         "useVision", false);
 
     // Camera pose relative to robot
-    public static final SN_DoublePreference cameraXPosition = new SN_DoublePreference(
-        "cameraXPosition", 0);
-    public static final SN_DoublePreference cameraYPosition = new SN_DoublePreference(
-        "cameraYPosition", Units.inchesToMeters(11));
-    public static final SN_DoublePreference cameraZPosition = new SN_DoublePreference(
-        "cameraZPosition", Units.inchesToMeters(8.5));
-    public static final SN_DoublePreference cameraPitch = new SN_DoublePreference("cameraPitch", 0);
-    public static final SN_DoublePreference cameraYaw = new SN_DoublePreference("cameraYaw", 0);
-    public static final SN_DoublePreference cameraRoll = new SN_DoublePreference("cameraRoll", 0);
+    public static final SN_DoublePreference cameraXPositionInches = new SN_DoublePreference(
+        "cameraXPositionInches", 0);
+    public static final SN_DoublePreference cameraYPositionInches = new SN_DoublePreference(
+        "cameraYPositionInches", 11);
+    public static final SN_DoublePreference cameraZPositionInches = new SN_DoublePreference(
+        "cameraZPositionInches", 8.5);
+    public static final SN_DoublePreference cameraPitchDegrees = new SN_DoublePreference(
+        "cameraPitchDegrees", 0);
+    public static final SN_DoublePreference cameraYawDegrees = new SN_DoublePreference(
+        "cameraYawDegrees", 90);
+    public static final SN_DoublePreference cameraRollDegrees = new SN_DoublePreference(
+        "cameraRollDegrees", 0);
 
     public static final SN_DoublePreference chasingTagID = new SN_DoublePreference("chasingTagID", 1);
     public static final SN_DoublePreference goalDistToTag = new SN_DoublePreference("distanceInFrontOfTag", 2);

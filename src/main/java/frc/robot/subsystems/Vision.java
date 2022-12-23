@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Quaternion;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences.prefVision;
@@ -52,10 +53,11 @@ public class Vision extends SubsystemBase {
     double totalY = 0;
     double totalZ = 0;
 
-    Pose3d cameraPose = new Pose3d(prefVision.cameraXPosition.getValue(), prefVision.cameraYPosition.getValue(),
-        prefVision.cameraZPosition.getValue(),
-        new Rotation3d(prefVision.cameraRoll.getValue(), prefVision.cameraPitch.getValue(),
-            prefVision.cameraYaw.getValue()));
+    Pose3d cameraPose = new Pose3d(prefVision.cameraXPositionInches.getValue(),
+        prefVision.cameraYPositionInches.getValue(),
+        prefVision.cameraZPositionInches.getValue(),
+        new Rotation3d(prefVision.cameraRollDegrees.getValue(), prefVision.cameraPitchDegrees.getValue(),
+            prefVision.cameraYawDegrees.getValue()));
     Transform3d cameraToRobot = new Transform3d(new Pose3d(0, 0, 0, new Rotation3d(0, 0, 0)), cameraPose);
 
     if (filteredResult.length < 1) {
@@ -118,16 +120,33 @@ public class Vision extends SubsystemBase {
     Pose2d returnedPose = new Pose2d();
 
     Optional<PhotonTrackedTarget> filteredResult = result.getTargets().stream()
-        .filter(t -> t.getPoseAmbiguity() <= .2 && t.getPoseAmbiguity() != -1 && t.getFiducialId() == desiredTargetID)
+        .filter(t -> t.getPoseAmbiguity() <= .2)
+        .filter(t -> t.getPoseAmbiguity() != -1)
+        .filter(t -> t.getFiducialId() == desiredTargetID)
         .findFirst();
 
-    Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0,
-        new Rotation3d(0, 0, robotPose.getRotation().getRadians()));
-    Pose3d cameraPose = new Pose3d(prefVision.cameraXPosition.getValue(), prefVision.cameraYPosition.getValue(),
-        prefVision.cameraZPosition.getValue(),
-        new Rotation3d(prefVision.cameraRoll.getValue(), prefVision.cameraPitch.getValue(),
-            prefVision.cameraYaw.getValue()));
-    Transform3d cameraToRobot = new Transform3d(new Pose3d(0, 0, 0, new Rotation3d(0, 0, 0)), cameraPose);
+    Pose3d robotPose3d = new Pose3d(
+        robotPose.getX(),
+        robotPose.getY(),
+        0,
+        new Rotation3d(
+            0,
+            0,
+            robotPose.getRotation().getRadians()));
+
+    Pose3d cameraPose = new Pose3d(
+        Units.inchesToMeters(prefVision.cameraXPositionInches.getValue()),
+        Units.inchesToMeters(prefVision.cameraYPositionInches.getValue()),
+        Units.inchesToMeters(prefVision.cameraZPositionInches.getValue()),
+        new Rotation3d(
+            Units.degreesToRadians(prefVision.cameraRollDegrees.getValue()),
+            Units.degreesToRadians(prefVision.cameraPitchDegrees.getValue()),
+            Units.degreesToRadians(prefVision.cameraYawDegrees.getValue())));
+
+    Transform3d cameraToRobot = new Transform3d(
+        new Pose3d(0, 0, 0,
+            new Rotation3d(0, 0, 0)),
+        cameraPose);
 
     if (filteredResult.isPresent()) {
       PhotonTrackedTarget target = filteredResult.get();
