@@ -6,11 +6,6 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.PathPoint;
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -21,10 +16,8 @@ import edu.wpi.first.math.geometry.Quaternion;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.RobotPreferences.prefVision;
 
 public class Vision extends SubsystemBase {
@@ -117,10 +110,9 @@ public class Vision extends SubsystemBase {
   }
 
   // Calculates a Field-relative goal pose relative to a visible target.
-  public PathPlannerTrajectory getTargetRelativeGoalPose(Double desiredTargetID, Transform3d desiredDistance,
-      Pose2d robotPose,
+  public Pose2d getTargetRelativeGoalPose(Double desiredTargetID, Transform3d desiredDistance, Pose2d robotPose,
       PhotonPipelineResult result) {
-    PathPlannerTrajectory goalTrajectory = null;
+    Pose3d desiredPose = null;
 
     Optional<PhotonTrackedTarget> filteredResult = result.getTargets().stream()
         .filter(t -> t.getPoseAmbiguity() <= .2 && t.getPoseAmbiguity() != -1 && t.getFiducialId() == 1).findFirst();
@@ -140,16 +132,10 @@ public class Vision extends SubsystemBase {
       Transform3d targetToRobot = cameraToRobot.plus(targetToCamera);
       Pose3d targetFieldRelativePose = robotPose3d.transformBy(targetToRobot);
 
-      Pose3d desiredPose = targetFieldRelativePose.transformBy(desiredDistance);
-
-      goalTrajectory = PathPlanner.generatePath(new PathConstraints(
-          Units.feetToMeters(prefDrivetrain.autoMaxSpeedFeet.getValue()),
-          Units.feetToMeters(prefDrivetrain.autoMaxAccelFeet.getValue())),
-          new PathPoint(robotPose.getTranslation(), robotPose.getRotation()),
-          new PathPoint(desiredPose.getTranslation().toTranslation2d(), desiredPose.getRotation().toRotation2d()));
+      desiredPose = targetFieldRelativePose.transformBy(desiredDistance);
     }
 
-    return goalTrajectory;
+    return desiredPose.toPose2d();
   };
 
   @Override
