@@ -3,8 +3,6 @@ package frc.robot;
 import com.frcteam3255.preferences.SN_BooleanPreference;
 import com.frcteam3255.preferences.SN_DoublePreference;
 
-import edu.wpi.first.math.util.Units;
-
 public class RobotPreferences {
 
   public static final SN_BooleanPreference displayPreferences = new SN_BooleanPreference(
