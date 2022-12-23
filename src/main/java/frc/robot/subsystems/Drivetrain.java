@@ -158,7 +158,7 @@ public class Drivetrain extends SubsystemBase {
         new TrapezoidProfile.Constraints(
             Units.feetToMeters(prefDrivetrain.teleTransMaxSpeedFeet.getValue()),
             Units.feetToMeters(prefDrivetrain.teleTransMaxAccelFeet.getValue())));
-    yTransPIDController.reset(getPose().getX());
+    yTransPIDController.reset(getPose().getY());
 
     thetaPIDController.setPID(
         prefDrivetrain.teleThetaP.getValue(),
@@ -223,7 +223,7 @@ public class Drivetrain extends SubsystemBase {
           slewedVelocity.getX(),
           slewedVelocity.getY(),
           slewedVelocity.getRotation().getRadians(),
-          getGyroYaw());
+          getPose().getRotation());
     } else {
       chassisSpeeds = new ChassisSpeeds(
           slewedVelocity.getX(),
@@ -255,15 +255,21 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void driveToPosition(Pose2d position) {
-    xTransPIDController.setGoal(position.getX());
-    yTransPIDController.setGoal(position.getY());
+    xTransPIDController.setGoal(new TrapezoidProfile.State(position.getX(), 0.0));
+    yTransPIDController.setGoal(new TrapezoidProfile.State(position.getY(), 0.0));
 
     Pose2d velocity = new Pose2d(
-        xTransPIDController.calculate(getPose().getRotation().getRadians()),
-        yTransPIDController.calculate(getPose().getRotation().getRadians()),
+        xTransPIDController.calculate(getPose().getX()),
+        yTransPIDController.calculate(getPose().getY()),
         position.getRotation());
 
     driveAlignAngle(velocity);
+  }
+
+  public void resetPID() {
+    xTransPIDController.reset(new TrapezoidProfile.State(getPose().getX(), 0.0));
+    yTransPIDController.reset(new TrapezoidProfile.State(getPose().getY(), 0.0));
+    thetaPIDController.reset(new TrapezoidProfile.State(getPose().getRotation().getRadians(), 0.0));
   }
 
   public void neutralOutputs() {
@@ -397,6 +403,8 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
 
       SmartDashboard.putBoolean("Drivetrain field relative", fieldRelative);
+
+      SmartDashboard.putNumber("Drivetrain xTransPID", xTransPIDController.getP());
 
     }
   }
