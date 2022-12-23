@@ -43,7 +43,7 @@ public class chaseAprilTag extends CommandBase {
         subDrivetrain.getPose(), result);
 
     if (goalPose != null) {
-      // auto drive
+      subDrivetrain.driveToPosition(goalPose);
     }
   }
 
