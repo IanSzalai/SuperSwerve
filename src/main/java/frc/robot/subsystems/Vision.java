@@ -115,7 +115,8 @@ public class Vision extends SubsystemBase {
     Pose2d returnedPose = new Pose2d();
 
     Optional<PhotonTrackedTarget> filteredResult = result.getTargets().stream()
-        .filter(t -> t.getPoseAmbiguity() <= .2 && t.getPoseAmbiguity() != -1 && t.getFiducialId() == 1).findFirst();
+        .filter(t -> t.getPoseAmbiguity() <= .2 && t.getPoseAmbiguity() != -1 && t.getFiducialId() == desiredTargetID)
+        .findFirst();
 
     Pose3d robotPose3d = new Pose3d(robotPose.getX(), robotPose.getY(), 0,
         new Rotation3d(0, 0, robotPose.getRotation().getRadians()));

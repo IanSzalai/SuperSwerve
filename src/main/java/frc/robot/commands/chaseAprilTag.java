@@ -29,6 +29,7 @@ public class ChaseAprilTag extends CommandBase {
 
   @Override
   public void initialize() {
+    subDrivetrain.resetPID();
   }
 
   @Override
@@ -49,7 +50,7 @@ public class ChaseAprilTag extends CommandBase {
     }
 
     if (goalPose != null && goalPose != new Pose2d()) {
-      // subDrivetrain.driveToPosition(goalPose);
+      subDrivetrain.driveToPosition(goalPose);
       SmartDashboard.putString(".goal pose", goalPose.toString());
     }
   }
