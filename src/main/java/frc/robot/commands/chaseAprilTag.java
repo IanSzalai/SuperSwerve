@@ -48,7 +48,7 @@ public class ChaseAprilTag extends CommandBase {
           result);
     }
 
-    if (goalPose != null) {
+    if (goalPose != null && goalPose != new Pose2d()) {
       // subDrivetrain.driveToPosition(goalPose);
       SmartDashboard.putString(".goal pose", goalPose.toString());
     }
