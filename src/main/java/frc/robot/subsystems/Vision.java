@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import java.util.Optional;
 
+import javax.xml.crypto.dsig.Transform;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -13,7 +15,9 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Quaternion;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
@@ -125,38 +129,26 @@ public class Vision extends SubsystemBase {
         .filter(t -> t.getFiducialId() == desiredTargetID)
         .findFirst();
 
-    Pose3d robotPose3d = new Pose3d(
-        robotPose.getX(),
-        robotPose.getY(),
-        0,
-        new Rotation3d(
-            0,
-            0,
-            robotPose.getRotation().getRadians()));
-
-    Pose3d cameraPose = new Pose3d(
-        Units.inchesToMeters(prefVision.cameraXPositionInches.getValue()),
-        Units.inchesToMeters(prefVision.cameraYPositionInches.getValue()),
-        Units.inchesToMeters(prefVision.cameraZPositionInches.getValue()),
-        new Rotation3d(
-            Units.degreesToRadians(prefVision.cameraRollDegrees.getValue()),
-            Units.degreesToRadians(prefVision.cameraPitchDegrees.getValue()),
-            Units.degreesToRadians(prefVision.cameraYawDegrees.getValue())));
-
-    Transform3d cameraToRobot = new Transform3d(
-        new Pose3d(0, 0, 0,
-            new Rotation3d(0, 0, 0)),
-        cameraPose);
-
     if (filteredResult.isPresent()) {
       PhotonTrackedTarget target = filteredResult.get();
 
       Transform3d targetToCamera = target.getBestCameraToTarget();
-      Transform3d targetToRobot = cameraToRobot.plus(targetToCamera);
-      Pose3d targetFieldRelativePose = robotPose3d.transformBy(targetToRobot);
+      Transform3d aiogaoigioaw = targetToCamera.plus(desiredDistance);
+      Pose3d targetCameraRelative = new Pose3d(0, 0, 0, new Rotation3d(0, 0, 0)).transformBy(aiogaoigioaw);
+      // this is done because photonvision people use a different coordinate system
+      // and its very annoying
 
-      Pose3d desiredPose = targetFieldRelativePose.transformBy(desiredDistance);
-      returnedPose = desiredPose.toPose2d();
+      // so this is where the target is relative to the camera (currently assuming the
+      // camera is not offset at all, which it is, but shut up)
+      Pose2d actualTargetPose = new Pose2d(targetCameraRelative.getY(),
+          targetCameraRelative.getX(),
+          new Rotation2d(targetCameraRelative.getRotation().getZ() - Units.degreesToRadians(180)));
+
+      // now we make it field relative
+      Transform2d targetToRobot = new Transform2d(new Pose2d(0, 0, new Rotation2d(0)), actualTargetPose);
+      Pose2d targetFieldRelativePose = robotPose.transformBy(targetToRobot);
+
+      returnedPose = targetFieldRelativePose;
     }
 
     SmartDashboard.putString(".desired pose", returnedPose.toString());

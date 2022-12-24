@@ -102,17 +102,17 @@ public class RobotPreferences {
     public static final SN_DoublePreference cameraXPositionInches = new SN_DoublePreference(
         "cameraXPositionInches", 0);
     public static final SN_DoublePreference cameraYPositionInches = new SN_DoublePreference(
-        "cameraYPositionInches", 11);
+        "cameraYPositionInches", 0);
     public static final SN_DoublePreference cameraZPositionInches = new SN_DoublePreference(
-        "cameraZPositionInches", 8.5);
+        "cameraZPositionInches", 0);
     public static final SN_DoublePreference cameraPitchDegrees = new SN_DoublePreference(
         "cameraPitchDegrees", 0);
     public static final SN_DoublePreference cameraYawDegrees = new SN_DoublePreference(
-        "cameraYawDegrees", 90);
+        "cameraYawDegrees", 0);
     public static final SN_DoublePreference cameraRollDegrees = new SN_DoublePreference(
         "cameraRollDegrees", 0);
 
     public static final SN_DoublePreference chasingTagID = new SN_DoublePreference("chasingTagID", 1);
-    public static final SN_DoublePreference goalDistToTag = new SN_DoublePreference("distanceInFrontOfTag", 2);
+    public static final SN_DoublePreference goalDistToTag = new SN_DoublePreference("distanceInFrontOfTag", 1);
   }
 }

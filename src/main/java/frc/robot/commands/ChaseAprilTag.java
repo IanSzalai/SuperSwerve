@@ -10,9 +10,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotPreferences;
+import frc.robot.RobotPreferences.prefVision;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
@@ -37,9 +39,9 @@ public class ChaseAprilTag extends CommandBase {
   @Override
   public void execute() {
     PhotonPipelineResult result = subVision.photonCamera.getLatestResult();
-    // this may need Math.PI, depends on robot setup
     Transform3d desiredDistance = new Transform3d(
-        new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+        new Translation3d(prefVision.goalDistToTag.getValue(), 0, 0),
+        new Rotation3d(0, 0, 0));
 
     Pose2d goalPose = null;
     // Filtering is done in goalPose to include an ID filter
