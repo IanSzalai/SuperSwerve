@@ -20,6 +20,8 @@ public class ChaseAprilTag extends CommandBase {
   Vision subVision;
   Drivetrain subDrivetrain;
 
+  Pose2d poseToSetRobot;
+
   public ChaseAprilTag(Vision subVision, Drivetrain subDrivetrain) {
     this.subVision = subVision;
     this.subDrivetrain = subDrivetrain;
@@ -37,7 +39,7 @@ public class ChaseAprilTag extends CommandBase {
     PhotonPipelineResult result = subVision.photonCamera.getLatestResult();
     // this may need Math.PI, depends on robot setup
     Transform3d desiredDistance = new Transform3d(
-        new Translation3d(RobotPreferences.prefVision.goalDistToTag.getValue(), 0, 0), new Rotation3d(0, 0, 0));
+        new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
 
     Pose2d goalPose = null;
     // Filtering is done in goalPose to include an ID filter
@@ -51,7 +53,13 @@ public class ChaseAprilTag extends CommandBase {
 
     if (goalPose != null && !(goalPose.equals(new Pose2d()))) {
       subDrivetrain.driveToPosition(goalPose);
+      poseToSetRobot = goalPose;
       SmartDashboard.putString(".goal pose", goalPose.toString());
+    }
+
+    if (poseToSetRobot != null) {
+      subDrivetrain.driveToPosition(poseToSetRobot);
+      SmartDashboard.putString(".poseToSetRobot", poseToSetRobot.toString());
     }
   }
 

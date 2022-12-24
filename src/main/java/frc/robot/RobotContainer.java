@@ -13,9 +13,7 @@ import frc.robot.RobotPreferences.prefDrivetrain;
 import frc.robot.commands.ChaseAprilTag;
 import frc.robot.commands.DriveToPose;
 import frc.robot.commands.UpdatePoseEstimator;
-import frc.robot.commands.Drive.Buttons;
-import frc.robot.commands.Drive.FlickStick;
-import frc.robot.commands.Drive.Simple;
+import frc.robot.commands.Drive.TriggerSlows;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
 
@@ -28,7 +26,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     subDrivetrain.setDefaultCommand(
-        new Simple(subDrivetrain, conDriver));
+        new TriggerSlows(subDrivetrain, conDriver));
 
     subVision.setDefaultCommand(new UpdatePoseEstimator(subDrivetrain, subVision));
 

@@ -1,6 +1,7 @@
 package frc.robot.commands.Drive;
 
 import com.frcteam3255.joystick.SN_F310Gamepad;
+import com.frcteam3255.utils.SN_Math;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -22,14 +23,14 @@ import frc.robot.subsystems.Drivetrain;
  * left trigger (translation)
  * right trigger (translation)
  */
-public class Trigger extends CommandBase {
+public class TriggerSlows extends CommandBase {
 
   Drivetrain subDrivetrain;
   SN_F310Gamepad conDriver;
 
   Rotation2d lastTranslationDirection;
 
-  public Trigger(Drivetrain subDrivetrain, SN_F310Gamepad conDriver) {
+  public TriggerSlows(Drivetrain subDrivetrain, SN_F310Gamepad conDriver) {
 
     this.subDrivetrain = subDrivetrain;
     this.conDriver = conDriver;
@@ -51,17 +52,16 @@ public class Trigger extends CommandBase {
     double yStick = conDriver.getAxisLSY();
     double rStick = -conDriver.getAxisRSX();
     double rTrigger = conDriver.getAxisRT();
-    double lTrigger = conDriver.getAxisLT();
 
     // apply deadbands
     xStick = MathUtil.applyDeadband(xStick, prefDrivetrain.leftStickDeadband.getValue());
     yStick = MathUtil.applyDeadband(yStick, prefDrivetrain.leftStickDeadband.getValue());
     rStick = MathUtil.applyDeadband(rStick, prefDrivetrain.rightStickDeadband.getValue());
     rTrigger = MathUtil.applyDeadband(rTrigger, prefDrivetrain.rightTriggerDeadband.getValue());
-    lTrigger = MathUtil.applyDeadband(lTrigger, prefDrivetrain.leftTriggerDeadband.getValue());
 
     // calculate components of translation
-    double translationMagnitude = rTrigger - lTrigger;
+    double translationMagnitude = new Translation2d(xStick, yStick).getNorm()
+        * SN_Math.interpolate(rTrigger, 0, 1, 1, .2);
     Rotation2d translationDirection = new Rotation2d();
     if (xStick != 0 || yStick != 0) {
       translationDirection = new Rotation2d(xStick, yStick);
