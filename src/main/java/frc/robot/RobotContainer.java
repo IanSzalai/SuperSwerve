@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotMap.mapControllers;
 import frc.robot.RobotPreferences.prefDrivetrain;
-import frc.robot.commands.ChaseAprilTag;
 import frc.robot.commands.DriveToPose;
 import frc.robot.commands.UpdatePoseEstimator;
 import frc.robot.commands.Drive.TriggerSlows;
@@ -38,7 +37,6 @@ public class RobotContainer {
     conDriver.btn_RBump.whenPressed(new InstantCommand(() -> subDrivetrain.configure()));
     conDriver.btn_Start.whenPressed(new InstantCommand(() -> subDrivetrain.resetPose(new Pose2d())));
     conDriver.btn_Back.whenPressed(new InstantCommand(() -> subDrivetrain.toggleFieldRelative()));
-    conDriver.btn_A.whileHeld(new ChaseAprilTag(subVision, subDrivetrain));
     conDriver.btn_B.whileHeld(new DriveToPose(subDrivetrain));
   }
 

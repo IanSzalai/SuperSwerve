@@ -102,13 +102,13 @@ public class RobotPreferences {
     public static final SN_DoublePreference cameraXPositionInches = new SN_DoublePreference(
         "cameraXPositionInches", 0);
     public static final SN_DoublePreference cameraYPositionInches = new SN_DoublePreference(
-        "cameraYPositionInches", 0);
+        "cameraYPositionInches", 11);
     public static final SN_DoublePreference cameraZPositionInches = new SN_DoublePreference(
-        "cameraZPositionInches", 0);
+        "cameraZPositionInches", 8.5);
     public static final SN_DoublePreference cameraPitchDegrees = new SN_DoublePreference(
         "cameraPitchDegrees", 0);
     public static final SN_DoublePreference cameraYawDegrees = new SN_DoublePreference(
-        "cameraYawDegrees", 0);
+        "cameraYawDegrees", 90);
     public static final SN_DoublePreference cameraRollDegrees = new SN_DoublePreference(
         "cameraRollDegrees", 0);
 

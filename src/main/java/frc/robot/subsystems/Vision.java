@@ -115,46 +115,6 @@ public class Vision extends SubsystemBase {
     return calculatedPose.toPose2d();
   }
 
-  // Calculates a Field-relative goal pose relative to a visible target.
-  public Pose2d getTargetRelativeGoalPose(
-      double desiredTargetID,
-      Transform3d desiredDistance,
-      Pose2d robotPose,
-      PhotonPipelineResult result) {
-    Pose2d returnedPose = new Pose2d();
-
-    Optional<PhotonTrackedTarget> filteredResult = result.getTargets().stream()
-        .filter(t -> t.getPoseAmbiguity() <= .2)
-        .filter(t -> t.getPoseAmbiguity() != -1)
-        .filter(t -> t.getFiducialId() == desiredTargetID)
-        .findFirst();
-
-    if (filteredResult.isPresent()) {
-      PhotonTrackedTarget target = filteredResult.get();
-
-      Transform3d targetToCamera = target.getBestCameraToTarget();
-      Transform3d aiogaoigioaw = targetToCamera.plus(desiredDistance);
-      Pose3d targetCameraRelative = new Pose3d(0, 0, 0, new Rotation3d(0, 0, 0)).transformBy(aiogaoigioaw);
-      // this is done because photonvision people use a different coordinate system
-      // and its very annoying
-
-      // so this is where the target is relative to the camera (currently assuming the
-      // camera is not offset at all, which it is, but shut up)
-      Pose2d actualTargetPose = new Pose2d(targetCameraRelative.getY(),
-          targetCameraRelative.getX(),
-          new Rotation2d(targetCameraRelative.getRotation().getZ() - Units.degreesToRadians(180)));
-
-      // now we make it field relative
-      Transform2d targetToRobot = new Transform2d(new Pose2d(0, 0, new Rotation2d(0)), actualTargetPose);
-      Pose2d targetFieldRelativePose = robotPose.transformBy(targetToRobot);
-
-      returnedPose = targetFieldRelativePose;
-    }
-
-    SmartDashboard.putString(".desired pose", returnedPose.toString());
-    return returnedPose;
-  };
-
   @Override
   public void periodic() {
   }
