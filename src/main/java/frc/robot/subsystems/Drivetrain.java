@@ -43,7 +43,9 @@ public class Drivetrain extends SubsystemBase {
   public SlewRateLimiter driveYSlewRateLimiter;
   public SlewRateLimiter steerSlewRateLimiter;
 
-  public ProfiledPIDController thetaPIDController;
+  private ProfiledPIDController xTransPIDController;
+  private ProfiledPIDController yTransPIDController;
+  private ProfiledPIDController thetaPIDController;
 
   public Field2d field;
 
@@ -82,6 +84,20 @@ public class Drivetrain extends SubsystemBase {
     steerSlewRateLimiter = new SlewRateLimiter(
         Units.degreesToRadians(prefDrivetrain.slewMaxRotAccelDegrees.getValue()));
 
+    xTransPIDController = new ProfiledPIDController(
+        prefDrivetrain.teleTransP.getValue(),
+        prefDrivetrain.teleTransI.getValue(),
+        prefDrivetrain.teleTransD.getValue(),
+        new TrapezoidProfile.Constraints(
+            Units.feetToMeters(prefDrivetrain.teleTransMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.teleTransMaxAccelFeet.getValue())));
+    yTransPIDController = new ProfiledPIDController(
+        prefDrivetrain.teleTransP.getValue(),
+        prefDrivetrain.teleTransI.getValue(),
+        prefDrivetrain.teleTransD.getValue(),
+        new TrapezoidProfile.Constraints(
+            Units.feetToMeters(prefDrivetrain.teleTransMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.teleTransMaxAccelFeet.getValue())));
     thetaPIDController = new ProfiledPIDController(
         prefDrivetrain.teleThetaP.getValue(),
         prefDrivetrain.teleThetaI.getValue(),
@@ -117,6 +133,32 @@ public class Drivetrain extends SubsystemBase {
     driveYSlewRateLimiter = new SlewRateLimiter(Units.feetToMeters(prefDrivetrain.slewMaxAccelFeet.getValue()));
     steerSlewRateLimiter = new SlewRateLimiter(
         Units.degreesToRadians(prefDrivetrain.slewMaxRotAccelDegrees.getValue()));
+
+    xTransPIDController.setPID(
+        prefDrivetrain.teleTransP.getValue(),
+        prefDrivetrain.teleTransI.getValue(),
+        prefDrivetrain.teleTransD.getValue());
+
+    xTransPIDController.setTolerance(Units.inchesToMeters(prefDrivetrain.teleTransToleranceInches.getValue()));
+
+    xTransPIDController.setConstraints(
+        new TrapezoidProfile.Constraints(
+            Units.feetToMeters(prefDrivetrain.teleTransMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.teleTransMaxAccelFeet.getValue())));
+    xTransPIDController.reset(getPose().getX());
+
+    yTransPIDController.setPID(
+        prefDrivetrain.teleTransP.getValue(),
+        prefDrivetrain.teleTransI.getValue(),
+        prefDrivetrain.teleTransD.getValue());
+
+    yTransPIDController.setTolerance(Units.inchesToMeters(prefDrivetrain.teleTransToleranceInches.getValue()));
+
+    yTransPIDController.setConstraints(
+        new TrapezoidProfile.Constraints(
+            Units.feetToMeters(prefDrivetrain.teleTransMaxSpeedFeet.getValue()),
+            Units.feetToMeters(prefDrivetrain.teleTransMaxAccelFeet.getValue())));
+    yTransPIDController.reset(getPose().getY());
 
     thetaPIDController.setPID(
         prefDrivetrain.teleThetaP.getValue(),
@@ -181,7 +223,7 @@ public class Drivetrain extends SubsystemBase {
           slewedVelocity.getX(),
           slewedVelocity.getY(),
           slewedVelocity.getRotation().getRadians(),
-          getGyroYaw());
+          getPose().getRotation());
     } else {
       chassisSpeeds = new ChassisSpeeds(
           slewedVelocity.getX(),
@@ -210,6 +252,24 @@ public class Drivetrain extends SubsystemBase {
     for (SN_SwerveModule mod : swerveModules) {
       mod.setDesiredState(desiredStates[mod.moduleNumber], false);
     }
+  }
+
+  public void driveToPosition(Pose2d position) {
+    xTransPIDController.setGoal(new TrapezoidProfile.State(position.getX(), 0.0));
+    yTransPIDController.setGoal(new TrapezoidProfile.State(position.getY(), 0.0));
+
+    Pose2d velocity = new Pose2d(
+        xTransPIDController.calculate(getPose().getX()),
+        yTransPIDController.calculate(getPose().getY()),
+        position.getRotation());
+
+    driveAlignAngle(velocity);
+  }
+
+  public void resetPID() {
+    xTransPIDController.reset(new TrapezoidProfile.State(getPose().getX(), 0.0));
+    yTransPIDController.reset(new TrapezoidProfile.State(getPose().getY(), 0.0));
+    thetaPIDController.reset(new TrapezoidProfile.State(getPose().getRotation().getRadians(), 0.0));
   }
 
   public void neutralOutputs() {
@@ -343,6 +403,8 @@ public class Drivetrain extends SubsystemBase {
       SmartDashboard.putNumber("Drivetrain Pose Rotation", getPose().getRotation().getDegrees());
 
       SmartDashboard.putBoolean("Drivetrain field relative", fieldRelative);
+
+      SmartDashboard.putNumber("Drivetrain xTransPID", xTransPIDController.getP());
 
     }
   }

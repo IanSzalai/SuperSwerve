@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
+import javax.xml.crypto.dsig.Transform;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -11,9 +15,12 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Quaternion;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotPreferences.prefVision;
@@ -50,10 +57,11 @@ public class Vision extends SubsystemBase {
     double totalY = 0;
     double totalZ = 0;
 
-    Pose3d cameraPose = new Pose3d(prefVision.cameraXPosition.getValue(), prefVision.cameraYPosition.getValue(),
-        prefVision.cameraZPosition.getValue(),
-        new Rotation3d(prefVision.cameraRoll.getValue(), prefVision.cameraPitch.getValue(),
-            prefVision.cameraYaw.getValue()));
+    Pose3d cameraPose = new Pose3d(prefVision.cameraXPositionInches.getValue(),
+        prefVision.cameraYPositionInches.getValue(),
+        prefVision.cameraZPositionInches.getValue(),
+        new Rotation3d(prefVision.cameraRollDegrees.getValue(), prefVision.cameraPitchDegrees.getValue(),
+            prefVision.cameraYawDegrees.getValue()));
     Transform3d cameraToRobot = new Transform3d(new Pose3d(0, 0, 0, new Rotation3d(0, 0, 0)), cameraPose);
 
     if (filteredResult.length < 1) {
@@ -74,7 +82,8 @@ public class Vision extends SubsystemBase {
         newQuaternion = initialQuaternion;
       } else {
         newQuaternion = robotOnField.getRotation().getQuaternion();
-        // dot: ensure every value is within 180 degrees of init. quaternion
+        // dot: ensure every value is within 180 degrees of init. quaternion. rahh
+        // gimbal lock
         double dot = (initialQuaternion.getW() * newQuaternion.getW())
             + (initialQuaternion.getX() * newQuaternion.getX()) + (initialQuaternion.getY() * newQuaternion.getY())
             + (initialQuaternion.getZ() * newQuaternion.getZ());
